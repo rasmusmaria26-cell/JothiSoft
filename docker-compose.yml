@@ -1,0 +1,47 @@
+services:
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - FASTAPI_URL=http://api:8000
+      - NEXT_PUBLIC_FASTAPI_URL=http://localhost:8000
+    volumes:
+      - ./apps/web:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+      - SUPABASE_JWT_SECRET=${SUPABASE_JWT_SECRET}
+      - REDIS_URL=redis://redis:6379
+      - RAZORPAY_KEY_SECRET=${RAZORPAY_KEY_SECRET}
+      - ALLOWED_ORIGIN=http://localhost:3000
+    volumes:
+      - ./apps/api:/app
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  redis_data:
