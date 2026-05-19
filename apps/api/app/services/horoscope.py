@@ -3,6 +3,7 @@ horoscope.py
 Rasi (D1) and Navamsam (D9) chart engine for Tamil Jathagam.
 """
 from .ephemeris import get_julian_day, get_planet_positions, get_lagna, ZODIAC_SIGNS
+from .predictions import generate_predictions
 
 # ── House Placement ────────────────────────────────────────────────────────────
 def _house_from_lagna(planet_sign_index: int, lagna_sign_index: int) -> int:
@@ -114,9 +115,15 @@ def calculate_horoscope(
     positions = get_planet_positions(jd)
     lagna = get_lagna(jd, lat, lng)
 
+    moon_data = positions.get("Moon", {})
+    moon_sign = moon_data.get("sign", "")
+    moon_nakshatra = moon_data.get("nakshatra", "")
+    lagna_sign = lagna.get("sign", "")
+
     return {
         "lagna": lagna,
         "planets": build_planet_table(positions, lagna),
         "rasi_chart": build_rasi_chart(positions, lagna),
         "navamsam_chart": build_navamsam_chart(positions, lagna),
+        "predictions": generate_predictions(lagna_sign, moon_sign, moon_nakshatra),
     }

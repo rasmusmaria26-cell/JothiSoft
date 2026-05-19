@@ -182,3 +182,30 @@ async def panchapakshi(req: PanchapakshiRequest):
     except ValueError as e:
         raise HTTPException(400, detail=str(e))
     return result
+
+
+# ── Transit (Gocharam) ─────────────────────────────────────────────────────────
+@router.get("/transit")
+async def transit(
+    rasi: str = Query(..., description="Natal Moon Sign (Rasi) in English, e.g. Vrischika / Scorpio")
+):
+    """Return Vedic transit (Gocharam) for Saturn, Jupiter, Rahu, Ketu relative to natal Rasi."""
+    from ..services.transit import calculate_transit
+    ensure_ephemeris_files()
+    try:
+        # Map Vrischika -> Vrischika, Scorpio -> Vrischika (if needed, but our services support the ZODIAC_SIGNS keys)
+        # ZODIAC_SIGNS = ["Mesha", "Rishabha", "Mithuna", "Kataka", "Simha", "Kanya", "Thula", "Vrischika", "Dhanus", "Makara", "Kumbha", "Meena"]
+        # Let's map common English names if passed
+        english_to_vedic = {
+            "aries": "Mesha", "taurus": "Rishabha", "gemini": "Mithuna", "cancer": "Kataka",
+            "leo": "Simha", "virgo": "Kanya", "libra": "Thula", "scorpio": "Vrischika",
+            "sagittarius": "Dhanus", "capricorn": "Makara", "aquarius": "Kumbha", "pisces": "Meena"
+        }
+        mapped_rasi = rasi.strip().capitalize()
+        if rasi.lower() in english_to_vedic:
+            mapped_rasi = english_to_vedic[rasi.lower()]
+            
+        result = calculate_transit(mapped_rasi)
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
+    return result
