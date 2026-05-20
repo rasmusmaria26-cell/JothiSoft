@@ -1,0 +1,71 @@
+{
+  "note": "Times are traditional IST. Dates computed from Tamil month solar ingress. Verify annually against printed Panchangam before deploying new year data.",
+  "years": [
+    {
+      "year": 2026,
+      "days": [
+        {
+          "id": 1,
+          "tamil_month": "Chithirai",
+          "tamil_month_ta": "சித்திரை",
+          "tamil_date": "சித்திரை 10",
+          "gregorian_date": "2026-04-23",
+          "day_of_week": "Thursday",
+          "day_of_week_ta": "வியாழன்",
+          "waking_time": "08:00",
+          "waking_time_end": "09:30",
+          "activities": [
+            {
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "start": "08:00",
+              "end": "08:18",
+              "auspicious": false
+            },
+            {
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "start": "08:18",
+              "end": "08:36",
+              "auspicious": false
+            },
+            {
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "start": "08:36",
+              "end": "08:54",
+              "auspicious": false
+            },
+            {
+              "name_en": "Eating",
+              "name_ta": "சாப்பிடல்",
+              "start": "08:54",
+              "end": "09:12",
+              "auspicious": true
+            },
+            {
+              "name_en": "Chewing betel",
+              "name_ta": "வெற்றிலை மெல்லுதல்",
+              "start": "09:12",
+              "end": "09:30",
+              "auspicious": true,
+              "highly_auspicious": true
+            }
+          ],
+          "auspicious_window": {
+            "start": "08:54",
+            "end": "09:30",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "09:12",
+            "end": "09:30",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        }
+      ]
+    }
+  ]
+}
