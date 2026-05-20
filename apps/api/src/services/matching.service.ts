@@ -1,6 +1,8 @@
 import { cachedProkeralaFetch } from '../lib/prokerala';
 import { formatDatetime, formatCoordinates } from '../lib/utils';
-import { HoroscopeResponse, PlanetData } from './horoscope.service';
+import { HoroscopeResponse, PlanetData, calculateHoroscope } from './horoscope.service';
+import { calculatePapasamyam } from './papasamyam.service';
+import { getDasaSandhiClashes } from './dasaSandhi.service';
 
 export interface StarInput {
   nakshatra: number;
@@ -233,12 +235,7 @@ const hasMangalDosha = (planets: PlanetData[]): boolean => {
 };
 
 export const calculateHoroscopeMatching = (boy: HoroscopeResponse, girl: HoroscopeResponse): MatchingResponse => {
-  const boyPapasamyam = calculatePapasamyamScore(boy.planets);
-  const girlPapasamyam = calculatePapasamyamScore(girl.planets);
-  const difference = Math.abs(boyPapasamyam - girlPapasamyam);
-  
-  // Papasamyam is compatible if the points difference is 2 or less
-  const papasamyamCompatible = difference <= 2;
+  const papasamyamResult = calculatePapasamyam(boy.planets, girl.planets);
 
   const boyMangal = hasMangalDosha(boy.planets);
   const girlMangal = hasMangalDosha(girl.planets);
@@ -246,21 +243,71 @@ export const calculateHoroscopeMatching = (boy: HoroscopeResponse, girl: Horosco
   // Mangal Dosha is compatible if either both have it or both do not have it
   const mangalCompatible = boyMangal === girlMangal;
 
-  const overall_compatible = papasamyamCompatible && mangalCompatible;
+  const overall_compatible = papasamyamResult.compatible && mangalCompatible;
 
   return {
     overall_compatible,
     papasamyam: {
-      boy_score: boyPapasamyam,
-      girl_score: girlPapasamyam,
-      difference,
-      compatible: papasamyamCompatible
+      boy_score: papasamyamResult.boy_score,
+      girl_score: papasamyamResult.girl_score,
+      difference: papasamyamResult.difference,
+      compatible: papasamyamResult.compatible
     },
     mangal_dosha: {
       boy_has_dosha: boyMangal,
       girl_has_dosha: girlMangal,
       compatible: mangalCompatible
     }
+  };
+};
+
+export const getDetailedMatching = async (boy: BirthInput, girl: BirthInput, language: string = 'en') => {
+  // 1. Generate horoscopes for both
+  const boyHoro = await calculateHoroscope(boy.date, boy.time, boy.lat, boy.lng, boy.utcOffset, language);
+  const girlHoro = await calculateHoroscope(girl.date, girl.time, girl.lat, girl.lng, girl.utcOffset, language);
+
+  // 2. Star Match (10 Porutham) - Use Moon's Nakshatra
+  const boyMoon = boyHoro.planets.find((p: PlanetData) => p.planet === 'Moon') || boyHoro.lagna;
+  const girlMoon = girlHoro.planets.find((p: PlanetData) => p.planet === 'Moon') || girlHoro.lagna;
+  const starResult = calculateStarMatching(boyMoon.nakshatra, girlMoon.nakshatra);
+
+  // 3. Horoscope Match (Papasamyam & Mangal Dosha)
+  const horoResult = calculateHoroscopeMatching(boyHoro, girlHoro);
+
+  // 4. Dasa Sandhi Pre-check Severity
+  // Ensure we use the Moon's longitude for Dasa Sandhi, not Lagna's longitude!
+  const boyMoonLong = (['Mesha', 'Vrishabha', 'Mithuna', 'Kataka', 'Simha', 'Kanya', 'Thula', 'Vrischika', 'Dhanus', 'Makara', 'Kumbha', 'Meena'].indexOf(boyMoon.sign) * 30) + boyMoon.sign_degree;
+  const girlMoonLong = (['Mesha', 'Vrishabha', 'Mithuna', 'Kataka', 'Simha', 'Kanya', 'Thula', 'Vrischika', 'Dhanus', 'Makara', 'Kumbha', 'Meena'].indexOf(girlMoon.sign) * 30) + girlMoon.sign_degree;
+  
+  const dasaSandhi = getDasaSandhiClashes(boy.date, boyMoonLong, girl.date, girlMoonLong);
+
+  // 5. Calculate overview score based on star match + dosha check
+  let overviewScore = starResult.score_percent;
+  if (!horoResult.overall_compatible) {
+    overviewScore = Math.max(0, overviewScore - 20); // Penalty for dosha mismatch
+  }
+  if (dasaSandhi.summary_severity === 'severe') {
+    overviewScore = Math.max(0, overviewScore - 15);
+  }
+
+  return {
+    boy_star: boyMoon.nakshatra, 
+    boy_star_ta: boyMoon.nakshatra, 
+    girl_star: girlMoon.nakshatra, 
+    girl_star_ta: girlMoon.nakshatra,
+    star_result: starResult,
+    horo_result: horoResult,
+    overview_score: overviewScore,
+    dasa_sandhi_precheck_severity: dasaSandhi.summary_severity,
+    boy_chart: boyHoro.rasi_chart,
+    girl_chart: girlHoro.rasi_chart,
+    boy_planets: boyHoro.planets,
+    girl_planets: girlHoro.planets,
+    boy_lagna: boyHoro.lagna,
+    girl_lagna: girlHoro.lagna,
+    // Add raw horoscopes to use for other processing if needed
+    _raw_boy_horo: boyHoro,
+    _raw_girl_horo: girlHoro
   };
 };
 

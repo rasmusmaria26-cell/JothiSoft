@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { getNakshatraPorutham, getChartMatching, getMangalDosha, calculateHoroscopeMatching, calculateStarMatching } from '../services/matching.service';
+import { getNakshatraPorutham, getChartMatching, getMangalDosha, calculateHoroscopeMatching, calculateStarMatching, getDetailedMatching } from '../services/matching.service';
+import { getDasaSandhiClashes } from '../services/dasaSandhi.service';
 import { authenticate } from '../middleware/auth';
 import { requireSubscription } from '../middleware/subscription';
 import { calcLimiter, apiLimiter } from '../middleware/rateLimit';
@@ -123,6 +124,56 @@ router.post('/calculate', authenticate, requireSubscription, calcLimiter, async 
       success: false,
       error: 'SERVER_ERROR',
       message: error.message || 'An unexpected error occurred while matching horoscopes',
+    });
+  }
+});
+
+router.post('/detailed/basic', authenticate, requireSubscription, calcLimiter, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { boy, girl, language } = req.body;
+
+    if (!boy || !girl) {
+      res.status(400).json({
+        success: false,
+        error: 'VALIDATION_ERROR',
+        message: 'Missing required parameters: boy and girl birth details',
+      });
+      return;
+    }
+
+    const data = await getDetailedMatching(boy, girl, language);
+    res.json(data);
+  } catch (error: any) {
+    console.error('[Detailed Matching Error]:', error);
+    res.status(error.statusCode || 500).json({
+      success: false,
+      error: 'SERVER_ERROR',
+      message: error.message || 'An unexpected error occurred while calculating detailed match',
+    });
+  }
+});
+
+router.post('/detailed/dasa-sandhi', authenticate, requireSubscription, calcLimiter, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { boyDobStr, boyMoonLongitude, girlDobStr, girlMoonLongitude } = req.body;
+
+    if (!boyDobStr || boyMoonLongitude === undefined || !girlDobStr || girlMoonLongitude === undefined) {
+      res.status(400).json({
+        success: false,
+        error: 'VALIDATION_ERROR',
+        message: 'Missing required parameters for Dasa Sandhi',
+      });
+      return;
+    }
+
+    const data = getDasaSandhiClashes(boyDobStr, boyMoonLongitude, girlDobStr, girlMoonLongitude);
+    res.json(data);
+  } catch (error: any) {
+    console.error('[Dasa Sandhi Error]:', error);
+    res.status(error.statusCode || 500).json({
+      success: false,
+      error: 'SERVER_ERROR',
+      message: error.message || 'An unexpected error occurred while calculating Dasa Sandhi',
     });
   }
 });

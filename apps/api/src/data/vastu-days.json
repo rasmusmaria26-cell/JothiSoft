@@ -1,5 +1,5 @@
 {
-  "note": "Times are traditional IST. Dates computed from Tamil month solar ingress. Verify annually against printed Panchangam before deploying new year data.",
+  "note": "Vastu auspicious days for 2026, calculated with 18-minute activity slots based on traditional waking times.",
   "years": [
     {
       "year": 2026,
@@ -8,48 +8,1052 @@
           "id": 1,
           "tamil_month": "Chithirai",
           "tamil_month_ta": "சித்திரை",
+          "tamil_date": "சித்திரை 3",
+          "gregorian_date": "2026-04-16",
+          "day_of_week": "Thursday",
+          "day_of_week_ta": "வியாழன்",
+          "waking_time": "07:30",
+          "waking_time_end": "09:00",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:30",
+              "end_time": "07:48"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:48",
+              "end_time": "08:06"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:06",
+              "end_time": "08:24"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "08:24",
+              "end_time": "08:42"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "08:42",
+              "end_time": "09:00"
+            }
+          ],
+          "auspicious_window": {
+            "start": "08:24",
+            "end": "09:00",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "08:42",
+            "end": "09:00",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 2,
+          "tamil_month": "Chithirai",
+          "tamil_month_ta": "சித்திரை",
           "tamil_date": "சித்திரை 10",
           "gregorian_date": "2026-04-23",
+          "day_of_week": "Thursday",
+          "day_of_week_ta": "வியாழன்",
+          "waking_time": "07:30",
+          "waking_time_end": "09:00",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:30",
+              "end_time": "07:48"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:48",
+              "end_time": "08:06"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:06",
+              "end_time": "08:24"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "08:24",
+              "end_time": "08:42"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "08:42",
+              "end_time": "09:00"
+            }
+          ],
+          "auspicious_window": {
+            "start": "08:24",
+            "end": "09:00",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "08:42",
+            "end": "09:00",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 3,
+          "tamil_month": "Vaikasi",
+          "tamil_month_ta": "வைகாசி",
+          "tamil_date": "வைகாசி 7",
+          "gregorian_date": "2026-05-21",
+          "day_of_week": "Thursday",
+          "day_of_week_ta": "வியாழன்",
+          "waking_time": "07:00",
+          "waking_time_end": "08:30",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:00",
+              "end_time": "07:18"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:18",
+              "end_time": "07:36"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:36",
+              "end_time": "07:54"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "07:54",
+              "end_time": "08:12"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "08:12",
+              "end_time": "08:30"
+            }
+          ],
+          "auspicious_window": {
+            "start": "07:54",
+            "end": "08:30",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "08:12",
+            "end": "08:30",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 4,
+          "tamil_month": "Vaikasi",
+          "tamil_month_ta": "வைகாசி",
+          "tamil_date": "வைகாசி 11",
+          "gregorian_date": "2026-05-25",
+          "day_of_week": "Monday",
+          "day_of_week_ta": "திங்கள்",
+          "waking_time": "07:00",
+          "waking_time_end": "08:30",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:00",
+              "end_time": "07:18"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:18",
+              "end_time": "07:36"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:36",
+              "end_time": "07:54"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "07:54",
+              "end_time": "08:12"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "08:12",
+              "end_time": "08:30"
+            }
+          ],
+          "auspicious_window": {
+            "start": "07:54",
+            "end": "08:30",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "08:12",
+            "end": "08:30",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 5,
+          "tamil_month": "Ani",
+          "tamil_month_ta": "ஆனி",
+          "tamil_date": "ஆனி 4",
+          "gregorian_date": "2026-06-18",
+          "day_of_week": "Thursday",
+          "day_of_week_ta": "வியாழன்",
+          "waking_time": "06:30",
+          "waking_time_end": "08:00",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "06:30",
+              "end_time": "06:48"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "06:48",
+              "end_time": "07:06"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:06",
+              "end_time": "07:24"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "07:24",
+              "end_time": "07:42"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "07:42",
+              "end_time": "08:00"
+            }
+          ],
+          "auspicious_window": {
+            "start": "07:24",
+            "end": "08:00",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "07:42",
+            "end": "08:00",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 6,
+          "tamil_month": "Ani",
+          "tamil_month_ta": "ஆனி",
+          "tamil_date": "ஆனி 8",
+          "gregorian_date": "2026-06-22",
+          "day_of_week": "Monday",
+          "day_of_week_ta": "திங்கள்",
+          "waking_time": "06:30",
+          "waking_time_end": "08:00",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "06:30",
+              "end_time": "06:48"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "06:48",
+              "end_time": "07:06"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:06",
+              "end_time": "07:24"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "07:24",
+              "end_time": "07:42"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "07:42",
+              "end_time": "08:00"
+            }
+          ],
+          "auspicious_window": {
+            "start": "07:24",
+            "end": "08:00",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "07:42",
+            "end": "08:00",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 7,
+          "tamil_month": "Aadi",
+          "tamil_month_ta": "ஆடி",
+          "tamil_date": "ஆடி 7",
+          "gregorian_date": "2026-07-23",
+          "day_of_week": "Thursday",
+          "day_of_week_ta": "வியாழன்",
+          "waking_time": "06:30",
+          "waking_time_end": "08:00",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "06:30",
+              "end_time": "06:48"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "06:48",
+              "end_time": "07:06"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:06",
+              "end_time": "07:24"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "07:24",
+              "end_time": "07:42"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "07:42",
+              "end_time": "08:00"
+            }
+          ],
+          "auspicious_window": {
+            "start": "07:24",
+            "end": "08:00",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "07:42",
+            "end": "08:00",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 8,
+          "tamil_month": "Aadi",
+          "tamil_month_ta": "ஆடி",
+          "tamil_date": "ஆடி 11",
+          "gregorian_date": "2026-07-27",
+          "day_of_week": "Monday",
+          "day_of_week_ta": "திங்கள்",
+          "waking_time": "06:30",
+          "waking_time_end": "08:00",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "06:30",
+              "end_time": "06:48"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "06:48",
+              "end_time": "07:06"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:06",
+              "end_time": "07:24"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "07:24",
+              "end_time": "07:42"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "07:42",
+              "end_time": "08:00"
+            }
+          ],
+          "auspicious_window": {
+            "start": "07:24",
+            "end": "08:00",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "07:42",
+            "end": "08:00",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 9,
+          "tamil_month": "Aavani",
+          "tamil_month_ta": "ஆவணி",
+          "tamil_date": "ஆவணி 4",
+          "gregorian_date": "2026-08-20",
+          "day_of_week": "Thursday",
+          "day_of_week_ta": "வியாழன்",
+          "waking_time": "07:00",
+          "waking_time_end": "08:30",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:00",
+              "end_time": "07:18"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:18",
+              "end_time": "07:36"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:36",
+              "end_time": "07:54"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "07:54",
+              "end_time": "08:12"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "08:12",
+              "end_time": "08:30"
+            }
+          ],
+          "auspicious_window": {
+            "start": "07:54",
+            "end": "08:30",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "08:12",
+            "end": "08:30",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 10,
+          "tamil_month": "Aavani",
+          "tamil_month_ta": "ஆவணி",
+          "tamil_date": "ஆவணி 8",
+          "gregorian_date": "2026-08-24",
+          "day_of_week": "Monday",
+          "day_of_week_ta": "திங்கள்",
+          "waking_time": "07:00",
+          "waking_time_end": "08:30",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:00",
+              "end_time": "07:18"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:18",
+              "end_time": "07:36"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:36",
+              "end_time": "07:54"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "07:54",
+              "end_time": "08:12"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "08:12",
+              "end_time": "08:30"
+            }
+          ],
+          "auspicious_window": {
+            "start": "07:54",
+            "end": "08:30",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "08:12",
+            "end": "08:30",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 11,
+          "tamil_month": "Purattasi",
+          "tamil_month_ta": "புரட்டாசி",
+          "tamil_date": "புரட்டாசி 1",
+          "gregorian_date": "2026-09-17",
+          "day_of_week": "Thursday",
+          "day_of_week_ta": "வியாழன்",
+          "waking_time": "07:30",
+          "waking_time_end": "09:00",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:30",
+              "end_time": "07:48"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:48",
+              "end_time": "08:06"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:06",
+              "end_time": "08:24"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "08:24",
+              "end_time": "08:42"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "08:42",
+              "end_time": "09:00"
+            }
+          ],
+          "auspicious_window": {
+            "start": "08:24",
+            "end": "09:00",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "08:42",
+            "end": "09:00",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 12,
+          "tamil_month": "Purattasi",
+          "tamil_month_ta": "புரட்டாசி",
+          "tamil_date": "புரட்டாசி 5",
+          "gregorian_date": "2026-09-21",
+          "day_of_week": "Monday",
+          "day_of_week_ta": "திங்கள்",
+          "waking_time": "07:30",
+          "waking_time_end": "09:00",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:30",
+              "end_time": "07:48"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:48",
+              "end_time": "08:06"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:06",
+              "end_time": "08:24"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "08:24",
+              "end_time": "08:42"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "08:42",
+              "end_time": "09:00"
+            }
+          ],
+          "auspicious_window": {
+            "start": "08:24",
+            "end": "09:00",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "08:42",
+            "end": "09:00",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 13,
+          "tamil_month": "Aippasi",
+          "tamil_month_ta": "ஐப்பசி",
+          "tamil_date": "ஐப்பசி 5",
+          "gregorian_date": "2026-10-22",
+          "day_of_week": "Thursday",
+          "day_of_week_ta": "வியாழன்",
+          "waking_time": "07:45",
+          "waking_time_end": "09:15",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:45",
+              "end_time": "08:03"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:03",
+              "end_time": "08:21"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:21",
+              "end_time": "08:39"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "08:39",
+              "end_time": "08:57"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "08:57",
+              "end_time": "09:15"
+            }
+          ],
+          "auspicious_window": {
+            "start": "08:39",
+            "end": "09:15",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "08:57",
+            "end": "09:15",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 14,
+          "tamil_month": "Aippasi",
+          "tamil_month_ta": "ஐப்பசி",
+          "tamil_date": "ஐப்பசி 9",
+          "gregorian_date": "2026-10-26",
+          "day_of_week": "Monday",
+          "day_of_week_ta": "திங்கள்",
+          "waking_time": "07:45",
+          "waking_time_end": "09:15",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "07:45",
+              "end_time": "08:03"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:03",
+              "end_time": "08:21"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:21",
+              "end_time": "08:39"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "08:39",
+              "end_time": "08:57"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "08:57",
+              "end_time": "09:15"
+            }
+          ],
+          "auspicious_window": {
+            "start": "08:39",
+            "end": "09:15",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "08:57",
+            "end": "09:15",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 15,
+          "tamil_month": "Karthigai",
+          "tamil_month_ta": "கார்த்திகை",
+          "tamil_date": "கார்த்திகை 4",
+          "gregorian_date": "2026-11-19",
           "day_of_week": "Thursday",
           "day_of_week_ta": "வியாழன்",
           "waking_time": "08:00",
           "waking_time_end": "09:30",
           "activities": [
             {
+              "id": 1,
               "name_en": "Brushing teeth",
               "name_ta": "பல் துலக்குதல்",
-              "start": "08:00",
-              "end": "08:18",
-              "auspicious": false
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:00",
+              "end_time": "08:18"
             },
             {
+              "id": 2,
               "name_en": "Bathing",
               "name_ta": "குளியல்",
-              "start": "08:18",
-              "end": "08:36",
-              "auspicious": false
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:18",
+              "end_time": "08:36"
             },
             {
+              "id": 3,
               "name_en": "Pooja",
               "name_ta": "பூஜை",
-              "start": "08:36",
-              "end": "08:54",
-              "auspicious": false
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:36",
+              "end_time": "08:54"
             },
             {
+              "id": 4,
               "name_en": "Eating",
-              "name_ta": "சாப்பிடல்",
-              "start": "08:54",
-              "end": "09:12",
-              "auspicious": true
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "08:54",
+              "end_time": "09:12"
             },
             {
+              "id": 5,
               "name_en": "Chewing betel",
-              "name_ta": "வெற்றிலை மெல்லுதல்",
-              "start": "09:12",
-              "end": "09:30",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
               "auspicious": true,
-              "highly_auspicious": true
+              "highly_auspicious": true,
+              "start_time": "09:12",
+              "end_time": "09:30"
             }
           ],
           "auspicious_window": {
@@ -61,6 +1065,219 @@
           "highly_auspicious_window": {
             "start": "09:12",
             "end": "09:30",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 16,
+          "tamil_month": "Karthigai",
+          "tamil_month_ta": "கார்த்திகை",
+          "tamil_date": "கார்த்திகை 8",
+          "gregorian_date": "2026-11-23",
+          "day_of_week": "Monday",
+          "day_of_week_ta": "திங்கள்",
+          "waking_time": "08:00",
+          "waking_time_end": "09:30",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:00",
+              "end_time": "08:18"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:18",
+              "end_time": "08:36"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:36",
+              "end_time": "08:54"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "08:54",
+              "end_time": "09:12"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "09:12",
+              "end_time": "09:30"
+            }
+          ],
+          "auspicious_window": {
+            "start": "08:54",
+            "end": "09:30",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "09:12",
+            "end": "09:30",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 17,
+          "tamil_month": "Margazhi",
+          "tamil_month_ta": "மார்கழி",
+          "tamil_date": "மார்கழி 2",
+          "gregorian_date": "2026-12-17",
+          "day_of_week": "Thursday",
+          "day_of_week_ta": "வியாழன்",
+          "waking_time": "08:30",
+          "waking_time_end": "10:00",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:30",
+              "end_time": "08:48"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:48",
+              "end_time": "09:06"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "09:06",
+              "end_time": "09:24"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "09:24",
+              "end_time": "09:42"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "09:42",
+              "end_time": "10:00"
+            }
+          ],
+          "auspicious_window": {
+            "start": "09:24",
+            "end": "10:00",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "09:42",
+            "end": "10:00",
+            "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
+            "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
+          }
+        },
+        {
+          "id": 18,
+          "tamil_month": "Margazhi",
+          "tamil_month_ta": "மார்கழி",
+          "tamil_date": "மார்கழி 6",
+          "gregorian_date": "2026-12-21",
+          "day_of_week": "Monday",
+          "day_of_week_ta": "திங்கள்",
+          "waking_time": "08:30",
+          "waking_time_end": "10:00",
+          "activities": [
+            {
+              "id": 1,
+              "name_en": "Brushing teeth",
+              "name_ta": "பல் துலக்குதல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:30",
+              "end_time": "08:48"
+            },
+            {
+              "id": 2,
+              "name_en": "Bathing",
+              "name_ta": "குளியல்",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "08:48",
+              "end_time": "09:06"
+            },
+            {
+              "id": 3,
+              "name_en": "Pooja",
+              "name_ta": "பூஜை",
+              "duration_minutes": 18,
+              "auspicious": false,
+              "start_time": "09:06",
+              "end_time": "09:24"
+            },
+            {
+              "id": 4,
+              "name_en": "Eating",
+              "name_ta": "உணவு உண்ணுதல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "start_time": "09:24",
+              "end_time": "09:42"
+            },
+            {
+              "id": 5,
+              "name_en": "Chewing betel",
+              "name_ta": "தாம்பூலம் தரித்தல்",
+              "duration_minutes": 18,
+              "auspicious": true,
+              "highly_auspicious": true,
+              "start_time": "09:42",
+              "end_time": "10:00"
+            }
+          ],
+          "auspicious_window": {
+            "start": "09:24",
+            "end": "10:00",
+            "label_en": "Auspicious — begin construction",
+            "label_ta": "சுபமான நேரம் — கட்டுமானம் தொடங்கலாம்"
+          },
+          "highly_auspicious_window": {
+            "start": "09:42",
+            "end": "10:00",
             "label_en": "Highly auspicious — most ideal for Bhoomi Pooja",
             "label_ta": "மிகவும் சுபமான நேரம் — பூமி பூஜைக்கு சிறந்தது"
           }
