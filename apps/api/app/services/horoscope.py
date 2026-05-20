@@ -126,4 +126,9 @@ def calculate_horoscope(
         "rasi_chart": build_rasi_chart(positions, lagna),
         "navamsam_chart": build_navamsam_chart(positions, lagna),
         "predictions": generate_predictions(lagna_sign, moon_sign, moon_nakshatra),
+        "moon": {
+            "nakshatra": moon_nakshatra,
+            "longitude": moon_data.get("longitude", 0.0),
+            "sign": moon_sign
+        }
     }

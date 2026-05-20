@@ -73,12 +73,12 @@ def _calculate_rahu_kalam(dt: date, lat: float, lng: float) -> dict:
 
 
 # ── Core Panchangam ────────────────────────────────────────────────────────────
-def calculate_panchangam(dt: date, lat: float, lng: float) -> dict:
+def calculate_panchangam(dt: date, lat: float, lng: float, tz_offset: float = 5.5) -> dict:
     """
     Returns a full daily Panchangam dict for the given date and location.
-    Uses the 5:30 IST offset for Julian Day conversion.
+    Uses the provided tz_offset offset (defaults to 5.5 for IST) for Julian Day conversion.
     """
-    jd = get_julian_day(dt.year, dt.month, dt.day, 6, 0, tz_offset=5.5)
+    jd = get_julian_day(dt.year, dt.month, dt.day, 6, 0, tz_offset=tz_offset)
     positions = get_planet_positions(jd)
 
     sun_long = positions["Sun"]["longitude"]

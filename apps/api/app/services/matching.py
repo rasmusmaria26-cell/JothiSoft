@@ -166,3 +166,148 @@ def calculate_horoscope_match(boy_chart: dict, girl_chart: dict) -> dict:
         },
         "overall_compatible": papasamyam_ok and mangal_compatible,
     }
+
+
+# ── Compatibility Index Formula ────────────────────────────────────────────────
+def calculate_compatibility_index(
+    porutham_score: float,      # out of 10
+    papa_diff: int,             # point difference in papasamyam
+    mangal_compatible: bool,
+    dasa_sandhi_severity: str   # 'none'|'mild'|'moderate'|'severe'
+) -> int:
+    """
+    Synthesizes a 100-point compatibility score.
+    - Porutham Score: 40% weight
+    - Papasamyam (Papa difference <= 1): 30% weight
+    - Mangal Dosha alignment: 15% weight
+    - Dasa Sandhi alignment: 15% weight
+    """
+    # 1. Base Porutham (40%)
+    base = (porutham_score / 10.0) * 40.0
+
+    # 2. Papasamyam Difference (30%)
+    if papa_diff <= 1:
+        papa = 30.0
+    elif papa_diff == 2:
+        papa = 20.0
+    elif papa_diff == 3:
+        papa = 10.0
+    else:
+        papa = 0.0
+
+    # 3. Mangal Dosha (15%)
+    mangal = 15.0 if mangal_compatible else 0.0
+
+    # 4. Dasa Sandhi (15%)
+    sandhi_scores = {
+        'none': 15.0,
+        'mild': 10.0,
+        'moderate': 5.0,
+        'severe': 0.0
+    }
+    sandhi = sandhi_scores.get(dasa_sandhi_severity, 15.0)
+
+    return round(base + papa + mangal + sandhi)
+
+
+# ── Dasa Sandhi (Timeline Junction) Analysis ───────────────────────────────────
+def calculate_dasa_sandhi(
+    boy_birth_date: str, # ISO string
+    boy_moon_long: float,
+    girl_birth_date: str, # ISO string
+    girl_moon_long: float
+) -> dict:
+    """
+    Scans Vimshottari Mahadasha timeline transitions across 120 years.
+    Returns overlapping sandhi junctions (clashes) under 24 months.
+    """
+    from datetime import date
+    from .dasha import calculate_dasha_timeline
+
+    b_dob = date.fromisoformat(boy_birth_date)
+    g_dob = date.fromisoformat(girl_birth_date)
+
+    boy_timeline = calculate_dasha_timeline(b_dob, boy_moon_long)
+    girl_timeline = calculate_dasha_timeline(g_dob, girl_moon_long)
+
+    # 1. Collect all Mahadasha transitions for boy
+    boy_transitions = []
+    for i, maha in enumerate(boy_timeline):
+        if i < len(boy_timeline) - 1:
+            next_lord = boy_timeline[i+1]["lord"]
+        else:
+            next_lord = "Cycle End"
+        t_date = date.fromisoformat(maha["end"])
+        age = round((t_date - b_dob).days / 365.25, 1)
+        boy_transitions.append({
+            "from_lord": maha["lord"],
+            "to_lord": next_lord,
+            "transition_date": t_date,
+            "age": age
+        })
+
+    # 2. Collect all Mahadasha transitions for girl
+    girl_transitions = []
+    for i, maha in enumerate(girl_timeline):
+        if i < len(girl_timeline) - 1:
+            next_lord = girl_timeline[i+1]["lord"]
+        else:
+            next_lord = "Cycle End"
+        t_date = date.fromisoformat(maha["end"])
+        age = round((t_date - g_dob).days / 365.25, 1)
+        girl_transitions.append({
+            "from_lord": maha["lord"],
+            "to_lord": next_lord,
+            "transition_date": t_date,
+            "age": age
+        })
+
+    # 3. Double-loop to find overlaps under 24 months (730 days)
+    clashes = []
+    summary_severity = "none"
+
+    for bt in boy_transitions:
+        for gt in girl_transitions:
+            diff_days = abs((bt["transition_date"] - gt["transition_date"]).days)
+            if diff_days <= 730:
+                gap_months = round(diff_days / 30.4375, 1)
+                
+                # Assign severity (exactly <= 6 months, <= 12 months, <= 24 months)
+                if diff_days <= 182:
+                    severity = "severe"
+                    advice_en = "Highly inauspicious overlap. Both partners undergo a major planetary shift within 6 months, leading to emotional destabilization. Special remedial prayers or Dasa Shanti homam is recommended."
+                    advice_ta = "மிகவும் அசுபமான காலப் பொருத்தம். இருவருக்கும் 6 மாத இடைவெளிக்குள் தசா சந்தி ஏற்படுகிறது, இது உறவுகளில் பாதிப்பை ஏற்படுத்தலாம். தசா சாந்தி ஹோமம் செய்வது நன்று."
+                elif diff_days <= 365:
+                    severity = "moderate"
+                    advice_en = "Moderate junction clash within 12 months. Indicates planetary transition vulnerability. Patience and caution during this transition year are advised."
+                    advice_ta = "மத்திய தசா சந்தி. 1 வருடத்திற்குள் இருவருக்கும் தசா மாற்றம் ஏற்படுவதால், இந்த தசா காலத்தில் தம்பதியினர் எச்சரிக்கையுடனும் பொறுமையுடனும் இருக்க வேண்டும்."
+                else:
+                    severity = "mild"
+                    advice_en = "Mild transition impact within 24 months. Generally manageable with standard patience."
+                    advice_ta = "குறைந்த தசா சந்தி பாதிப்பு. 2 வருட கால இடைவெளி இருப்பதால் பெரிய பாதிப்புகள் இல்லை, நற்பலன்கள் கிட்டும்."
+
+                # Update summary severity
+                if severity == "severe":
+                    summary_severity = "severe"
+                elif severity == "moderate" and summary_severity != "severe":
+                    summary_severity = "moderate"
+                elif severity == "mild" and summary_severity not in ("severe", "moderate"):
+                    summary_severity = "mild"
+
+                clashes.append({
+                    "boy_age": bt["age"],
+                    "girl_age": gt["age"],
+                    "boy_planet": f"{bt['from_lord']} → {bt['to_lord']}",
+                    "girl_planet": f"{gt['from_lord']} → {gt['to_lord']}",
+                    "clash_date": bt["transition_date"].isoformat(),
+                    "severity": severity,
+                    "gap_months": gap_months,
+                    "advice_en": advice_en,
+                    "advice_ta": advice_ta
+                })
+
+    return {
+        "clashes": clashes,
+        "summary_severity": summary_severity
+    }
+

@@ -11,10 +11,10 @@ from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
 from ..services.ephemeris import ensure_ephemeris_files, get_julian_day, get_planet_positions, NAKSHATRAS
-from ..services.panchangam import calculate_panchangam
+from ..services.panchangam import calculate_panchangam, _get_sun_times
 from ..services.horoscope import calculate_horoscope
 from ..services.dasha import calculate_dasha_timeline, calculate_current_dasha
-from ..services.matching import calculate_star_match, calculate_horoscope_match
+from ..services.matching import calculate_star_match, calculate_horoscope_match, calculate_compatibility_index, calculate_dasa_sandhi
 from ..services.numerology import calculate_numerology_report
 from ..services.panchapakshi import calculate_panchapakshi
 from ..services.muhurtham import calculate_muhurtham
@@ -82,6 +82,15 @@ class MuhurthamRequest(BaseModel):
     lng: Optional[float] = 80.2707
 
 
+class MonthlyPanchangamRequest(BaseModel):
+    year: int
+    month: int = Field(..., ge=1, le=12)
+    lat: float
+    lng: float
+    utc_offset: float = 5.5
+    place_name: Optional[str] = "Chennai"
+
+
 class DashaRequest(BaseModel):
     # Optional old params for backward compatibility
     birth_date: Optional[str] = None
@@ -98,12 +107,37 @@ class DashaRequest(BaseModel):
     tz_offset: Optional[float] = 5.5
 
 
+class DetailedMatchRequest(BaseModel):
+    boy_name: Optional[str] = "Groom"
+    boy_year: int
+    boy_month: int
+    boy_day: int
+    boy_hour: int = 12
+    boy_minute: int = 0
+    boy_lat: float
+    boy_lng: float
+    boy_utc_offset: float = 5.5
+    boy_place_name: Optional[str] = "Chennai"
+
+    girl_name: Optional[str] = "Bride"
+    girl_year: int
+    girl_month: int
+    girl_day: int
+    girl_hour: int = 12
+    girl_minute: int = 0
+    girl_lat: float
+    girl_lng: float
+    girl_utc_offset: float = 5.5
+    girl_place_name: Optional[str] = "Chennai"
+
+
 # ── Panchangam ─────────────────────────────────────────────────────────────────
 @router.get("/panchangam")
 async def panchangam(
     date_str: str = Query(default=None, alias="date", description="YYYY-MM-DD (defaults to today)"),
     lat: float = Query(default=13.0827, description="Latitude (default: Chennai)"),
     lng: float = Query(default=80.2707, description="Longitude (default: Chennai)"),
+    tz_offset: float = Query(default=5.5, description="Timezone Offset (default: 5.5)"),
 ):
     """Return the daily Panchangam for the given date and location."""
     try:
@@ -111,7 +145,7 @@ async def panchangam(
     except ValueError:
         raise HTTPException(400, detail="Invalid date format. Use YYYY-MM-DD.")
 
-    cache_key = f"panchangam:{dt.isoformat()}:{lat:.2f}:{lng:.2f}"
+    cache_key = f"panchangam:{dt.isoformat()}:{lat:.2f}:{lng:.2f}:{tz_offset:.2f}"
     r = get_redis()
     if r:
         cached = r.get(cache_key)
@@ -119,12 +153,121 @@ async def panchangam(
             return json.loads(cached)
 
     ensure_ephemeris_files()
-    result = calculate_panchangam(dt, lat, lng)
+    result = calculate_panchangam(dt, lat, lng, tz_offset)
 
     if r:
         r.setex(cache_key, 86400, json.dumps(result))  # cache 24h
 
     return result
+
+
+from functools import lru_cache
+from calendar import monthrange
+
+# LRU cache on backend to save computation for fixed lat/lng/month combinations
+@lru_cache(maxsize=256)
+def get_cached_monthly_panchangam(year: int, month: int, lat: float, lng: float, utc_offset: float) -> list:
+    ensure_ephemeris_files()
+    num_days = monthrange(year, month)[1]
+    
+    TITHIS_TA = [
+        "பிரதமை (Pratipada)", "துவிதியை (Dvitiya)", "திருதியை (Tritiya)", "சதுர்த்தி (Chaturthi)", "பஞ்சமி (Panchami)",
+        "சஷ்டி (Shashthi)", "சப்தமி (Saptami)", "அஷ்டமி (Ashtami)", "நவமி (Navami)", "தசமி (Dashami)",
+        "ஏகாதசி (Ekadashi)", "துவாதசி (Dwadashi)", "திரயோதசி (Trayodashi)", "சதுர்தசி (Chaturdashi)", "பௌர்ணமி (Purnima)",
+        "பிரதமை (Pratipada)", "துவிதியை (Dvitiya)", "திருதியை (Tritiya)", "சதுர்த்தி (Chaturthi)", "பஞ்சமி (Panchami)",
+        "சஷ்டி (Shashthi)", "சப்தமி (Saptami)", "அஷ்டமி (Ashtami)", "நவமி (Navami)", "தசமி (Dashami)",
+        "ஏகாதசி (Ekadashi)", "துவாதசி (Dwadashi)", "திரயோதசி (Trayodashi)", "சதுர்தசி (Chaturdashi)", "அமாவாசை (Amavasya)"
+    ]
+
+    NAKSHATRAS_TA = [
+        "அஸ்வினி (Aswini)", "பரணி (Bharani)", "கார்த்திகை (Krithika)", "ரோகிணி (Rohini)", "மிருகசீரிடம் (Mrigasira)",
+        "திருவாதிரை (Arudra)", "புனர்பூசம் (Punarvasu)", "பூசம் (Pushya)", "ஆயில்யம் (Ashlesha)", "மகம் (Magha)",
+        "பூரம் (Poorva Phalguni)", "உத்திரம் (Uttara Phalguni)", "அஸ்தம் (Hasta)", "சித்திரை (Chitra)", "சுவாதி (Swati)",
+        "விசாகம் (Vishakha)", "அனுஷம் (Anuradha)", "கேட்டை (Jyeshtha)", "மூலம் (Moola)", "பூராடம் (Poorvashadha)",
+        "உத்திராடம் (Uttarashadha)", "திருவோணம் (Shravana)", "அவிட்டம் (Dhanishta)", "சதயம் (Shatabhisha)", "பூரட்டாதி (Poorvabhadra)",
+        "உத்திரட்டாதி (Uttarabhadra)", "ரேவதி (Revati)"
+    ]
+
+    YOGAS_TA = [
+        "விஷ்கம்பம் (Vishkambha)", "பிரீதி (Preeti)", "ஆயுஷ்மான் (Ayushman)", "சௌபாக்கியம் (Saubhagya)", "சோபனம் (Shobhana)",
+        "அதிகண்டம் (Atiganda)", "சுகர்மா (Sukarma)", "திருதி (Dhriti)", "சூலம் (Shoola)", "கண்டம் (Ganda)",
+        "விருத்தி (Vriddhi)", "துருவம் (Dhruva)", "வியாகாதம் (Vyaghata)", "ஹர்ஷணம் (Harshana)", "வஜிரம் (Vajra)",
+        "சித்தி (Siddhi)", "வியதீபாதம் (Vyatipata)", "வரியான் (Variyana)", "பரிகம் (Parigha)", "சிவம் (Shiva)",
+        "சித்தம் (Siddha)", "சாத்தியம் (Sadhya)", "சுபம் (Shubha)", "சுக்கிலம் (Shukla)", "பிரம்மா (Brahma)",
+        "இந்திரம் (Indra)", "வைதிருதி (Vaidhriti)"
+    ]
+
+    KARANAS_TA = {
+        "Bava": "பவம் (Bava)", "Balava": "பாலவம் (Balava)", "Kaulava": "கௌலவம் (Kaulava)", "Taitila": "தைதிலம் (Taitila)",
+        "Garaja": "கரசை (Garaja)", "Vanija": "வணிசை (Vanija)", "Vishti": "பத்திரை/விஷ்டி (Vishti)",
+        "Shakuni": "சகுனி (Shakuni)", "Chatushpada": "சதுஷ்பாதம் (Chatushpada)", "Naga": "நாகவம் (Naga)", "Kimstughna": "கிம்ஸ்துக்கினம் (Kimstughna)"
+    }
+
+    PAKSHA_TA = {
+        "Shukla": "வளர்பிறை (Shukla)",
+        "Krishna": "தேய்பிறை (Krishna)"
+    }
+
+    WEEKDAYS_EN = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    WEEKDAYS_TA = ["திங்கள்", "செவ்வாய்", "புதன்", "வியாழன்", "வெள்ளி", "சனி", "ஞாயிறு"]
+
+    results = []
+    for day in range(1, num_days + 1):
+        dt = date(year, month, day)
+        pan = calculate_panchangam(dt, lat, lng, utc_offset)
+        
+        tithi_idx = pan["tithi"]["index"]
+        tithi_name = pan["tithi"]["name"]
+        tithi_ta = TITHIS_TA[tithi_idx - 1] if 1 <= tithi_idx <= len(TITHIS_TA) else tithi_name
+
+        nak_idx = pan["nakshatra"]["index"]
+        nak_name = pan["nakshatra"]["name"]
+        nak_ta = NAKSHATRAS_TA[nak_idx - 1] if 1 <= nak_idx <= len(NAKSHATRAS_TA) else nak_name
+
+        yogam_idx = pan["yogam"]["index"]
+        yogam_name = pan["yogam"]["name"]
+        yogam_ta = YOGAS_TA[yogam_idx - 1] if 1 <= yogam_idx <= len(YOGAS_TA) else yogam_name
+
+        karanam_name = pan["karanam"]["name"]
+        karanam_ta = KARANAS_TA.get(karanam_name, karanam_name)
+
+        paksha = pan["paksha"]
+        paksha_ta = PAKSHA_TA.get(paksha, paksha)
+
+        sunrise_dt, sunset_dt = _get_sun_times(dt, lat, lng)
+
+        results.append({
+            "date": dt.isoformat(),
+            "day_of_week": WEEKDAYS_EN[dt.weekday()],
+            "day_of_week_ta": WEEKDAYS_TA[dt.weekday()],
+            "tithi": tithi_name,
+            "tithi_ta": tithi_ta,
+            "tithi_index": tithi_idx,
+            "paksha": paksha.lower(),
+            "paksha_ta": paksha_ta,
+            "nakshatra": nak_name,
+            "nakshatra_ta": nak_ta,
+            "nakshatra_index": nak_idx,
+            "yogam": yogam_name,
+            "yogam_ta": yogam_ta,
+            "karanam": karanam_name,
+            "karanam_ta": karanam_ta,
+            "rahu_kalam": pan["rahu_kalam"],
+            "sunrise": sunrise_dt.strftime("%H:%M"),
+            "sunset": sunset_dt.strftime("%H:%M"),
+        })
+    return results
+
+@router.post("/panchangam/monthly")
+async def panchangam_monthly(req: MonthlyPanchangamRequest):
+    """Return a lightweight monthly Panchangam for calendar rendering without planetary longitudes."""
+    try:
+        results = get_cached_monthly_panchangam(
+            req.year, req.month, round(req.lat, 4), round(req.lng, 4), round(req.utc_offset, 2)
+        )
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
+    return results
 
 
 # ── Horoscope ──────────────────────────────────────────────────────────────────
@@ -223,6 +366,116 @@ async def horoscope_match(req: HoroscopeMatchRequest):
     """Return Papasamyam and Mangal Dosha compatibility analysis."""
     result = calculate_horoscope_match(req.boy_horoscope, req.girl_horoscope)
     return result
+
+
+# ── Deep Matching (PRO Feature) ────────────────────────────────────────────────
+@router.post("/matching/detailed/basic")
+async def detailed_match_basic(req: DetailedMatchRequest):
+    """Return fast basic calculations (10 Poruthams, Papasamyam, Mangal Dosha, Overview Score, Charts)"""
+    ensure_ephemeris_files()
+    try:
+        # 1. Cast Groom's Horoscope
+        boy_horo = calculate_horoscope(
+            req.boy_year, req.boy_month, req.boy_day,
+            req.boy_hour, req.boy_minute,
+            req.boy_lat, req.boy_lng,
+            req.boy_utc_offset,
+        )
+
+        # 2. Cast Bride's Horoscope
+        girl_horo = calculate_horoscope(
+            req.girl_year, req.girl_month, req.girl_day,
+            req.girl_hour, req.girl_minute,
+            req.girl_lat, req.girl_lng,
+            req.girl_utc_offset,
+        )
+
+        # 3. Derive Stars
+        boy_star = boy_horo["moon"]["nakshatra"]
+        girl_star = girl_horo["moon"]["nakshatra"]
+
+        # 4. Calculate 10 Poruthams
+        star_result = calculate_star_match(boy_star, girl_star)
+
+        # 5. Calculate Papasamyam & Mangal Dosha
+        horo_result = calculate_horoscope_match(boy_horo, girl_horo)
+
+        # 6. Pre-calculate Dasa Sandhi (Mahadashas only) for overview score
+        boy_dob = f"{req.boy_year:04d}-{req.boy_month:02d}-{req.boy_day:02d}"
+        girl_dob = f"{req.girl_year:04d}-{req.girl_month:02d}-{req.girl_day:02d}"
+        dasa_result = calculate_dasa_sandhi(
+            boy_dob, boy_horo["moon"]["longitude"],
+            girl_dob, girl_horo["moon"]["longitude"]
+        )
+        dasa_severity = dasa_result["summary_severity"]
+
+        # 7. Compute Synthesized Overview Score
+        overview_score = calculate_compatibility_index(
+            star_result["score_percent"] / 10.0,
+            horo_result["papasamyam"]["difference"],
+            horo_result["mangal_dosha"]["compatible"],
+            dasa_severity
+        )
+
+        # Localized nakshatra translation map
+        nak_map_ta = {
+            'Ashwini': 'அஸ்வினி', 'Bharani': 'பரணி', 'Krittika': 'கார்த்திகை', 'Rohini': 'ரோகிணி',
+            'Mrigashira': 'மிருகசீரிஷம்', 'Ardra': 'திருவாதிரை', 'Punarvasu': 'புனர்பூசம்',
+            'Pushya': 'பூசம்', 'Ashlesha': 'ஆயில்யம்', 'Magha': 'மகம்',
+            'Purva Phalguni': 'பூரம்', 'Uttara Phalguni': 'உத்திரம்', 'Hasta': 'அஸ்தம்',
+            'Chitra': 'சித்திரை', 'Swati': 'சுவாதி', 'Vishakha': 'விசாகம்', 'Anuradha': 'அனுஷம்',
+            'Jyeshtha': 'கேட்டை', 'Mula': 'மூலம்', 'Purva Ashadha': 'பூராடம்',
+            'Uttara Ashadha': 'உத்திராடம்', 'Shravana': 'திருவோணம்', 'Dhanishtha': 'அவிட்டம்',
+            'Shatabhisha': 'சதயம்', 'Purva Bhadrapada': 'பூரட்டாதி',
+            'Uttara Bhadrapada': 'உத்திரட்டாதி', 'Revati': 'ரேவதி'
+        }
+        boy_star_ta = nak_map_ta.get(boy_star, boy_star)
+        girl_star_ta = nak_map_ta.get(girl_star, girl_star)
+
+        return {
+            "boy_star": boy_star,
+            "boy_star_ta": boy_star_ta,
+            "girl_star": girl_star,
+            "girl_star_ta": girl_star_ta,
+            "star_result": star_result,
+            "horo_result": horo_result,
+            "overview_score": overview_score,
+            "dasa_sandhi_precheck_severity": dasa_severity,
+            "boy_chart": boy_horo["rasi_chart"],
+            "girl_chart": girl_horo["rasi_chart"],
+            "boy_planets": boy_horo["planets"],
+            "girl_planets": girl_horo["planets"],
+            "boy_lagna": boy_horo["lagna"],
+            "girl_lagna": girl_horo["lagna"],
+        }
+
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
+
+
+@router.post("/matching/detailed/dasa-sandhi")
+async def detailed_match_dasa_sandhi(req: DetailedMatchRequest):
+    """Return heavier detailed 120-year Dasa Sandhi scan timeline and clashes"""
+    ensure_ephemeris_files()
+    try:
+        # Cast Moon positions
+        boy_jd = get_julian_day(req.boy_year, req.boy_month, req.boy_day, req.boy_hour, req.boy_minute, req.boy_utc_offset)
+        boy_positions = get_planet_positions(boy_jd)
+        boy_moon_long = boy_positions["Moon"]["longitude"]
+
+        girl_jd = get_julian_day(req.girl_year, req.girl_month, req.girl_day, req.girl_hour, req.girl_minute, req.girl_utc_offset)
+        girl_positions = get_planet_positions(girl_jd)
+        girl_moon_long = girl_positions["Moon"]["longitude"]
+
+        boy_dob = f"{req.boy_year:04d}-{req.boy_month:02d}-{req.boy_day:02d}"
+        girl_dob = f"{req.girl_year:04d}-{req.girl_month:02d}-{req.girl_day:02d}"
+
+        dasa_result = calculate_dasa_sandhi(boy_dob, boy_moon_long, girl_dob, girl_moon_long)
+        return dasa_result
+
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
+
 
 
 # ── Numerology ─────────────────────────────────────────────────────────────────
