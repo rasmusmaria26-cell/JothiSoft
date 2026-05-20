@@ -1,0 +1,86 @@
+{
+  "note": "Filter rules for special days. tithi is 1-30 (1=Prathama, 15=Pournami, 30=Amavasai). nakshatra is 1-27.",
+  "types": [
+    {
+      "id": "amavasai",
+      "name_en": "Amavasai",
+      "name_ta": "அமாவாசை",
+      "filter": { "tithi": 30 },
+      "significance_en": "New moon day — ancestor worship and Tharpanam rituals",
+      "significance_ta": "அமாவாசை — பித்ரு தர்ப்பண நாள்"
+    },
+    {
+      "id": "pournami",
+      "name_en": "Pournami",
+      "name_ta": "பௌர்ணமி",
+      "filter": { "tithi": 15 },
+      "significance_en": "Full moon day — auspicious for worship and fasting",
+      "significance_ta": "பௌர்ணமி — விரத நாள்"
+    },
+    {
+      "id": "sashti",
+      "name_en": "Sashti",
+      "name_ta": "சஷ்டி",
+      "filter": { "tithi": 6 },
+      "significance_en": "Sixth lunar day — dedicated to Lord Murugan",
+      "significance_ta": "சஷ்டி — முருகன் விரதம்"
+    },
+    {
+      "id": "krithigai",
+      "name_en": "Krithigai",
+      "name_ta": "கிருத்திகை",
+      "filter": { "nakshatra": 3 },
+      "significance_en": "Krittika nakshatra day — sacred to Lord Shiva and Murugan",
+      "significance_ta": "கிருத்திகை நட்சத்திர நாள் — சிவன் மற்றும் முருகன் வழிபாடு"
+    },
+    {
+      "id": "uthiram",
+      "name_en": "Uthiram",
+      "name_ta": "உத்திரம்",
+      "filter": { "nakshatra": 12 },
+      "significance_en": "Uttara Phalguni nakshatra day — auspicious for new beginnings",
+      "significance_ta": "உத்திர நட்சத்திர நாள் — நல்ல தொடக்கங்களுக்கு உகந்தது"
+    },
+    {
+      "id": "kantha_vrat",
+      "name_en": "Kantha Vrat",
+      "name_ta": "கந்த விரதம்",
+      "filter": { "tithi": 6, "paksha": "shukla" },
+      "significance_en": "Shukla Sashti — strict Murugan fast observed especially in Karthigai month",
+      "significance_ta": "சுக்ல சஷ்டி — கந்த விரதம்"
+    },
+    {
+      "id": "tharpanam",
+      "name_en": "Tharpanam",
+      "name_ta": "தர்ப்பணம்",
+      "filter": { "tithi": 30 },
+      "significance_en": "Amavasai Tharpanam — libations offered to ancestors",
+      "significance_ta": "அமாவாசை தர்ப்பணம் — பித்ரு வழிபாடு",
+      "note": "Same day as Amavasai — show as separate entry with ritual focus"
+    },
+    {
+      "id": "tamil_new_year",
+      "name_en": "Tamil New Year",
+      "name_ta": "தமிழ்ப் புத்தாண்டு",
+      "filter": { "fixed_date": "04-14" },
+      "significance_en": "Chithirai 1 — Tamil New Year, Sun enters Aries",
+      "significance_ta": "சித்திரை 1 — தமிழ் புத்தாண்டு"
+    },
+    {
+      "id": "jwalini",
+      "name_en": "Jwalini",
+      "name_ta": "ஜுவாலினி",
+      "filter": { "nakshatra": 20 },
+      "significance_en": "Purva Ashadha nakshatra day — associated with Goddess Jwalini",
+      "significance_ta": "பூராடம் நட்சத்திர நாள் — ஜுவாலினி தேவி"
+    },
+    {
+      "id": "tamil_panchangam",
+      "name_en": "Tamil Panchangam",
+      "name_ta": "தமிழ்ப் பஞ்சாங்கம்",
+      "filter": { "fixed_date": "04-14" },
+      "significance_en": "Start of Tamil calendar year — Panchangam reading day",
+      "significance_ta": "தமிழ் ஆண்டின் தொடக்கம் — பஞ்சாங்கம் படிக்கும் நாள்"
+    }
+  ]
+}

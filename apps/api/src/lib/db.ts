@@ -1,0 +1,14 @@
+import { Pool } from 'pg';
+import * as dotenv from 'dotenv';
+dotenv.config({ path: '../../.env' }); // Load from root
+
+// Use the Supabase Postgres connection string
+const connectionString = process.env.DATABASE_URL || 
+  `postgres://postgres.${process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '')}:${process.env.SUPABASE_DB_PASSWORD}@aws-0-ap-south-1.pooler.supabase.com:6543/postgres`;
+
+export const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
