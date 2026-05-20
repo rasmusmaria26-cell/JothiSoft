@@ -10,7 +10,7 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from ..services.ephemeris import ensure_ephemeris_files, get_julian_day, get_planet_positions
+from ..services.ephemeris import ensure_ephemeris_files, get_julian_day, get_planet_positions, NAKSHATRAS
 from ..services.panchangam import calculate_panchangam
 from ..services.horoscope import calculate_horoscope
 from ..services.dasha import calculate_dasha_timeline, calculate_current_dasha
@@ -74,8 +74,19 @@ class PanchapakshiRequest(BaseModel):
 
 
 class DashaRequest(BaseModel):
-    birth_date: str  # YYYY-MM-DD
-    moon_longitude: float
+    # Optional old params for backward compatibility
+    birth_date: Optional[str] = None
+    moon_longitude: Optional[float] = None
+
+    # New precision params for single API call
+    year: Optional[int] = None
+    month: Optional[int] = None
+    day: Optional[int] = None
+    hour: Optional[int] = 12
+    minute: Optional[int] = 0
+    lat: Optional[float] = None
+    lng: Optional[float] = None
+    tz_offset: Optional[float] = 5.5
 
 
 # ── Panchangam ─────────────────────────────────────────────────────────────────
@@ -129,13 +140,61 @@ async def horoscope(req: HoroscopeRequest):
 async def dasha(req: DashaRequest):
     """Return the full Vimshottari Dasha timeline for the given birth details."""
     try:
-        birth_date = date.fromisoformat(req.birth_date)
-    except ValueError:
-        raise HTTPException(400, detail="Invalid birth_date. Use YYYY-MM-DD.")
+        # Check if high-precision details are passed
+        if req.year is not None and req.month is not None and req.day is not None and req.lat is not None and req.lng is not None:
+            # 1. Reconstruct Julian Day
+            jd = get_julian_day(req.year, req.month, req.day, req.hour, req.minute, req.tz_offset)
+            # 2. Reconstruct exact moon longitude
+            positions = get_planet_positions(jd)
+            moon_long = positions["Moon"]["longitude"]
+            # 3. Create birth_date object
+            birth_date = date(req.year, req.month, req.day)
+            
+            # Retrieve Moon Nakshatra and translations
+            moon_nakshatra = positions["Moon"]["nakshatra"]
+        else:
+            # Fallback to old format
+            if not req.birth_date or req.moon_longitude is None:
+                raise HTTPException(400, detail="Missing birth details or moon_longitude.")
+            try:
+                birth_date = date.fromisoformat(req.birth_date)
+            except ValueError:
+                raise HTTPException(400, detail="Invalid birth_date format YYYY-MM-DD.")
+            moon_long = req.moon_longitude
+            # In old format, compute moon_nakshatra from longitude
+            nakshatra_index = int(moon_long / (360 / 27))
+            moon_nakshatra = NAKSHATRAS[nakshatra_index % 27]
 
-    timeline = calculate_dasha_timeline(birth_date, req.moon_longitude)
-    current = calculate_current_dasha(birth_date, req.moon_longitude)
-    return {"current": current, "timeline": timeline}
+        # Calculate full three-level deep timeline
+        timeline = calculate_dasha_timeline(birth_date, moon_long)
+        current = calculate_current_dasha(birth_date, moon_long)
+        
+        # Localized nakshatra translation map
+        nak_map_ta = {
+            'Ashwini': 'அஸ்வினி', 'Bharani': 'பரணி', 'Krittika': 'கார்த்திகை', 'Rohini': 'ரோகிணி',
+            'Mrigashira': 'மிருகசீரிடம்', 'Ardra': 'திருவாதிரை', 'Punarvasu': 'புனர்பூசம்',
+            'Pushya': 'பூசம்', 'Ashlesha': 'ஆயில்யம்', 'Magha': 'மகம்',
+            'Purva Phalguni': 'பூரம்', 'Uttara Phalguni': 'உத்திரம்', 'Hasta': 'அஸ்தம்',
+            'Chitra': 'சித்திரை', 'Swati': 'சுவாதி', 'Vishakha': 'விசாகம்', 'Anuradha': 'அனுஷம்',
+            'Jyeshtha': 'கேட்டை', 'Mula': 'மூலம்', 'Purva Ashadha': 'பூராடம்',
+            'Uttara Ashadha': 'உத்திராடம்', 'Shravana': 'திருவோணம்', 'Dhanishta': 'அவிட்டம்',
+            'Shatabhisha': 'சதயம்', 'Purva Bhadrapada': 'பூரட்டாதி',
+            'Uttara Bhadrapada': 'உத்திரட்டாதி', 'Revati': 'ரேவதி'
+        }
+        moon_nakshatra_ta = nak_map_ta.get(moon_nakshatra, moon_nakshatra)
+
+        return {
+            "current": current,
+            "timeline": timeline,
+            "moon_longitude": round(moon_long, 4),
+            "moon_nakshatra": moon_nakshatra,
+            "moon_nakshatra_ta": moon_nakshatra_ta,
+        }
+        
+    except ValueError:
+        raise HTTPException(400, detail="Invalid date format or parameters.")
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
 
 
 # ── Star Matching ──────────────────────────────────────────────────────────────
