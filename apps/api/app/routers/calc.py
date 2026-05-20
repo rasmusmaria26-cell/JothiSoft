@@ -17,6 +17,7 @@ from ..services.dasha import calculate_dasha_timeline, calculate_current_dasha
 from ..services.matching import calculate_star_match, calculate_horoscope_match
 from ..services.numerology import calculate_numerology_report
 from ..services.panchapakshi import calculate_panchapakshi
+from ..services.muhurtham import calculate_muhurtham
 
 import os
 
@@ -71,6 +72,14 @@ class PanchapakshiRequest(BaseModel):
     lat: float
     lng: float
     query_datetime: Optional[str] = None  # ISO format; defaults to now
+
+
+class MuhurthamRequest(BaseModel):
+    year: int
+    month: int
+    category: Optional[str] = "general"
+    lat: Optional[float] = 13.0827
+    lng: Optional[float] = 80.2707
 
 
 class DashaRequest(BaseModel):
@@ -268,3 +277,18 @@ async def transit(
     except Exception as e:
         raise HTTPException(500, detail=str(e))
     return result
+
+
+# ── Muhurtham Finder ───────────────────────────────────────────────────────────
+@router.post("/muhurtham")
+async def muhurtham(req: MuhurthamRequest):
+    """Return daily Muhurtham evaluations and Gowri timings for the given month."""
+    ensure_ephemeris_files()
+    try:
+        result = calculate_muhurtham(
+            req.year, req.month, req.category, req.lat, req.lng
+        )
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
+    return result
+
