@@ -40,7 +40,10 @@ export function PlaceSearch({ onSelect, selectedCity, error }: PlaceSearchProps)
   }, [query])
 
   // Fetch cities via SWR — calls the Express backend cities endpoint
-  const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
+  let apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
+  if (!apiBase.endsWith('/api')) {
+    apiBase = `${apiBase}/api`
+  }
   const shouldFetch = debouncedQuery.trim().length >= 1
   const { data: cities, error: fetchError, isLoading } = useSWR<CityData[]>(
     shouldFetch ? `cities:${debouncedQuery}` : null,

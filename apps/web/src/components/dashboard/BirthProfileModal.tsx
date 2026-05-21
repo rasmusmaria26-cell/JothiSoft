@@ -82,7 +82,10 @@ export function BirthProfileModal({ isOpen, onClose, onSuccess }: BirthProfileMo
     const delayDebounce = setTimeout(async () => {
       setIsSearching(true)
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
+        let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
+        if (!apiUrl.endsWith('/api')) {
+          apiUrl = `${apiUrl}/api`
+        }
         const response = await fetch(`${apiUrl}/cities?q=${encodeURIComponent(cityInput)}&limit=6`)
         if (response.ok) {
           const data = await response.json()
