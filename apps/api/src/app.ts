@@ -8,34 +8,8 @@ dotenv.config({ path: '../../.env' }); // Load from root
 const app = express();
 const port = process.env.PORT || 4000;
 
-// CORS configuration with dynamic origin whitelisting
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://127.0.0.1:3000',
-  'https://jothi-soft-api.vercel.app',
-  process.env.NEXT_PUBLIC_URL
-].filter(Boolean) as string[];
-
-if (process.env.ALLOWED_ORIGINS) {
-  const envOrigins = process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim());
-  allowedOrigins.push(...envOrigins);
-}
-
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    
-    const isAllowed = allowedOrigins.some((allowed) => {
-      if (allowed === '*') return true;
-      return allowed.toLowerCase() === origin.toLowerCase();
-    }) || origin.toLowerCase().endsWith('.vercel.app');
-
-    if (isAllowed) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true,
   credentials: true
 }));
 
