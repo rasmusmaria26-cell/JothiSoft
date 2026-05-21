@@ -24,7 +24,10 @@ export default function LoginPage() {
 
     // Format as E.164 for India (+91)
     const formattedPhone = '+91' + phone.replace(/\D/g, '').slice(-10)
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
+    let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
+    if (!apiUrl.endsWith('/api')) {
+      apiUrl = `${apiUrl}/api`
+    }
 
     try {
       if (isRegister) {
@@ -247,7 +250,10 @@ export default function LoginPage() {
                     setSuccess(null)
                     setLoading(true)
                     const formattedPhone = '+91' + phone.replace(/\D/g, '').slice(-10)
-                    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
+                    let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
+                    if (!apiUrl.endsWith('/api')) {
+                      apiUrl = `${apiUrl}/api`
+                    }
                     try {
                       const res = await fetch(`${apiUrl}/auth/register`, {
                         method: 'POST',
