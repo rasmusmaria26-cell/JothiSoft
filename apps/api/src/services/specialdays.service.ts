@@ -1,10 +1,10 @@
 import config from '../data/special-days-config.json';
-import { getDailyPanchangam } from './panchangam.service';
+import { getLocalPanchangam } from './localPanchangam.service';
 
 export type SpecialDayType = 
   'amavasai' | 'pournami' | 'sashti' | 'krithigai' | 
   'uthiram' | 'kantha_vrat' | 'tharpanam' | 
-  'tamil_new_year' | 'jwalini' | 'tamil_panchangam';
+  'tamil_new_year' | 'jwalini' | 'pradosham';
 
 export interface SpecialDay {
   type:        SpecialDayType;
@@ -14,6 +14,23 @@ export interface SpecialDay {
   day_of_week: string;
   significance_en: string;
   significance_ta: string;
+  deity_en?: string;
+  deity_ta?: string;
+  fasting?: boolean;
+  fasting_rules_en?: string | null;
+  fasting_rules_ta?: string | null;
+  ritual_en?: string;
+  ritual_ta?: string;
+  avoid_en?: string;
+  avoid_ta?: string;
+  color_accent?: string;
+  icon?: string;
+  card_shape?: string;
+  auspicious_time_en?: string;
+  auspicious_time_ta?: string;
+  offerings?: { en: string; ta: string }[];
+  mantra?: { text_ta?: string; transliteration?: string; meaning_en?: string };
+  key_temples?: { name: string; location: string; reason_en?: string }[];
 }
 
 // Pre-compute all special days for a year
@@ -34,47 +51,26 @@ export const computeSpecialDaysForYear = async (
     const dateStr = formatDate(current);          // "2026-04-14"
     const mmdd    = dateStr.slice(5);             // "04-14"
 
-    // 1. Handle fixed-date specials first (no Prokerala call needed)
+    // 1. Handle fixed-date specials first
     for (const type of config.types) {
       if (type.filter.fixed_date === mmdd) {
         results.push(buildEntry(type, dateStr, current));
       }
     }
 
-    // 2. Fetch panchangam for tithi/nakshatra-based days
-    // In test environment, skip Prokerala calls to avoid credit consumption and instant startup
-    if (process.env.PROKERALA_ENV === 'test') {
-      // Mock some tithi/nakshatra matches for testing on specific dates (e.g. 2026-01-01)
-      if (dateStr === '2026-01-01') {
-        // Mock a Sashti and Krithigai match
-        for (const type of config.types) {
-          if (type.id === 'sashti' || type.id === 'krithigai') {
-            results.push(buildEntry(type, dateStr, current));
-          }
-        }
-      }
-      continue;
-    }
+    // 2. Fetch panchangam locally (instant, zero cost, no rate limits!)
+    const panchang = getLocalPanchangam(current);
 
-    // Add 150ms delay to stay within Prokerala rate limits
-    await sleep(150);
-    let panchang: any;
-    try {
-      panchang = await getDailyPanchangam(dateStr, lat, lng, utcOffset);
-    } catch {
-      continue; // skip day on API error — don't crash the whole loop
-    }
-
-    const tithiId     = panchang?.tithi?.[0]?.id;
-    const nakshatraId = panchang?.nakshatra?.[0]?.id;
-    const paksha      = panchang?.tithi?.[0]?.paksha?.toLowerCase();
+    const tithiId     = panchang?.tithi?.index;
+    const nakshatraId = panchang?.nakshatra?.index;
+    const paksha      = panchang?.tithi?.paksha?.toLowerCase();
 
     for (const type of config.types) {
       if (type.filter.fixed_date) continue; // already handled above
 
-      const matchesTithi     = type.filter.tithi     === undefined || type.filter.tithi     === tithiId;
-      const matchesNakshatra = type.filter.nakshatra === undefined || type.filter.nakshatra === nakshatraId;
-      const matchesPaksha    = type.filter.paksha    === undefined || type.filter.paksha    === paksha;
+      const matchesTithi     = type.filter.tithi     === undefined || type.filter.tithi     === null || type.filter.tithi     === tithiId;
+      const matchesNakshatra = type.filter.nakshatra === undefined || type.filter.nakshatra === null || type.filter.nakshatra === nakshatraId;
+      const matchesPaksha    = type.filter.paksha    === undefined || type.filter.paksha    === null || type.filter.paksha    === paksha;
 
       if (matchesTithi && matchesNakshatra && matchesPaksha) {
         results.push(buildEntry(type, dateStr, current));
@@ -94,6 +90,7 @@ export const getSpecialDaysByType = (
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 const buildEntry = (type: any, date: string, d: Date): SpecialDay => ({
+  ...type,
   type:            type.id as SpecialDayType,
   name_en:         type.name_en,
   name_ta:         type.name_ta,

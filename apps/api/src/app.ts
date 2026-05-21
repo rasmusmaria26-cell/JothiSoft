@@ -88,7 +88,7 @@ if (require.main === module) {
     console.log(`[server]: Starting background pre-computation for 2026 special days...`);
     computeSpecialDaysForYear(2026, 13.0827, 80.2707, 5.5)
       .then((days) => {
-        specialDaysCache.set('special-days:2026', days);
+        specialDaysCache.set('special-days-v4:2026', days);
         console.log(`[server]: Background pre-computation for 2026 special days completed successfully! Total events: ${days.length}`);
       })
       .catch((err) => {
