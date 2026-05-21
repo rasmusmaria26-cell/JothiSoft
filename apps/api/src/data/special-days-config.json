@@ -1,86 +1,501 @@
 {
-  "note": "Filter rules for special days. tithi is 1-30 (1=Prathama, 15=Pournami, 30=Amavasai). nakshatra is 1-27.",
   "types": [
     {
       "id": "amavasai",
       "name_en": "Amavasai",
       "name_ta": "அமாவாசை",
-      "filter": { "tithi": 30 },
-      "significance_en": "New moon day — ancestor worship and Tharpanam rituals",
-      "significance_ta": "அமாவாசை — பித்ரு தர்ப்பண நாள்"
-    },
-    {
-      "id": "pournami",
-      "name_en": "Pournami",
-      "name_ta": "பௌர்ணமி",
-      "filter": { "tithi": 15 },
-      "significance_en": "Full moon day — auspicious for worship and fasting",
-      "significance_ta": "பௌர்ணமி — விரத நாள்"
-    },
-    {
-      "id": "sashti",
-      "name_en": "Sashti",
-      "name_ta": "சஷ்டி",
-      "filter": { "tithi": 6 },
-      "significance_en": "Sixth lunar day — dedicated to Lord Murugan",
-      "significance_ta": "சஷ்டி — முருகன் விரதம்"
-    },
-    {
-      "id": "krithigai",
-      "name_en": "Krithigai",
-      "name_ta": "கிருத்திகை",
-      "filter": { "nakshatra": 3 },
-      "significance_en": "Krittika nakshatra day — sacred to Lord Shiva and Murugan",
-      "significance_ta": "கிருத்திகை நட்சத்திர நாள் — சிவன் மற்றும் முருகன் வழிபாடு"
-    },
-    {
-      "id": "uthiram",
-      "name_en": "Uthiram",
-      "name_ta": "உத்திரம்",
-      "filter": { "nakshatra": 12 },
-      "significance_en": "Uttara Phalguni nakshatra day — auspicious for new beginnings",
-      "significance_ta": "உத்திர நட்சத்திர நாள் — நல்ல தொடக்கங்களுக்கு உகந்தது"
-    },
-    {
-      "id": "kantha_vrat",
-      "name_en": "Kantha Vrat",
-      "name_ta": "கந்த விரதம்",
-      "filter": { "tithi": 6, "paksha": "shukla" },
-      "significance_en": "Shukla Sashti — strict Murugan fast observed especially in Karthigai month",
-      "significance_ta": "சுக்ல சஷ்டி — கந்த விரதம்"
+      "filter": {
+        "tithi": 30,
+        "nakshatra": null,
+        "paksha": "krishna",
+        "fixed_date": null
+      },
+      "deity_en": "Pitrus (Ancestors)",
+      "deity_ta": "பித்ருக்கள் (முன்னோர்கள்)",
+      "fasting": true,
+      "fasting_rules_en": "Partial fasting is observed by consuming only one simple vegetarian meal. Rice is often avoided or eaten only once after the tarpanam rituals.",
+      "fasting_rules_ta": "ஒரு வேளை மட்டுமே எளிய சைவ உணவை உட்கொள்ள வேண்டும். தர்ப்பணம் செய்த பிறகே அரிசி உணவு உண்ணும் வழக்கம் உள்ளது.",
+      "ritual_en": "Offerings of water and sesame seeds (tarpanam) are made to ancestors. Special pujas are conducted at home and temples for family well-being.",
+      "ritual_ta": "முன்னோர்களுக்கு எள்ளும் தண்ணீரும் அளித்து தர்ப்பணம் செய்யப்படுகிறது. குடும்ப நலனுக்காக வீடுகளிலும் கோவில்களிலும் சிறப்பு பூஜைகள் நடைபெறுகின்றன.",
+      "avoid_en": "Avoid non-vegetarian food, onion, garlic, alcohol, and initiating new ventures.",
+      "avoid_ta": "அசைவம், வெங்காயம், பூண்டு, மது மற்றும் புதிய முயற்சிகளைத் தொடங்குவதைத் தவிர்க்கவும்.",
+      "significance_en": "Amavasai is dedicated to remembering and honoring departed ancestors. Pleasing the ancestors on this day brings peace, prosperity, and their continued blessings to the lineage.",
+      "significance_ta": "அமாவாசை நாள் முன்னோர்களை நினைவுகூர்ந்து வழிபடுவதற்கு உகந்ததாகும். இந்த நாளில் பித்ருக்களை மகிழ்விப்பதன் மூலம் பரம்பரைக்கு அமைதியும் நல்வாழ்வும் கிடைக்கும்.",
+      "color_accent": "#2e7d6b",
+      "icon": "🌑",
+      "card_shape": "pill",
+      "auspicious_time_en": "Afternoon — 12:00 PM to 2:00 PM (Aparahna Kala, preferred for Pitru pujas)",
+      "auspicious_time_ta": "பிற்பகல் — 12:00 முதல் 2:00 வரை (அபராஹ்ண காலம், பித்ரு பூஜைக்கு உகந்தது)",
+      "offerings": [
+        { "en": "Black sesame seeds", "ta": "கருப்பு எள்" },
+        { "en": "Darbha grass", "ta": "தர்ப்பைப் புல்" },
+        { "en": "Cooked rice balls (Pinda)", "ta": "சோற்று உருண்டை (பிண்டம்)" },
+        { "en": "Tulsi leaves", "ta": "துளசி இலைகள்" }
+      ],
+      "mantra": {
+        "text_ta": "ஓம் பித்ரு தேவதாயை நம:",
+        "transliteration": "Om Pitru Devatayai Namah",
+        "meaning_en": "Salutations to the divine ancestor deities."
+      },
+      "key_temples": [
+        {
+          "name": "Ramanathaswamy Temple",
+          "location": "Rameswaram, Ramanathapuram",
+          "reason_en": "The most sacred site in Tamil Nadu for performing Pitru Dosha parihara and taking holy ocean dips."
+        }
+      ]
     },
     {
       "id": "tharpanam",
       "name_en": "Tharpanam",
       "name_ta": "தர்ப்பணம்",
-      "filter": { "tithi": 30 },
-      "significance_en": "Amavasai Tharpanam — libations offered to ancestors",
-      "significance_ta": "அமாவாசை தர்ப்பணம் — பித்ரு வழிபாடு",
-      "note": "Same day as Amavasai — show as separate entry with ritual focus"
+      "filter": {
+        "tithi": 30,
+        "nakshatra": null,
+        "paksha": "krishna",
+        "fixed_date": null
+      },
+      "deity_en": "Pitrus (Ancestors)",
+      "deity_ta": "பித்ருக்கள் (முன்னோர்கள்)",
+      "fasting": false,
+      "_fasting_note": "No fasting required — ritual focus only",
+      "fasting_rules_en": null,
+      "fasting_rules_ta": null,
+      "ritual_en": "Water mixed with black sesame seeds is offered through the hands using darbha grass. Mantras are chanted invoking three generations of ancestors.",
+      "ritual_ta": "தர்ப்பைப் புல் கொண்டு கருப்பு எள் கலந்த நீரை கைகள் மூலம் முன்னோர்களுக்கு அளிப்பர். மூன்று தலைமுறை முன்னோர்களை நினைத்து மந்திரங்கள் ஓதப்படுகின்றன.",
+      "avoid_en": "Avoid wearing unwashed clothes and eating before the ritual is completed.",
+      "avoid_ta": "துவைக்காத ஆடைகளை அணிவதையும், தர்ப்பணம் முடியும் முன் உணவு உண்பதையும் தவிர்க்க வேண்டும்.",
+      "significance_en": "Tharpanam is a sacred duty to express gratitude to one's ancestors. It helps clear karmic debts and ensures the spiritual progress of departed souls.",
+      "significance_ta": "தர்ப்பணம் என்பது முன்னோர்களுக்கு நன்றி செலுத்தும் ஒரு புனிதமான கடமையாகும். இது கர்ம வினைகளைப் போக்கி, மறைந்த ஆன்மாக்களின் ஆன்மீக முன்னேற்றத்தை உறுதி செய்கிறது.",
+      "color_accent": "#2e7d6b",
+      "icon": "💧",
+      "card_shape": "left-clip",
+      "auspicious_time_en": "Late morning to noon — 10:30 AM to 12:30 PM (Sangava to Madhyahna Kala)",
+      "auspicious_time_ta": "முற்பகல் முதல் நண்பகல் வரை — 10:30 முதல் 12:30 வரை (சங்கவ மற்றும் மதிய காலம்)",
+      "offerings": [
+        { "en": "Black sesame seeds", "ta": "கருப்பு எள்" },
+        { "en": "Clean water in copper vessel", "ta": "செம்புப் பாத்திரத்தில் சுத்தமான நீர்" },
+        { "en": "Darbha grass ring (Pavitram)", "ta": "தர்ப்பை பவித்திரம்" },
+        { "en": "Sandalwood paste", "ta": "சந்தனம்" }
+      ],
+      "mantra": {
+        "text_ta": "ஓம் பித்ரு கணாய வித்மஹே ஜகத் தாரிணே தீமஹி தன்னோ பித்ரோ ப்ரசோதயாத்",
+        "transliteration": "Om Pitru Ganaya Vidmahe Jagat Dharine Dheemahi Tanno Pitro Prachodayat",
+        "meaning_en": "Om, let us meditate on the ancestors who sustain the universe; may they illuminate our minds."
+      },
+      "key_temples": [
+        {
+          "name": "Sri Vanchinadaswamy Temple",
+          "location": "Srivanchiyam, Tiruvarur",
+          "reason_en": "A prime Mukthi kshetram where Yama himself is worshipped, considered highly auspicious for Tharpanam rituals."
+        },
+        {
+          "name": "Triveni Sangamam",
+          "location": "Kanyakumari",
+          "reason_en": "The holy confluence of three oceans, extremely sacred for ancestral water oblations."
+        }
+      ]
+    },
+    {
+      "id": "pournami",
+      "name_en": "Pournami",
+      "name_ta": "பௌர்ணமி",
+      "filter": {
+        "tithi": 15,
+        "nakshatra": null,
+        "paksha": "shukla",
+        "fixed_date": null
+      },
+      "deity_en": "Chandra (Moon) / Goddess Ambal",
+      "deity_ta": "சந்திரன் / அம்பாள்",
+      "fasting": true,
+      "fasting_rules_en": "Devotees observe a day-long fast, abstaining from solid foods. The fast is broken after sighting the full moon and offering prayers.",
+      "fasting_rules_ta": "பகலிலே உணவைத் தவிர்த்து உபவாசம் இருக்க வேண்டும். மாலையில் சந்திரன் உதயமான பிறகு தரிசனம் செய்து விரதம் முடிக்க வேண்டும்.",
+      "ritual_en": "Special abhishekam and pujas are performed for Goddess Ambal and Lord Shiva in temples. Girivalam is a key tradition, especially in Thiruvannamalai.",
+      "ritual_ta": "கோவில்களில் அம்பாளுக்கும் சிவபெருமானுக்கு சிறப்பு அபிஷேக ஆராதனைகள் நடைபெறும். திருவண்ணாமலையில் கிரிவலம் செல்வது முக்கிய மரபாகும்.",
+      "avoid_en": "Avoid non-vegetarian food, alcohol, and negative thoughts during this highly energetic day.",
+      "avoid_ta": "அசைவ உணவு, மது மற்றும் எதிர்மறையான எண்ணங்களை இந்த நாளில் தவிர்க்க வேண்டும்.",
+      "significance_en": "Pournami radiates powerful lunar energy, making it highly auspicious for spiritual practices. It brings physical and mental balance while enhancing the power of meditation and prayers.",
+      "significance_ta": "பௌர்ணமி சக்திவாய்ந்த சந்திர ஆற்றலை வெளிப்படுத்துவதால், ஆன்மீகப் பயிற்சிகளுக்கு இது மிகவும் உகந்தது.",
+      "color_accent": "#f2c96a",
+      "icon": "🌕",
+      "card_shape": "oval",
+      "auspicious_time_en": "Evening to night — 6:00 PM to 9:00 PM (Pradosha Kala and Chandra Udayam)",
+      "auspicious_time_ta": "மாலை முதல் இரவு வரை — 6:00 முதல் 9:00 வரை (பிரதோஷ காலம் மற்றும் சந்திர உதயம்)",
+      "offerings": [
+        { "en": "Milk pudding (Payasam)", "ta": "பால் பாயாசம்" },
+        { "en": "White lotus flowers", "ta": "வெண் தாமரை மலர்கள்" },
+        { "en": "Sandalwood paste", "ta": "சந்தனம்" },
+        { "en": "Coconut and betel leaves", "ta": "தேங்காய் மற்றும் வெற்றிலை" }
+      ],
+      "mantra": {
+        "text_ta": "ஓம் பத்மத்வஜாய வித்மஹே ஹேம ரூபாய தீமஹி தன்னோ சோம: ப்ரசோதயாத்",
+        "transliteration": "Om Padmadhwajaya Vidmahe Hema Roopaya Dheemahi Tanno Somah Prachodayat",
+        "meaning_en": "Om, let me meditate on the Moon God with the golden hue; may He illuminate my intellect."
+      },
+      "key_temples": [
+        {
+          "name": "Arunachaleswarar Temple",
+          "location": "Thiruvannamalai",
+          "reason_en": "Millions gather here for Girivalam (circumambulation) around the holy mountain during the full moon."
+        },
+        {
+          "name": "Meenakshi Amman Temple",
+          "location": "Madurai",
+          "reason_en": "Special pujas are held for Goddess Meenakshi, who represents the divine feminine energy magnified on Pournami."
+        }
+      ]
+    },
+    {
+      "id": "sashti",
+      "name_en": "Sashti",
+      "name_ta": "சஷ்டி",
+      "filter": {
+        "tithi": 6,
+        "nakshatra": null,
+        "paksha": null,
+        "fixed_date": null
+      },
+      "deity_en": "Lord Murugan",
+      "deity_ta": "முருகப்பெருமான்",
+      "fasting": true,
+      "fasting_rules_en": "Fasting is observed from sunrise to sunset, consuming only milk and fruits. Some observe a strict dry fast without water.",
+      "fasting_rules_ta": "சூரிய உதயம் முதல் அஸ்தமனம் வரை பால் மற்றும் பழங்கள் மட்டுமே உண்டு விரதம் இருப்பர்.",
+      "ritual_en": "Devotees recite the Kanda Sashti Kavacham with deep devotion. Special abhishekam and archana are offered to Lord Murugan at homes and temples.",
+      "ritual_ta": "பக்தர்கள் ஆழ்ந்த பக்தியுடன் கந்த சஷ்டி கவசத்தைப் பாராயணம் செய்வார்கள்.",
+      "avoid_en": "Avoid anger, worldly distractions, and non-vegetarian foods.",
+      "avoid_ta": "கோபம், உலகியல் கவனச்சிதறல்கள் மற்றும் அசைவ உணவுகளைத் தவிர்க்க வேண்டும்.",
+      "significance_en": "Sashti is dedicated to Lord Murugan, celebrating his victory over negative forces. Observing this fast grants health, courage, and removes obstacles in life.",
+      "significance_ta": "சஷ்டி முருகப்பெருமானுக்கு அர்ப்பணிக்கப்பட்ட நாளாகும்.",
+      "color_accent": "#a05c1a",
+      "icon": "🦚",
+      "card_shape": "sharp",
+      "auspicious_time_en": "Early morning — 6:00 AM to 7:30 AM (Udaya Kala) or Evening — 5:30 PM to 7:00 PM (Sayarakshai)",
+      "auspicious_time_ta": "அதிகாலை — 6:00 முதல் 7:30 வரை (உதய காலம்) அல்லது மாலை — 5:30 முதல் 7:00 வரை (சாயரட்சை)",
+      "offerings": [
+        { "en": "Red oleander flowers", "ta": "செவ்வரளி மலர்கள்" },
+        { "en": "Milk and honey", "ta": "பால் மற்றும் தேன்" },
+        { "en": "Panchamritham", "ta": "பஞ்சாமிர்தம்" },
+        { "en": "Lemon garland", "ta": "எலுமிச்சை மாலை" }
+      ],
+      "mantra": {
+        "text_ta": "ஓம் சரவணபவாய நம:",
+        "transliteration": "Om Sharavanabhavaya Namah",
+        "meaning_en": "Salutations to Lord Murugan, the one born in the forest of reeds."
+      },
+      "key_temples": [
+        {
+          "name": "Subramaniya Swamy Temple",
+          "location": "Tiruchendur, Thoothukudi",
+          "reason_en": "The ultimate coastal shrine for Murugan and the site of his victory over the demon Surapadman."
+        },
+        {
+          "name": "Palani Murugan Temple",
+          "location": "Palani, Dindigul",
+          "reason_en": "The sacred hill temple where Murugan resides as an ascetic, renowned for its supreme healing powers."
+        }
+      ]
+    },
+    {
+      "id": "kantha_vrat",
+      "name_en": "Kantha Vrat",
+      "name_ta": "கந்த விரதம்",
+      "filter": {
+        "tithi": 6,
+        "nakshatra": null,
+        "paksha": "shukla",
+        "fixed_date": null
+      },
+      "deity_en": "Lord Murugan",
+      "deity_ta": "முருகப்பெருமான்",
+      "fasting": true,
+      "fasting_rules_en": "A very strict fast spanning six days during Skanda Sashti. Devotees take only one simple meal or subsist on liquids.",
+      "fasting_rules_ta": "கந்த சஷ்டி திருவிழாவின் போது ஆறு நாட்கள் கடுமையான விரதம் கடைப்பிடிக்கப்படுகிறது.",
+      "ritual_en": "Continuous chanting of Murugan mantras and reading of Skanda Puranam. Visiting Murugan temples and Soorasamharam re-enactment is central.",
+      "ritual_ta": "முருகன் மந்திரங்களை இடைவிடாது உச்சரிப்பதும் ஸ்கந்த புராணத்தைப் படிப்பதும் நடைபெறும்.",
+      "avoid_en": "Complete abstinence from non-vegetarian food, alcohol, and marital relations. Avoid harsh words.",
+      "avoid_ta": "அசைவ உணவு, மது மற்றும் தாம்பத்திய உறவுகளை முழுமையாகத் தவிர்க்க வேண்டும்.",
+      "significance_en": "Kantha Vrat commemorates Lord Murugan's six-day battle and victory over Surapadman. It deeply purifies the soul and bestows ultimate protection.",
+      "significance_ta": "கந்த விரதம் சூரபத்மனை முருகப்பெருமான் போரில் வீழ்த்திய வெற்றியை நினைவுகூருகிறது.",
+      "color_accent": "#a05c1a",
+      "icon": "🔱",
+      "card_shape": "shield",
+      "auspicious_time_en": "All day observance, but main pujas during Evening — 5:00 PM to 7:00 PM (Sayarakshai)",
+      "auspicious_time_ta": "நாள் முழுவதுமான விரதம், ஆனால் முக்கிய பூஜைகள் மாலை — 5:00 முதல் 7:00 வரை (சாயரட்சை)",
+      "offerings": [
+        { "en": "Six types of fruits", "ta": "ஆறு வகையான பழங்கள்" },
+        { "en": "Kavadi or milk pots", "ta": "காவடி அல்லது பால்குடம்" },
+        { "en": "Red clothes", "ta": "சிவப்பு நிற ஆடைகள்" },
+        { "en": "Sweet pongal", "ta": "சர்க்கரைப் பொங்கல்" }
+      ],
+      "mantra": {
+        "text_ta": "ஓம் தத்புருஷாய வித்மஹே மஹாசேனாய தீமஹி தன்னோ ஷண்முக ப்ரசோதயாத்",
+        "transliteration": "Om Tatpurushaya Vidmahe Mahasenaya Dheemahi Tanno Shanmuga Prachodayat",
+        "meaning_en": "Om, let us meditate on the great commander; may the six-faced Lord illuminate our minds."
+      },
+      "key_temples": [
+        {
+          "name": "Subramaniya Swamy Temple",
+          "location": "Tiruchendur, Thoothukudi",
+          "reason_en": "The epicenter of Skanda Sashti celebrations where the grand Soorasamharam is physically enacted on the beach."
+        },
+        {
+          "name": "Swaminathaswamy Temple",
+          "location": "Swamimalai, Thanjavur",
+          "reason_en": "One of the Arupadaiveedu shrines where Murugan taught the Pranava mantra to Lord Shiva."
+        }
+      ]
+    },
+    {
+      "id": "krithigai",
+      "name_en": "Krithigai",
+      "name_ta": "கிருத்திகை",
+      "filter": {
+        "tithi": null,
+        "nakshatra": 3,
+        "paksha": null,
+        "fixed_date": null
+      },
+      "deity_en": "Lord Shiva / Murugan",
+      "deity_ta": "சிவபெருமான் / முருகப்பெருமான்",
+      "fasting": true,
+      "fasting_rules_en": "Fasting observed throughout the day with only water or light fruits. Concluded after evening temple worship.",
+      "fasting_rules_ta": "பகல் முழுவதும் தண்ணீர் அல்லது பழங்கள் மட்டுமே உட்கொண்டு விரதம் இருக்க வேண்டும்.",
+      "ritual_en": "Lighting earthen lamps (agal vilakku) at home and in temples is the major practice. Special pujas for the Krittika maidens who raised Lord Murugan.",
+      "ritual_ta": "வீடுகளிலும் கோவில்களிலும் அகல் விளக்குகள் ஏற்றுவது முக்கிய வழக்கமாகும்.",
+      "avoid_en": "Avoid consuming grains during the day and refrain from cutting hair or nails.",
+      "avoid_ta": "பகலில் தானியங்கள் உண்பதையும், முடி மற்றும் நகங்களை வெட்டுவதையும் தவிர்க்கவும்.",
+      "significance_en": "Krithigai is the birth star of Lord Murugan and represents the fire element of Lord Shiva. Worshipping brings knowledge, prosperity, and liberation from bad karma.",
+      "significance_ta": "கிருத்திகை முருகனின் அவதார நட்சத்திரமாகவும், சிவபெருமானின் அக்னி வடிவமாகவும் கொண்டாடப்படுகிறது.",
+      "color_accent": "#a05c1a",
+      "icon": "🪔",
+      "card_shape": "dome",
+      "auspicious_time_en": "Evening twilight — 5:30 PM to 7:00 PM (Pradosham / Sandhya Kala, time of lighting lamps)",
+      "auspicious_time_ta": "மாலை அந்தி நேரம் — 5:30 முதல் 7:00 வரை (பிரதோஷ காலம் / சந்தியா காலம், தீபம் ஏற்றும் நேரம்)",
+      "offerings": [
+        { "en": "Clay oil lamps with ghee", "ta": "நெய் ஊற்றிய அகல் விளக்குகள்" },
+        { "en": "Puffed rice with jaggery (Pori)", "ta": "பொரி மற்றும் வெல்லம்" },
+        { "en": "Red oleander flowers", "ta": "செவ்வரளி மலர்கள்" },
+        { "en": "Sweet appam", "ta": "இனிப்பு அப்பம்" }
+      ],
+      "mantra": {
+        "text_ta": "ஓம் கார்த்திகேயாய வித்மஹே சக்தி ஹஸ்தாய தீமஹி தன்னோ ஸ்கந்த ப்ரசோதயாத்",
+        "transliteration": "Om Karthikeyaya Vidmahe Shakti Hastaya Dheemahi Tanno Skanda Prachodayat",
+        "meaning_en": "Om, let us meditate on Karthikeya who holds the divine spear; may Lord Skanda illuminate our intellect."
+      },
+      "key_temples": [
+        {
+          "name": "Arunachaleswarar Temple",
+          "location": "Thiruvannamalai",
+          "reason_en": "The grandest celebration of Maha Karthigai Deepam occurs here, culminating with a massive fire lit atop the sacred hill."
+        },
+        {
+          "name": "Palani Murugan Temple",
+          "location": "Palani, Dindigul",
+          "reason_en": "Renowned for the special golden chariot procession and elaborate deepam lightings for Lord Murugan."
+        }
+      ]
+    },
+    {
+      "id": "uthiram",
+      "name_en": "Uthiram",
+      "name_ta": "உத்திரம்",
+      "filter": {
+        "tithi": null,
+        "nakshatra": 12,
+        "paksha": null,
+        "fixed_date": null
+      },
+      "deity_en": "Aryaman / Sun Deity",
+      "deity_ta": "ஆரியமான் / சூரிய பகவான்",
+      "fasting": false,
+      "_fasting_note": "Verify with astrologer — partial fasting by some women",
+      "fasting_rules_en": "Partial fasting traditionally observed by women seeking marital blessings, concluding after temple visits.",
+      "fasting_rules_ta": "திருமண வரம் வேண்டி பெண்கள் மாலையில் கோவில் தரிசனத்திற்குப் பின் விரதத்தை முடிப்பது மரபு.",
+      "ritual_en": "Marriages, upanayanam, and new ventures initiated on this star. Devotees visit Shiva and Vishnu temples for marital harmony and family blessings.",
+      "ritual_ta": "இந்த நட்சத்திரத்தில் திருமணங்கள், உபநயனம் மற்றும் புதிய முயற்சிகள் தொடங்கப்படுகின்றன.",
+      "avoid_en": "Avoid lending money or starting arguments, as the day amplifies binding relationships.",
+      "avoid_ta": "கடன் கொடுப்பதையோ விவாதங்களில் ஈடுபடுவதையோ தவிர்க்கவும்.",
+      "significance_en": "Uthiram symbolizes patronage, relationships, and new beginnings. Many divine marriages including Shiva and Parvati are celebrated under this star.",
+      "significance_ta": "உத்திரம் உறவுகள் மற்றும் புதிய தொடக்கங்களைக் குறிக்கும் மிகவும் மங்களகரமான நட்சத்திரமாகும்.",
+      "color_accent": "#f2c96a",
+      "icon": "✨",
+      "card_shape": "diamond",
+      "auspicious_time_en": "Morning — 7:30 AM to 9:00 AM (Suitable for Muhurthams and vows)",
+      "auspicious_time_ta": "காலை — 7:30 முதல் 9:00 வரை (முகூர்த்தங்கள் மற்றும் விரதங்களுக்கு உகந்தது)",
+      "offerings": [
+        { "en": "Yellow clothing", "ta": "மஞ்சள் ஆடை" },
+        { "en": "Turmeric and Kumkum", "ta": "மஞ்சள் மற்றும் குங்குமம்" },
+        { "en": "Mangoes", "ta": "மாம்பழம்" },
+        { "en": "Betel leaf, nut and banana", "ta": "தாம்பூலம்" }
+      ],
+      "mantra": {
+        "text_ta": "ஓம் கௌரீ வல்லபாய காமதாய நம:",
+        "transliteration": "Om Gauri Vallabhaya Kamadaya Namah",
+        "meaning_en": "Salutations to the beloved of Goddess Gauri, the granter of all righteous desires."
+      },
+      "key_temples": [
+        {
+          "name": "Ekambareswarar Temple",
+          "location": "Kanchipuram",
+          "reason_en": "The Panguni Uthiram festival grandly celebrates the divine marriage of Lord Shiva and Goddess Kamakshi here."
+        },
+        {
+          "name": "Sri Kapaleeswarar Temple",
+          "location": "Mylapore, Chennai",
+          "reason_en": "Famous for the spectacular Arupathimoovar festival held during the Panguni Uthiram period."
+        }
+      ]
     },
     {
       "id": "tamil_new_year",
       "name_en": "Tamil New Year",
       "name_ta": "தமிழ்ப் புத்தாண்டு",
-      "filter": { "fixed_date": "04-14" },
-      "significance_en": "Chithirai 1 — Tamil New Year, Sun enters Aries",
-      "significance_ta": "சித்திரை 1 — தமிழ் புத்தாண்டு"
+      "filter": {
+        "tithi": null,
+        "nakshatra": null,
+        "paksha": null,
+        "fixed_date": "04-14"
+      },
+      "deity_en": "Surya (Sun)",
+      "deity_ta": "சூரிய பகவான்",
+      "fasting": false,
+      "fasting_rules_en": null,
+      "fasting_rules_ta": null,
+      "ritual_en": "Homes decorated with kolam and mango leaves. A festive meal with all six tastes, notably neem flower pachadi, is prepared and offered to deities.",
+      "ritual_ta": "வீடுகள் கோலங்கள் மற்றும் மாவிலைத் தோரணங்களால் அலங்கரிக்கப்படுகின்றன. வேப்பம்பூ பச்சடி உட்பட அறுசுவை உணவு படைக்கப்படுகிறது.",
+      "avoid_en": "Avoid negative speech, crying, or mourning, as the first day sets the tone for the entire year.",
+      "avoid_ta": "எதிர்மறையான பேச்சுகள் மற்றும் அழுவதைத் தவிர்க்க வேண்டும்.",
+      "significance_en": "Tamil New Year marks the sun's entry into Aries, beginning the traditional calendar cycle. A celebration of agricultural prosperity, renewal, and hope.",
+      "significance_ta": "தமிழ்ப் புத்தாண்டு சூரியன் மேஷ ராசியில் நுழைவதைக் குறிக்கிறது.",
+      "color_accent": "#c9922a",
+      "icon": "☀️",
+      "card_shape": "starburst",
+      "auspicious_time_en": "Early morning — 4:30 AM to 6:00 AM (Brahma Muhurtham for Kani Kaanthal)",
+      "auspicious_time_ta": "அதிகாலை — 4:30 முதல் 6:00 வரை (கனி காணலுக்கு உகந்த பிரம்ம முஹூர்த்தம்)",
+      "offerings": [
+        { "en": "Neem flower and jaggery pachadi", "ta": "வேப்பம்பூ வெல்லப் பச்சடி" },
+        { "en": "Auspicious tray (fruits, gold, mirror)", "ta": "கனி காணும் தட்டு (பழங்கள், தங்கம், கண்ணாடி)" },
+        { "en": "Mango leaves garland", "ta": "மாவிலைத் தோரணம்" },
+        { "en": "Coconut", "ta": "தேங்காய்" }
+      ],
+      "mantra": {
+        "text_ta": "ஓம் அச்வத்வஜாய வித்மஹே பாஸ ஹஸ்தாய தீமஹி தன்னோ சூர்ய: ப்ரசோதயாத்",
+        "transliteration": "Om Ashwadhwajaya Vidmahe Pasa Hastaya Dheemahi Tanno Surya Prachodayat",
+        "meaning_en": "Om, let me meditate on the Sun God with the horse flag; may He illuminate my intellect."
+      },
+      "key_temples": [
+        {
+          "name": "Suryanar Kovil",
+          "location": "Kumbakonam, Thanjavur",
+          "reason_en": "The principal temple dedicated to the Sun God in Tamil Nadu, highly auspicious for worship on New Year's day."
+        },
+        {
+          "name": "Meenakshi Amman Temple",
+          "location": "Madurai",
+          "reason_en": "The grand Chithirai festival commences around this time, drawing massive crowds for the celestial wedding and procession."
+        }
+      ]
+    },
+    {
+      "id": "pradosham",
+      "name_en": "Pradosham",
+      "name_ta": "பிரதோஷம்",
+      "filter": {
+        "tithi": 13,
+        "nakshatra": null,
+        "paksha": null,
+        "fixed_date": null
+      },
+      "deity_en": "Lord Shiva / Nandi",
+      "deity_ta": "சிவபெருமான் / நந்தி பகவான்",
+      "fasting": true,
+      "fasting_rules_en": "Devotees observe a partial fast, consuming only fruits and liquids during the day. The fast is broken in the evening after participating in the Shiva temple Pradosha abhishekam.",
+      "fasting_rules_ta": "பகலில் உபவாசம் இருந்து, மாலையில் சிவன் மற்றும் நந்தீஸ்வரர் அபிஷேகத்தை தரிசித்து, பிரசாதம் உட்கொண்டு விரதத்தை முடிக்க வேண்டும்.",
+      "ritual_en": "Special evening abhishekam and archana are performed for Lord Shiva and Nandi. Devotees circumambulate the Shiva temple sanctum in the traditional 'Pradakshinam' pattern.",
+      "ritual_ta": "மாலை 4:30 முதல் 6:00 மணி வரை நந்தி பகவானுக்கும் சிவபெருமானுக்கு சிறப்பு அபிஷேகங்கள் நடைபெறும். கோயிலில் பிரதோஷ பிரதட்சணம் செய்ய வேண்டும்.",
+      "avoid_en": "Avoid non-vegetarian food, commercial activities, and negative speech during the evening Pradosha Kalam.",
+      "avoid_ta": "மாலை பிரதோஷ காலத்தில் அசைவ உணவு, வணிக நடவடிக்கைகள் மற்றும் வீண் பேச்சுக்களைத் தவிர்க்க வேண்டும்.",
+      "significance_en": "Pradosham is the most sacred time to dissolve past sins and karmic blockages. It is believed that during Pradosha Kalam (4:30 PM to 6:00 PM), all deities reside in Shiva temples, magnifying the power of prayers.",
+      "significance_ta": "பிரதோஷம் என்பது கர்ம வினைகள் மற்றும் பாவங்களைப் போக்கக்கூடிய ஒரு மிக உயர்ந்த மங்கல நாளாகும். பிரதோஷ காலத்தில் (மாலை 4:30 - 6:00) அனைத்து தேவதைகளும் சிவபெருமானை வணங்குவதாக ஐதீகம்.",
+      "color_accent": "#2e7d6b",
+      "icon": "🐂",
+      "card_shape": "rounded",
+      "auspicious_time_en": "Evening — 4:30 PM to 6:00 PM (Pradosha Kalam, supreme time for Shiva worship)",
+      "auspicious_time_ta": "மாலை — 4:30 முதல் 6:00 மணி வரை (பிரதோஷ காலம், சிவ வழிபாட்டிற்கு உகந்தது)",
+      "offerings": [
+        { "en": "Bael leaves (Vilvam)", "ta": "வில்வ இலைகள்" },
+        { "en": "Milk and honey for Abhishekam", "ta": "அபிஷேகத்திற்கு பால் மற்றும் தேன்" },
+        { "en": "Sandalwood and Vibhuti", "ta": "சந்தனம் மற்றும் திருநீறு" },
+        { "en": "White jasmine flowers", "ta": "வெண் முல்லை மலர்கள்" }
+      ],
+      "mantra": {
+        "text_ta": "ஓம் நமசிவாய நம: ஓம் மஹா தேவாய நம:",
+        "transliteration": "Om Namah Shivaya Namah, Om Maha Devaya Namah",
+        "meaning_en": "Om, salutations to Lord Shiva, the supreme auspicious deity."
+      },
+      "key_temples": [
+        {
+          "name": "Kapaleeshwarar Temple",
+          "location": "Mylapore, Chennai",
+          "reason_en": "Renowned for grand Pradosha Kalam rituals where massive crowds gather for the Shiva & Nandi procession."
+        },
+        {
+          "name": "Brihadisvara Temple",
+          "location": "Thanjavur",
+          "reason_en": "Famous for its giant monolithic Nandi, where special elaborate pradosha abhishekam is witnessed by thousands."
+        }
+      ]
     },
     {
       "id": "jwalini",
       "name_en": "Jwalini",
       "name_ta": "ஜுவாலினி",
-      "filter": { "nakshatra": 20 },
-      "significance_en": "Purva Ashadha nakshatra day — associated with Goddess Jwalini",
-      "significance_ta": "பூராடம் நட்சத்திர நாள் — ஜுவாலினி தேவி"
-    },
-    {
-      "id": "tamil_panchangam",
-      "name_en": "Tamil Panchangam",
-      "name_ta": "தமிழ்ப் பஞ்சாங்கம்",
-      "filter": { "fixed_date": "04-14" },
-      "significance_en": "Start of Tamil calendar year — Panchangam reading day",
-      "significance_ta": "தமிழ் ஆண்டின் தொடக்கம் — பஞ்சாங்கம் படிக்கும் நாள்"
+      "filter": {
+        "tithi": null,
+        "nakshatra": 20,
+        "paksha": null,
+        "fixed_date": null
+      },
+      "deity_en": "Goddess Jwalini (Devi)",
+      "deity_ta": "ஜுவாலினி தேவி",
+      "fasting": true,
+      "fasting_rules_en": "Devotees maintain a fast observing silence or chanting mantras, consuming only simple sattvic food once a day.",
+      "fasting_rules_ta": "பகலிலே மௌனமாக இருந்து உபவாசம் காக்க வேண்டும். எளிய சாத்வீக உணவை மட்டுமே ஒரு பொழுது உண்ண வேண்டும்.",
+      "ritual_en": "Special fire rituals (homas) and lamp lighting dedicated to the Goddess. Red flowers and vermillion are offered to invoke her fiery, protective energy.",
+      "ritual_ta": "அம்மனுக்கு சிறப்பு ஹோமங்கள் மற்றும் தீப ஆராதனைகள் செய்யப்படுகின்றன.",
+      "avoid_en": "Avoid pointing feet towards fire, wasting fuel, or engaging in deceitful activities.",
+      "avoid_ta": "நெருப்பை நோக்கி கால்களை நீட்டுவது மற்றும் வஞ்சகமான செயல்களில் ஈடுபடுவதைத் தவிர்க்கவும்.",
+      "significance_en": "Jwalini is the fierce, purifying fire goddess of Purva Ashadha. Worshipping her burns karmic impurities and provides powerful protection from evil.",
+      "significance_ta": "ஜுவாலினி தேவி பூராடம் நட்சத்திரத்துடன் தொடர்புடைய snake-fire-fierce அக்னி தேவியாக வணங்கப்படுகிறாள்.",
+      "color_accent": "#b0415e",
+      "icon": "🔥",
+      "card_shape": "leaf",
+      "auspicious_time_en": "Midnight or late night — 11:30 PM to 1:00 AM (Nishi Kaala, ideal for fierce Devi worship)",
+      "auspicious_time_ta": "நள்ளிரவு அல்லது பின்னிரவு — 11:30 முதல் 1:00 வரை (நிசி காலம், உக்கிர தேவி வழிபாட்டிற்கு உகந்தது)",
+      "offerings": [
+        { "en": "Red kumkum", "ta": "குங்குமம்" },
+        { "en": "Lemon garland", "ta": "எலுமிச்சை மாலை" },
+        { "en": "Ghee for homam", "ta": "ஹோமத்திற்கு நெய்" },
+        { "en": "Neem leaves", "ta": "வேப்பிலைகள்" }
+      ],
+      "mantra": {
+        "text_ta": "ஓம் ஜ்வாலினி தேவியை நமஹ:",
+        "transliteration": "Om Jwalini Devyai Namah",
+        "meaning_en": "Salutations to Goddess Jwalini, the embodiment of divine fire."
+      },
+      "key_temples": [
+        {
+          "name": "Prathyangira Devi Temple",
+          "location": "Ayyavadi, Thanjavur",
+          "reason_en": "Famous for fierce goddess worship and powerful fire rituals (Homas) using red chillies to dispel evil forces."
+        },
+        {
+          "name": "Kamakshi Amman Temple",
+          "location": "Kanchipuram",
+          "reason_en": "The seat of Sri Vidya tradition where all forms of Devi, including fierce fire aspects, are subtly invoked in the Sri Chakra."
+        }
+      ]
     }
   ]
 }

@@ -23,7 +23,7 @@ router.all('/daily', authenticate, async (req: Request, res: Response, next) => 
       });
     }
 
-    const data = await getDailyPanchangam(
+    const p = await getDailyPanchangam(
       date as string,
       parseFloat(lat),
       parseFloat(lng),
@@ -31,9 +31,69 @@ router.all('/daily', authenticate, async (req: Request, res: Response, next) => 
       language || 'ta'
     );
 
+    const RAHU_KALAM = [
+      { start: '16:30', end: '18:00' }, // Sunday
+      { start: '07:30', end: '09:00' }, // Monday
+      { start: '15:00', end: '16:30' }, // Tuesday
+      { start: '12:00', end: '13:30' }, // Wednesday
+      { start: '13:30', end: '15:00' }, // Thursday
+      { start: '10:30', end: '12:00' }, // Friday
+      { start: '09:00', end: '10:30' }  // Saturday
+    ];
+
+    const dateObj = new Date(date as string);
+    const dayOfWeek = dateObj.getDay();
+
+    // Map fields
+    let tithiVal = { name: 'Dwitiya', index: 2 };
+    let pakshaVal = 'Shukla';
+    if (p.tithi && p.tithi.length > 0) {
+      tithiVal = {
+        name: p.tithi[0].name || 'Dwitiya',
+        index: p.tithi[0].index || 2
+      };
+      pakshaVal = p.tithi[0].paksha || 'Shukla';
+    }
+
+    let nakshatraVal = { name: 'Ashwini', index: 1, pada: 1 };
+    if (p.nakshatra && p.nakshatra.length > 0) {
+      nakshatraVal = {
+        name: p.nakshatra[0].name || 'Ashwini',
+        index: p.nakshatra[0].index || 1,
+        pada: p.nakshatra[0].pada || 1
+      };
+    }
+
+    let yogaVal = { name: 'Siddhi', index: 1 };
+    if (p.yoga && p.yoga.length > 0) {
+      yogaVal = {
+        name: p.yoga[0].name || 'Siddhi',
+        index: p.yoga[0].index || 1
+      };
+    }
+
+    let karanamVal = { name: 'Bava' };
+    if (p.karanam && p.karanam.length > 0) {
+      karanamVal = {
+        name: p.karanam[0].name || 'Bava'
+      };
+    }
+
+    const formattedData = {
+      date: date as string,
+      paksha: pakshaVal,
+      tithi: tithiVal,
+      nakshatra: nakshatraVal,
+      yogam: yogaVal,
+      karanam: karanamVal,
+      rahu_kalam: RAHU_KALAM[dayOfWeek],
+      sun_longitude: p.sun_longitude || 30.5,
+      moon_longitude: p.moon_longitude || 120.2
+    };
+
     res.json({
       success: true,
-      data
+      data: formattedData
     });
   } catch (error) {
     next(error);
@@ -281,6 +341,7 @@ router.post('/muhurtham', authenticate, requireSubscription, async (req: Request
     const result = resolvedDays.map((localData, index) => {
       const dateObj = new Date(year, month - 1, index + 1);
       const dayOfWeek = dateObj.getDay();
+      const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(index + 1).padStart(2, '0')}`;
       const weekday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
 
       // Extract Tithi name and index
@@ -349,7 +410,7 @@ router.post('/muhurtham', authenticate, requireSubscription, async (req: Request
       }
 
       return {
-        date: item.date,
+        date: dateStr,
         weekday,
         status,
         event_score,
