@@ -31,12 +31,12 @@ const REMAINDER_ORDER = ['Dhana', 'Dhanya', 'Jaya', 'Nasha', 'Shubha', 'Papa', '
 const container = {
   hidden: {},
   show: { transition: { staggerChildren: 0.07 } }
-}
+} as const
 
 const itemVariant = {
   hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 22 } }
-}
+  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 260, damping: 22 } }
+} as const
 
 export default function ManaiyadiPage() {
   const { language } = useLanguage()

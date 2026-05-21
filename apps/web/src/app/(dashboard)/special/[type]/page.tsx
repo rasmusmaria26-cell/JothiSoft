@@ -460,7 +460,7 @@ export default function SpecialDayDetailPage() {
                   {isTa ? 'முக்கியத்துவம் & தத்துவம்' : 'Significance & Mythology'}
                 </h4>
                 <p className="text-stone-300 text-[13.5px] leading-relaxed italic">
-                  "{isTa ? selectedDay.significance_ta : selectedDay.significance_en}"
+                  &quot;{isTa ? selectedDay.significance_ta : selectedDay.significance_en}&quot;
                 </p>
               </div>
             </div>

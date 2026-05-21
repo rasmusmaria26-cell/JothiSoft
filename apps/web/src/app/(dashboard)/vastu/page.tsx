@@ -9,12 +9,12 @@ import { useLanguage } from '@/context/LanguageContext'
 const container = {
   hidden: {},
   show: { transition: { staggerChildren: 0.1 } }
-}
+} as const
 
 const item = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 22 } }
-}
+  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 260, damping: 22 } }
+} as const
 
 export default function VastuPage() {
   const { language } = useLanguage()
