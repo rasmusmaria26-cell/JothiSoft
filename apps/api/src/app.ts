@@ -12,6 +12,7 @@ const port = process.env.PORT || 4000;
 const allowedOrigins = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
+  'https://jothi-soft-api.vercel.app',
   process.env.NEXT_PUBLIC_URL
 ].filter(Boolean) as string[];
 
@@ -27,7 +28,7 @@ app.use(cors({
     const isAllowed = allowedOrigins.some((allowed) => {
       if (allowed === '*') return true;
       return allowed.toLowerCase() === origin.toLowerCase();
-    });
+    }) || origin.toLowerCase().endsWith('.vercel.app');
 
     if (isAllowed) {
       callback(null, true);
