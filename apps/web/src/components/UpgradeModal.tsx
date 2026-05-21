@@ -82,7 +82,7 @@ export default function UpgradeModal() {
 
           <div className="space-y-3">
             <button
-              onClick={() => startCheckout(plan.id, user?.phone ?? undefined)}
+              onClick={() => startCheckout(plan.id, user?.phone ?? undefined, user?.email)}
               disabled={status === 'creating' || status === 'verifying' || status === 'open'}
               className="w-full py-3 rounded-[var(--radius-md)] font-bold text-base transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed hover:brightness-110 active:scale-[0.98]"
               style={{ background: 'var(--gold-deep)', color: '#1a1209' }}

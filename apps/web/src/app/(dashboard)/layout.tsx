@@ -40,7 +40,8 @@ export default function DashboardLayout({
 
         setUser({
           id: session.user.id,
-          phone: session.user.phone ?? profile?.phone ?? '',
+          email: session.user.email ?? profile?.email ?? '',
+          phone: session.user.phone ?? profile?.phone ?? undefined,
           name: profile?.name ?? null,
           plan: profile?.subscriptions?.plan ?? 'FREE',
           planExpiry: profile?.subscriptions?.expires_at ?? null,

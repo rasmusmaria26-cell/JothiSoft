@@ -12,7 +12,7 @@ export function UserInfoCard() {
   const { user, isLoading, clearAuth } = useAuthStore();
 
   const displayName = user?.name || (language === 'ta' ? 'அன்பரே' : 'User');
-  const displayPhone = user?.phone || '';
+  const displayEmail = user?.email || '';
   const displayPlan = user?.plan || 'FREE';
   
   const displayExpiry = user?.planExpiry 
@@ -56,7 +56,7 @@ export function UserInfoCard() {
           </h2>
         </div>
         <p className="text-sm text-text-muted mt-1 font-sans tracking-wide">
-          {displayPhone}
+          {displayEmail}
         </p>
       </div>
       

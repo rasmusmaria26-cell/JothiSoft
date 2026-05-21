@@ -8,10 +8,40 @@ dotenv.config({ path: '../../.env' }); // Load from root
 const app = express();
 const port = process.env.PORT || 4000;
 
+const allowedOrigins = [
+  'https://jothisoft.com',
+  'https://www.jothisoft.com',
+  'http://localhost:3000',
+];
+
 app.use(cors({
-  origin: true,
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    
+    const isAllowed = allowedOrigins.includes(origin) || 
+      origin.endsWith('.vercel.app') || 
+      origin.endsWith('.onrender.com') ||
+      /^http:\/\/localhost:\d+$/.test(origin);
+      
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
+
+// Custom secure HTTP headers middleware (bypasses helmet dependency overhead)
+app.use((req, res, next) => {
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.jothisoft.com; frame-src https://api.razorpay.com");
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

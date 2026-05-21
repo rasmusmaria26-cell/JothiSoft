@@ -22,109 +22,40 @@ const otpCache = new Map<string, OtpEntry>();
  */
 router.post('/register', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { phone, password, name, otp, language = 'ta' } = req.body;
+    const { email, password, name, language = 'ta' } = req.body;
 
-    if (!phone || !password) {
+    if (!email || !password) {
       res.status(400).json({
         success: false,
         error: 'VALIDATION_ERROR',
-        message: 'Phone number and password are required',
+        message: 'மின்னஞ்சல் மற்றும் கடவுச்சொல் தேவை · Email and password are required',
       });
       return;
     }
 
-    // Ensure phone exists or is valid
-    const cleanPhone = '+' + phone.replace(/\D/g, '');
+    const cleanEmail = email.trim().toLowerCase();
 
-    // Step 1: Send/Generate OTP
-    if (!otp) {
-      // Check if user already exists in public.users to avoid duplicating
-      const { data: existingUser } = await supabaseAdmin
-        .from('users')
-        .select('id')
-        .eq('phone', cleanPhone)
-        .maybeSingle();
+    // Check if user already exists in public.users to avoid duplicating
+    const { data: existingUser } = await supabaseAdmin
+      .from('users')
+      .select('id')
+      .eq('email', cleanEmail)
+      .maybeSingle();
 
-      if (existingUser) {
-        res.status(400).json({
-          success: false,
-          error: 'USER_EXISTS',
-          message: 'கைபேசி எண் ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது · Phone number already registered',
-        });
-        return;
-      }
-
-      // Generate a clean 6-digit OTP code
-      const code = Math.floor(100000 + Math.random() * 900000).toString();
-      
-      // Store in memory cache
-      otpCache.set(cleanPhone, {
-        code,
-        expiresAt: Date.now() + 5 * 60 * 1000 // 5 minutes validity
-      });
-
-      console.log(`
-===================================================
-[SMS OTP SIMULATOR]
-Verification code for ${cleanPhone} is: ${code}
-===================================================
-`);
-
-      // Send the real SMS OTP via Twilio!
-      try {
-        await sendOtpSms(cleanPhone, code);
-      } catch (smsError: any) {
-        console.error('[Register SMS Send Error]:', smsError);
-        // We log the error but still allow the process to proceed in dev environment
-        // so trial account restrictions don't block local development.
-      }
-
-      res.json({
-        success: true,
-        otp_sent: true,
-        message: 'உறுதிப்படுத்தல் குறியீடு அனுப்பப்பட்டது · Verification code sent to your phone',
-      });
-      return;
-    }
-
-    // Step 2: Verify OTP
-    const cachedEntry = otpCache.get(cleanPhone);
-    if (!cachedEntry) {
+    if (existingUser) {
       res.status(400).json({
         success: false,
-        error: 'INVALID_OTP',
-        message: 'அங்கீகரிக்கப்படாத குறியீடு · Verification code expired or not found. Please request a new one.',
+        error: 'USER_EXISTS',
+        message: 'மின்னஞ்சல் ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது · Email already registered',
       });
       return;
     }
 
-    if (Date.now() > cachedEntry.expiresAt) {
-      otpCache.delete(cleanPhone);
-      res.status(400).json({
-        success: false,
-        error: 'EXPIRED_OTP',
-        message: 'காலாவதியான குறியீடு · Verification code expired. Please request a new one.',
-      });
-      return;
-    }
-
-    if (cachedEntry.code !== otp.trim()) {
-      res.status(400).json({
-        success: false,
-        error: 'WRONG_OTP',
-        message: 'தவறான குறியீடு · Invalid verification code. Please check and try again.',
-      });
-      return;
-    }
-
-    // OTP is valid! Clear it from cache and create account
-    otpCache.delete(cleanPhone);
-
-    // 1. Create user in auth.users using Admin API (bypass external SMS confirmation)
+    // 1. Create user in auth.users using Admin API (with email_confirm: true for seamless dev/prod testing)
     const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
-      phone: cleanPhone,
+      email: cleanEmail,
       password,
-      phone_confirm: true,
+      email_confirm: true, // Set to false here when standard SMTP is fully connected in production!
       user_metadata: { name, language, plan: 'FREE', plan_expires_at: null }
     });
 
@@ -137,10 +68,10 @@ Verification code for ${cleanPhone} is: ${code}
       return;
     }
 
-    // 2. Update public.users profile
+    // 2. Update public.users profile (the trigger handles insertion, we make sure name/email are synced)
     const { error: profileError } = await supabaseAdmin
       .from('users')
-      .update({ name, language })
+      .update({ name, language, email: cleanEmail })
       .eq('id', authUser.user.id);
 
     if (profileError) {
@@ -152,7 +83,7 @@ Verification code for ${cleanPhone} is: ${code}
       message: 'User registered successfully',
       data: {
         id: authUser.user.id,
-        phone: authUser.user.phone,
+        email: authUser.user.email,
       },
     });
   } catch (error: any) {
@@ -166,23 +97,25 @@ Verification code for ${cleanPhone} is: ${code}
 
 /**
  * POST /api/auth/login
- * Signs in user with phone and password, returning JWT access and refresh tokens.
+ * Signs in user with email and password, returning JWT access and refresh tokens.
  */
 router.post('/login', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { phone, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!phone || !password) {
+    if (!email || !password) {
       res.status(400).json({
         success: false,
         error: 'VALIDATION_ERROR',
-        message: 'Phone number and password are required',
+        message: 'மின்னஞ்சல் மற்றும் கடவுச்சொல் தேவை · Email and password are required',
       });
       return;
     }
 
+    const cleanEmail = email.trim().toLowerCase();
+
     const { data: session, error } = await supabaseAdmin.auth.signInWithPassword({
-      phone,
+      email: cleanEmail,
       password,
     });
 
@@ -190,7 +123,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
       res.status(401).json({
         success: false,
         error: 'INVALID_CREDENTIALS',
-        message: error?.message || 'Invalid phone number or password',
+        message: error?.message || 'மின்னஞ்சல் அல்லது கடவுச்சொல் தவறானது · Invalid email or password',
       });
       return;
     }
@@ -203,7 +136,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
         expires_at: session.session.expires_at,
         user: {
           id: session.user.id,
-          phone: session.user.phone,
+          email: session.user.email,
         },
       },
     });

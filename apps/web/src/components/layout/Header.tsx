@@ -9,7 +9,7 @@ export function Header() {
   const { user, clearAuth } = useAuthStore()
   const displayInitial = user?.name 
     ? user.name.trim().charAt(0).toUpperCase() 
-    : (user?.phone ? 'U' : 'M')
+    : (user?.email ? 'U' : 'M')
 
   const handleLogout = async () => {
     await supabase.auth.signOut()

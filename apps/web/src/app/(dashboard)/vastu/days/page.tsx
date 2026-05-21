@@ -45,7 +45,7 @@ const container = {
 
 const item = {
   hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 260, damping: 22 } }
+  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 22 } }
 }
 
 export default function VastuDaysPage() {
@@ -161,11 +161,10 @@ export default function VastuDaysPage() {
               <button
                 key={y}
                 onClick={() => setYear(y)}
-                className={`px-3 py-1.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${
-                  year === y
+                className={`px-3 py-1.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${year === y
                     ? 'text-[#1a1209] shadow-md'
                     : 'text-text-secondary hover:text-text-primary'
-                }`}
+                  }`}
                 style={year === y ? { background: '#c9922a' } : {}}
               >
                 {y}

@@ -2,18 +2,18 @@
 
 import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { 
+import {
   ArrowLeft, AlertTriangle, RefreshCw, Clock, Sparkles, Calendar,
-  CircleDot, Star, Flame, Sun, Gift, BookMarked, MapPin, 
+  CircleDot, Star, Flame, Sun, Gift, BookMarked, MapPin,
   CheckCircle2, Ban, Heart, Copy, Check, Info, Award
 } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 import api from '@/lib/api'
 
 // Define interfaces locally
-export type SpecialDayType = 
-  | 'amavasai' | 'pournami' | 'sashti' | 'krithigai' 
-  | 'uthiram' | 'kantha_vrat' | 'tharpanam' 
+export type SpecialDayType =
+  | 'amavasai' | 'pournami' | 'sashti' | 'krithigai'
+  | 'uthiram' | 'kantha_vrat' | 'tharpanam'
   | 'tamil_new_year' | 'jwalini' | 'pradosham';
 
 export interface SpecialDay {
@@ -194,7 +194,7 @@ export default function SpecialDayDetailPage() {
   const router = useRouter()
   const { language } = useLanguage()
   const isTa = language === 'ta'
-  
+
   const routeType = params.type as string
   const apiType = ROUTE_TO_API_TYPE[routeType]
 
@@ -226,7 +226,7 @@ export default function SpecialDayDetailPage() {
       if (res.success) {
         const fetchedDays = res.data || []
         setDays(fetchedDays)
-        
+
         // Find first upcoming or today's occurrence to default-select
         const today = new Date()
         today.setHours(0, 0, 0, 0)
@@ -236,14 +236,14 @@ export default function SpecialDayDetailPage() {
         throw new Error('Failed to fetch data')
       }
     } catch (err: any) {
-      const isStillComputing = err.status === 503 || 
-                               err.message?.includes('computed') || 
-                               err.message?.includes('unavailable') || 
-                               err.message?.includes('SERVICE_UNAVAILABLE');
+      const isStillComputing = err.status === 503 ||
+        err.message?.includes('computed') ||
+        err.message?.includes('unavailable') ||
+        err.message?.includes('SERVICE_UNAVAILABLE');
       if (isStillComputing) {
         setIs503(true)
-        setError(isTa 
-          ? 'இந்த ஆண்டிற்கான நாட்கள் தற்போது கணக்கிடப்படுகின்றன. தயவுசெய்து சிறிது நேரம் காத்திருந்து மீண்டும் முயற்சிக்கவும்.' 
+        setError(isTa
+          ? 'இந்த ஆண்டிற்கான நாட்கள் தற்போது கணக்கிடப்படுகின்றன. தயவுசெய்து சிறிது நேரம் காத்திருந்து மீண்டும் முயற்சிக்கவும்.'
           : 'Special days are currently being computed for this year. Please wait 30 seconds and retry.'
         )
       } else {
@@ -291,7 +291,7 @@ export default function SpecialDayDetailPage() {
     const monthIndex = dateObj.getMonth()
     const month = isTa ? MONTHS_TA[monthIndex] : MONTHS_EN[monthIndex]
     const formattedWeekday = isTa ? (WEEKDAYS_TA[weekday] || weekday) : weekday
-    return isTa 
+    return isTa
       ? `${year} ${month} ${day} (${formattedWeekday})`
       : `${month} ${day}, ${year} (${formattedWeekday})`
   }
@@ -306,7 +306,7 @@ export default function SpecialDayDetailPage() {
     <div className="max-w-6xl mx-auto space-y-6">
       {/* Top Header & Actions */}
       <div className="flex items-center justify-between">
-        <button 
+        <button
           onClick={() => router.back()}
           className="flex items-center gap-2 text-stone-400 hover:text-white transition-colors text-[14px]"
         >
@@ -320,11 +320,10 @@ export default function SpecialDayDetailPage() {
             <button
               key={y}
               onClick={() => setYear(y)}
-              className={`px-3 py-1 text-[13px] font-medium rounded-md transition-all ${
-                year === y 
-                  ? 'bg-amber-600 text-white shadow-md' 
+              className={`px-3 py-1 text-[13px] font-medium rounded-md transition-all ${year === y
+                  ? 'bg-amber-600 text-white shadow-md'
                   : 'text-stone-400 hover:text-stone-200'
-              }`}
+                }`}
             >
               {y}
             </button>
@@ -340,9 +339,9 @@ export default function SpecialDayDetailPage() {
           </div>
           <div className="lg:col-span-5 space-y-3">
             {[1, 2, 3, 4].map((n) => (
-              <div 
-                key={n} 
-                className="h-20 bg-stone-900/30 animate-pulse rounded-lg border border-stone-850" 
+              <div
+                key={n}
+                className="h-20 bg-stone-900/30 animate-pulse rounded-lg border border-stone-850"
               />
             ))}
           </div>
@@ -356,8 +355,8 @@ export default function SpecialDayDetailPage() {
           <p className="text-stone-400 text-[13px] leading-relaxed">
             {error}
           </p>
-          <button 
-            onClick={fetchSpecialDays} 
+          <button
+            onClick={fetchSpecialDays}
             className="w-full bg-amber-600 hover:bg-amber-500 text-white font-medium py-2 rounded-lg text-[13px] inline-flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95"
           >
             <RefreshCw className="w-3.5 h-3.5" />
@@ -368,8 +367,8 @@ export default function SpecialDayDetailPage() {
         <div className="bg-red-500/5 border border-red-500/20 rounded-lg p-6 text-center space-y-3">
           <AlertTriangle className="w-8 h-8 text-red-400 mx-auto" />
           <p className="text-red-200 text-[14px]">{error}</p>
-          <button 
-            onClick={fetchSpecialDays} 
+          <button
+            onClick={fetchSpecialDays}
             className="text-[13px] text-red-400 underline inline-flex items-center gap-1 hover:text-red-300"
           >
             <RefreshCw className="w-3.5 h-3.5" />
@@ -385,23 +384,23 @@ export default function SpecialDayDetailPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          
+
           {/* LEFT COLUMN: Cultural Details & Sacred Info */}
           <div className="lg:col-span-7 space-y-6">
-            
+
             {/* Main Aesthetic Banner Card */}
-            <div 
+            <div
               className="bg-stone-900/30 p-6 rounded-xl border border-stone-850 relative overflow-hidden transition-all duration-300"
-              style={{ 
+              style={{
                 borderColor: `${dynamicColor}25`,
                 background: `radial-gradient(circle at top right, ${dynamicColor}12, transparent 65%)`
               }}
             >
               <div className="flex items-start gap-4">
                 {/* Dynamically Shaped Emoji / Icon container */}
-                <div 
+                <div
                   className="w-16 h-16 flex items-center justify-center text-3xl select-none bg-stone-950/80 border shrink-0 shadow-lg"
-                  style={{ 
+                  style={{
                     borderRadius: resolvedShape,
                     borderColor: `${dynamicColor}45`,
                     boxShadow: `0 0 15px ${dynamicColor}20`
@@ -409,12 +408,12 @@ export default function SpecialDayDetailPage() {
                 >
                   {dynamicIcon}
                 </div>
-                
+
                 <div className="space-y-1">
                   <h1 className="text-2xl font-bold text-white tracking-tight">
                     {isTa ? selectedDay.name_ta : selectedDay.name_en}
                   </h1>
-                  
+
                   {/* Deity Display */}
                   {selectedDay.deity_en && (
                     <div className="flex items-center gap-1.5 text-stone-300 text-[13px]">
@@ -443,14 +442,13 @@ export default function SpecialDayDetailPage() {
                     </span>
                   </div>
                 </div>
-                
-                <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold select-none tracking-wide ${
-                  isFuture(selectedDay.date)
+
+                <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold select-none tracking-wide ${isFuture(selectedDay.date)
                     ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400'
                     : 'bg-stone-850 border border-stone-800 text-stone-500'
-                }`}>
-                  {isFuture(selectedDay.date) 
-                    ? (isTa ? 'வரவிருப்பது' : 'Upcoming') 
+                  }`}>
+                  {isFuture(selectedDay.date)
+                    ? (isTa ? 'வரவிருப்பது' : 'Upcoming')
                     : (isTa ? 'முடிந்தது' : 'Past')
                   }
                 </span>
@@ -462,14 +460,14 @@ export default function SpecialDayDetailPage() {
                   {isTa ? 'முக்கியத்துவம் & தத்துவம்' : 'Significance & Mythology'}
                 </h4>
                 <p className="text-stone-300 text-[13.5px] leading-relaxed italic">
-                  &ldquo;{isTa ? selectedDay.significance_ta : selectedDay.significance_en}&rdquo;
+                  "{isTa ? selectedDay.significance_ta : selectedDay.significance_en}"
                 </p>
               </div>
             </div>
 
             {/* Fasting & Auspicious Timings sub-grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              
+
               {/* Fasting Card */}
               <div className="bg-stone-900/30 p-5 rounded-lg border border-stone-850 space-y-3">
                 <div className="flex items-center justify-between">
@@ -477,27 +475,26 @@ export default function SpecialDayDetailPage() {
                     <Heart className="w-4 h-4 text-rose-400" />
                     {isTa ? 'விரதம் & உணவு' : 'Fasting Status'}
                   </h3>
-                  
-                  <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded ${
-                    selectedDay.fasting 
+
+                  <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded ${selectedDay.fasting
                       ? 'bg-rose-500/10 border border-rose-500/20 text-rose-400'
                       : 'bg-stone-800 text-stone-400'
-                  }`}>
-                    {selectedDay.fasting 
-                      ? (isTa ? 'உபவாசம் உண்டு' : 'Fasting Required') 
+                    }`}>
+                    {selectedDay.fasting
+                      ? (isTa ? 'உபவாசம் உண்டு' : 'Fasting Required')
                       : (isTa ? 'உபவாசம் இல்லை' : 'No Fasting')
                     }
                   </span>
                 </div>
-                
+
                 {selectedDay.fasting_rules_en ? (
                   <p className="text-stone-400 text-[12.5px] leading-relaxed">
                     {isTa ? selectedDay.fasting_rules_ta : selectedDay.fasting_rules_en}
                   </p>
                 ) : (
                   <p className="text-stone-500 text-[12.5px]">
-                    {isTa 
-                      ? 'இந்த நாளில் சிறப்பு விரதக் கட்டுப்பாடுகள் எதுவும் குறிக்கப்படவில்லை.' 
+                    {isTa
+                      ? 'இந்த நாளில் சிறப்பு விரதக் கட்டுப்பாடுகள் எதுவும் குறிக்கப்படவில்லை.'
                       : 'No specific dietary restrictions listed for this day.'
                     }
                   </p>
@@ -510,15 +507,15 @@ export default function SpecialDayDetailPage() {
                   <Clock className="w-4 h-4 text-amber-400" />
                   {isTa ? 'சுப முகூர்த்த நேரம்' : 'Auspicious Time'}
                 </h3>
-                
+
                 {selectedDay.auspicious_time_en ? (
                   <p className="text-stone-400 text-[12.5px] leading-relaxed">
                     {isTa ? selectedDay.auspicious_time_ta : selectedDay.auspicious_time_en}
                   </p>
                 ) : (
                   <p className="text-stone-500 text-[12.5px]">
-                    {isTa 
-                      ? 'பஞ்சாங்கத்தின்படி நாள் முழுவதும் பூஜைகளுக்கு உகந்தது.' 
+                    {isTa
+                      ? 'பஞ்சாங்கத்தின்படி நாள் முழுவதும் பூஜைகளுக்கு உகந்தது.'
                       : 'All hours generally auspicious for worship ceremonies.'
                     }
                   </p>
@@ -534,10 +531,10 @@ export default function SpecialDayDetailPage() {
                   <Gift className="w-4 h-4 text-emerald-400" />
                   {isTa ? 'நிவேதனப் பொருட்கள் (படையல்)' : 'Prasadam & Offerings'}
                 </h3>
-                
+
                 <div className="flex flex-wrap gap-2">
                   {selectedDay.offerings.map((item, idx) => (
-                    <span 
+                    <span
                       key={idx}
                       className="bg-stone-950/80 border border-stone-800/80 text-stone-300 text-[12px] px-3 py-1 rounded-md flex items-center gap-1.5 hover:border-stone-750 transition-colors"
                     >
@@ -551,7 +548,7 @@ export default function SpecialDayDetailPage() {
 
             {/* Mantra Card */}
             {selectedDay.mantra && selectedDay.mantra.text_ta && (
-              <div 
+              <div
                 className="bg-stone-950/40 p-5 rounded-lg border relative overflow-hidden transition-all duration-300 group hover:bg-stone-950/60"
                 style={{ borderColor: `${dynamicColor}20`, borderLeftWidth: '4px', borderLeftColor: dynamicColor }}
               >
@@ -561,7 +558,7 @@ export default function SpecialDayDetailPage() {
                       <Flame className="w-4 h-4 text-amber-500" />
                       {isTa ? 'மூல மந்திரம் / பாராயணம்' : 'Sacred Chant / Mantra'}
                     </h3>
-                    
+
                     <p className="text-xl font-bold text-white mt-3 select-all leading-normal tracking-wide">
                       {selectedDay.mantra.text_ta}
                     </p>
@@ -592,7 +589,7 @@ export default function SpecialDayDetailPage() {
 
             {/* Recommended Rituals & Practices & Avoid list */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              
+
               {/* Recommended Rituals */}
               {selectedDay.ritual_en && (
                 <div className="bg-stone-900/30 p-5 rounded-lg border border-stone-850 space-y-3">
@@ -628,10 +625,10 @@ export default function SpecialDayDetailPage() {
                   <MapPin className="w-4 h-4 text-rose-400 animate-pulse" />
                   {isTa ? 'வழிபாட்டுக்கு உகந்த முக்கிய ஸ்தலங்கள்' : 'Key Pilgrimage Temples'}
                 </h3>
-                
+
                 <div className="grid grid-cols-1 gap-3">
                   {selectedDay.key_temples.map((temple, idx) => (
-                    <div 
+                    <div
                       key={idx}
                       className="bg-stone-950/80 p-4 rounded-lg border border-stone-850/80 hover:border-stone-800 transition-colors space-y-1.5"
                     >
@@ -644,7 +641,7 @@ export default function SpecialDayDetailPage() {
                           {temple.location}
                         </span>
                       </div>
-                      
+
                       {temple.reason_en && (
                         <p className="text-stone-400 text-[12px] leading-relaxed">
                           {temple.reason_en}
@@ -660,7 +657,7 @@ export default function SpecialDayDetailPage() {
 
           {/* RIGHT COLUMN: Chronological Timeline Occurrence Calendar */}
           <div className="lg:col-span-5 space-y-4">
-            
+
             <div className="bg-stone-900/20 p-4 rounded-lg border border-stone-850">
               <h2 className="font-semibold text-white text-[14px] flex items-center gap-2 mb-4">
                 <Calendar className="w-4 h-4 text-stone-400" />
@@ -675,20 +672,19 @@ export default function SpecialDayDetailPage() {
                   const isUpcoming = isFuture(item.date)
                   const isSelected = selectedIndex === index
                   const { day, month } = formatDateBox(item.date)
-                  const formattedWeekday = isTa 
-                    ? (WEEKDAYS_TA[item.day_of_week] || item.day_of_week) 
+                  const formattedWeekday = isTa
+                    ? (WEEKDAYS_TA[item.day_of_week] || item.day_of_week)
                     : item.day_of_week
 
                   return (
                     <div
                       key={item.date + index}
                       onClick={() => setSelectedIndex(index)}
-                      className={`transition-all duration-200 border rounded-lg p-3.5 flex items-center justify-between gap-4 cursor-pointer hover:bg-stone-900/40 active:scale-95 animate-fade-up ${
-                        isSelected 
-                          ? 'bg-stone-900/60 shadow-md scale-[1.01]' 
+                      className={`transition-all duration-200 border rounded-lg p-3.5 flex items-center justify-between gap-4 cursor-pointer hover:bg-stone-900/40 active:scale-95 animate-fade-up ${isSelected
+                          ? 'bg-stone-900/60 shadow-md scale-[1.01]'
                           : 'bg-stone-900/10 border-stone-850/60'
-                      }`}
-                      style={{ 
+                        }`}
+                      style={{
                         animationDelay: `${index * 20}ms`,
                         animationFillMode: 'backwards',
                         borderColor: isSelected ? dynamicColor : 'rgba(44, 40, 36, 0.4)',
@@ -697,15 +693,15 @@ export default function SpecialDayDetailPage() {
                     >
                       <div className="flex items-center gap-3.5">
                         {/* Unique Category Shapes applied strictly to the Date Box */}
-                        <div 
+                        <div
                           className="bg-stone-950 border text-center flex flex-col items-center justify-center p-2 h-14 w-16 select-none shrink-0 transition-all duration-300"
-                          style={{ 
+                          style={{
                             borderRadius: resolvedShape,
                             borderColor: isSelected ? dynamicColor : `${dynamicColor}22`,
                             boxShadow: (isUpcoming || isSelected) ? `0 0 10px ${dynamicColor}15` : 'none'
                           }}
                         >
-                          <span 
+                          <span
                             className="block text-[9px] uppercase font-extrabold tracking-wider"
                             style={{ color: dynamicColor }}
                           >
@@ -715,7 +711,7 @@ export default function SpecialDayDetailPage() {
                             {day}
                           </span>
                         </div>
-                        
+
                         <div>
                           <h3 className="font-semibold text-white text-[14px]">
                             {isTa ? item.name_ta : item.name_en}
@@ -730,14 +726,14 @@ export default function SpecialDayDetailPage() {
                       {/* Status Indicator */}
                       <div className="flex items-center gap-2">
                         {isUpcoming && (
-                          <span 
+                          <span
                             className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] px-2 py-0.5 rounded font-medium select-none"
                           >
                             {isTa ? 'வரவிருப்பது' : 'Upcoming'}
                           </span>
                         )}
                         {isSelected && (
-                          <span 
+                          <span
                             className="w-2 h-2 rounded-full shrink-0 animate-ping"
                             style={{ backgroundColor: dynamicColor }}
                           />

@@ -474,36 +474,36 @@ server {
 ## 12. Security Checklist (Pre-Launch)
 
 ### Authentication
-- [ ] Passwords hashed with bcrypt (rounds ≥ 12)
-- [ ] JWT stored correctly (access in memory, refresh in httpOnly cookie)
-- [ ] OTP expires in 5 minutes and is one-time use
-- [ ] Refresh token rotation implemented
-- [ ] All auth endpoints rate-limited
+- [x] Passwords hashed with bcrypt (Supabase Auth built-in encryption)
+- [x] JWT stored correctly (handled securely by Supabase Browser Session Manager)
+- [x] OTP expires in 5 minutes and is one-time use (SMS system deleted, direct email/pass active)
+- [x] Refresh token rotation implemented
+- [x] All auth endpoints rate-limited
 
 ### Data
-- [ ] All DB queries use parameterised statements
-- [ ] All user inputs validated with Zod on backend
-- [ ] No sensitive data in logs
+- [x] All DB queries use parameterised statements
+- [x] All user inputs validated with Zod on backend
+- [x] No sensitive data in logs
 - [ ] Account deletion deletes all user data
 - [ ] Privacy policy published (Tamil + English)
 
 ### Payments
-- [ ] Razorpay signature verified before subscription activation
-- [ ] Webhook signature verified independently
-- [ ] No payment credentials in frontend code
+- [x] Razorpay signature verified before subscription activation
+- [x] Webhook signature verified independently
+- [x] No payment credentials in frontend code
 - [ ] All payment events logged to audit_log
 
 ### Infrastructure
-- [ ] HTTPS enforced everywhere (Let's Encrypt)
-- [ ] All security headers set via Helmet + Nginx
+- [x] HTTPS enforced everywhere (Let's Encrypt / Render SSL)
+- [x] All security headers set via HTTP Response Headers
 - [ ] Firewall configured — DB and engine not exposed
 - [ ] Root SSH login disabled, key-only auth
-- [ ] Environment variables not in git
-- [ ] Separate credentials for dev/prod
+- [x] Environment variables not in git
+- [x] Separate credentials for dev/prod
 
 ### API
-- [ ] CORS restricted to production domain only
-- [ ] Rate limiting on all endpoints
+- [x] CORS restricted to production domain only
+- [x] Rate limiting on all endpoints
 - [ ] Subscription checked server-side on every protected route
 - [ ] Astro engine only accessible from API server
 

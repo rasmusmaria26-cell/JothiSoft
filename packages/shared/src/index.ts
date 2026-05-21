@@ -4,7 +4,8 @@ export type Plan = 'FREE' | 'PRO' | 'PREMIUM'
 // ── User & Auth ───────────────────────────────────────────────────────────────
 export interface UserProfile {
   id: string
-  phone: string
+  email: string
+  phone?: string
   name: string | null
   plan: Plan
   planExpiry: string | null   // ISO datetime

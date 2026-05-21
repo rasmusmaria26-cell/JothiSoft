@@ -16,14 +16,14 @@ interface ManaiyadiResult {
 }
 
 const QUALITY_DETAILS: Record<string, { descEn: string; descTa: string; color: string; glow: string; bg: string }> = {
-  Dhana:   { descEn: 'Wealth & Prosperity — excellent for the main structure.',   descTa: 'தனம் மற்றும் செழிப்பு — கட்டுமானத்திற்கு சிறந்தது.',   color: '#f4c532', glow: 'rgba(244, 197, 50, 0.25)', bg: 'rgba(244, 197, 50, 0.10)' },
-  Dhanya:  { descEn: 'Abundance of Food — auspicious for household prosperity.',  descTa: 'தான்ய வளம் — குடும்ப செழிப்பிற்கு சுபம்.',                color: '#4ade80', glow: 'rgba(74, 222, 128, 0.25)', bg: 'rgba(74, 222, 128, 0.10)' },
-  Jaya:    { descEn: 'Victory & Success — brings triumph to the inhabitants.',    descTa: 'ஜெயம் — குடியிருப்போருக்கு வெற்றி தரும்.',              color: '#60a5fa', glow: 'rgba(96, 165, 250, 0.25)', bg: 'rgba(96, 165, 250, 0.10)' },
-  Nasha:   { descEn: 'Destruction — avoid this dimension for main structures.',   descTa: 'நாசம் — கட்டுமானத்திற்கு உகந்ததல்ல.',                   color: '#f87171', glow: 'rgba(248, 113, 113, 0.25)', bg: 'rgba(248, 113, 113, 0.10)' },
-  Shubha:  { descEn: 'Auspicious — highly favorable for all construction.',       descTa: 'சுபம் — அனைத்து கட்டுமானங்களுக்கும் சிறந்தது.',         color: '#2aac8a', glow: 'rgba(42, 172, 138, 0.25)', bg: 'rgba(42, 172, 138, 0.10)' },
-  Papa:    { descEn: 'Inauspicious — bring negative energy to the inhabitants.',  descTa: 'பாபம் — குடியிருப்போருக்கு தீய பலன் தரும்.',            color: '#f97316', glow: 'rgba(249, 115, 22, 0.25)',  bg: 'rgba(249, 115, 22, 0.10)'  },
-  Mrutyu:  { descEn: 'Death — strongly inauspicious, must be avoided.',          descTa: 'மிருத்யு — மிகவும் அசுபம், தவிர்க்கவும்.',              color: '#e11d48', glow: 'rgba(225, 29, 72, 0.25)',  bg: 'rgba(225, 29, 72, 0.10)'   },
-  Agni:    { descEn: 'Fire & Loss — risk of accidents and financial loss.',        descTa: 'அக்னி — விபத்து மற்றும் நஷ்டம் ஏற்படலாம்.',            color: '#fb923c', glow: 'rgba(251, 146, 60, 0.25)', bg: 'rgba(251, 146, 60, 0.10)'  },
+  Dhana: { descEn: 'Wealth & Prosperity — excellent for the main structure.', descTa: 'தனம் மற்றும் செழிப்பு — கட்டுமானத்திற்கு சிறந்தது.', color: '#f4c532', glow: 'rgba(244, 197, 50, 0.25)', bg: 'rgba(244, 197, 50, 0.10)' },
+  Dhanya: { descEn: 'Abundance of Food — auspicious for household prosperity.', descTa: 'தான்ய வளம் — குடும்ப செழிப்பிற்கு சுபம்.', color: '#4ade80', glow: 'rgba(74, 222, 128, 0.25)', bg: 'rgba(74, 222, 128, 0.10)' },
+  Jaya: { descEn: 'Victory & Success — brings triumph to the inhabitants.', descTa: 'ஜெயம் — குடியிருப்போருக்கு வெற்றி தரும்.', color: '#60a5fa', glow: 'rgba(96, 165, 250, 0.25)', bg: 'rgba(96, 165, 250, 0.10)' },
+  Nasha: { descEn: 'Destruction — avoid this dimension for main structures.', descTa: 'நாசம் — கட்டுமானத்திற்கு உகந்ததல்ல.', color: '#f87171', glow: 'rgba(248, 113, 113, 0.25)', bg: 'rgba(248, 113, 113, 0.10)' },
+  Shubha: { descEn: 'Auspicious — highly favorable for all construction.', descTa: 'சுபம் — அனைத்து கட்டுமானங்களுக்கும் சிறந்தது.', color: '#2aac8a', glow: 'rgba(42, 172, 138, 0.25)', bg: 'rgba(42, 172, 138, 0.10)' },
+  Papa: { descEn: 'Inauspicious — bring negative energy to the inhabitants.', descTa: 'பாபம் — குடியிருப்போருக்கு தீய பலன் தரும்.', color: '#f97316', glow: 'rgba(249, 115, 22, 0.25)', bg: 'rgba(249, 115, 22, 0.10)' },
+  Mrutyu: { descEn: 'Death — strongly inauspicious, must be avoided.', descTa: 'மிருத்யு — மிகவும் அசுபம், தவிர்க்கவும்.', color: '#e11d48', glow: 'rgba(225, 29, 72, 0.25)', bg: 'rgba(225, 29, 72, 0.10)' },
+  Agni: { descEn: 'Fire & Loss — risk of accidents and financial loss.', descTa: 'அக்னி — விபத்து மற்றும் நஷ்டம் ஏற்படலாம்.', color: '#fb923c', glow: 'rgba(251, 146, 60, 0.25)', bg: 'rgba(251, 146, 60, 0.10)' },
 }
 
 const REMAINDER_ORDER = ['Dhana', 'Dhanya', 'Jaya', 'Nasha', 'Shubha', 'Papa', 'Mrutyu', 'Agni']
@@ -35,7 +35,7 @@ const container = {
 
 const itemVariant = {
   hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 260, damping: 22 } }
+  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 22 } }
 }
 
 export default function ManaiyadiPage() {

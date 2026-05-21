@@ -10,7 +10,7 @@ export const useRazorpay = () => {
   const [status, setStatus] = useState<CheckoutStatus>('idle')
   const [error, setError] = useState<string | null>(null)
 
-  const startCheckout = async (plan: string, userPhone?: string) => {
+  const startCheckout = async (plan: string, userPhone?: string, userEmail?: string) => {
     setError(null)
     setStatus('creating')
 
@@ -39,7 +39,7 @@ export const useRazorpay = () => {
         order_id: orderData.id,
         name: 'JothiSoft PRO',
         description: 'Monthly PRO Subscription',
-        prefill: { contact: userPhone },
+        prefill: { contact: userPhone, email: userEmail },
         theme: { color: '#B8860B' }, // gold
 
         handler: async (response) => {
