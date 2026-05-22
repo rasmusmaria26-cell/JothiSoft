@@ -22,20 +22,53 @@ const otpCache = new Map<string, OtpEntry>();
  */
 router.post('/register', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, password, name, language = 'ta' } = req.body;
+    const { email, password, name, phone, language = 'ta' } = req.body;
 
-    if (!email || !password) {
+    if (!email || !password || !phone) {
       res.status(400).json({
         success: false,
         error: 'VALIDATION_ERROR',
-        message: 'மின்னஞ்சல் மற்றும் கடவுச்சொல் தேவை · Email and password are required',
+        message: 'மின்னஞ்சல், கடவுச்சொல் மற்றும் தொலைபேசி எண் தேவை · Email, password, and phone number are required',
       });
       return;
     }
 
     const cleanEmail = email.trim().toLowerCase();
+    const cleanPhone = phone.trim().replace(/\s+/g, '');
 
-    // Check if user already exists in public.users to avoid duplicating
+    // 1. Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(cleanEmail)) {
+      res.status(400).json({
+        success: false,
+        error: 'VALIDATION_ERROR',
+        message: 'செல்லுபடியாகும் மின்னஞ்சல் தேவை · Valid email is required',
+      });
+      return;
+    }
+
+    // 2. Password length validation
+    if (password.length < 6) {
+      res.status(400).json({
+        success: false,
+        error: 'VALIDATION_ERROR',
+        message: 'கடவுச்சொல் குறைந்தது 6 எழுத்துகள் இருக்க வேண்டும் · Password must be at least 6 characters',
+      });
+      return;
+    }
+
+    // 3. Phone number format validation (E.164-like pattern: 7-15 digits, optional + prefix)
+    const phoneRegex = /^\+?[0-9]{7,15}$/;
+    if (!phoneRegex.test(cleanPhone)) {
+      res.status(400).json({
+        success: false,
+        error: 'VALIDATION_ERROR',
+        message: 'செல்லுபடியாகும் தொலைபேசி எண் தேவை · Valid phone number is required (7-15 digits)',
+      });
+      return;
+    }
+
+    // Check if email already exists in public.users to avoid duplicating
     const { data: existingUser } = await supabaseAdmin
       .from('users')
       .select('id')
@@ -51,11 +84,29 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    // Check if phone already exists in public.users to avoid duplicating
+    const { data: existingPhone } = await supabaseAdmin
+      .from('users')
+      .select('id')
+      .eq('phone', cleanPhone)
+      .maybeSingle();
+
+    if (existingPhone) {
+      res.status(400).json({
+        success: false,
+        error: 'PHONE_EXISTS',
+        message: 'தொலைபேசி எண் ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது · Phone number already registered',
+      });
+      return;
+    }
+
     // 1. Create user in auth.users using Admin API (with email_confirm: true for seamless dev/prod testing)
     const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email: cleanEmail,
       password,
+      phone: cleanPhone,
       email_confirm: true, // Set to false here when standard SMTP is fully connected in production!
+      phone_confirm: true,
       user_metadata: { name, language, plan: 'FREE', plan_expires_at: null }
     });
 
@@ -68,10 +119,10 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // 2. Update public.users profile (the trigger handles insertion, we make sure name/email are synced)
+    // 2. Update public.users profile (the trigger handles insertion, we make sure name/email/phone are synced)
     const { error: profileError } = await supabaseAdmin
       .from('users')
-      .update({ name, language, email: cleanEmail })
+      .update({ name, language, email: cleanEmail, phone: cleanPhone })
       .eq('id', authUser.user.id);
 
     if (profileError) {
