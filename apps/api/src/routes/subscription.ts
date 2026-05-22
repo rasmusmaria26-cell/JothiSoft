@@ -155,11 +155,20 @@ router.post('/verify', authenticate, async (req: Request, res: Response): Promis
         .update(body)
         .digest('hex');
 
-      // Use timingSafeEqual to prevent timing attacks
-      const isVerified = timingSafeEqual(
-        Buffer.from(expected),
-        Buffer.from(razorpay_signature)
-      );
+      // Use timingSafeEqual to prevent timing attacks after verifying identical lengths
+      const expectedBuffer = Buffer.from(expected);
+      const signatureBuffer = Buffer.from(razorpay_signature);
+
+      if (expectedBuffer.length !== signatureBuffer.length) {
+        res.status(400).json({
+          success: false,
+          error: 'SIGNATURE_VERIFICATION_FAILED',
+          message: 'Payment verification failed: Invalid signature length',
+        });
+        return;
+      }
+
+      const isVerified = timingSafeEqual(expectedBuffer, signatureBuffer);
 
       if (!isVerified) {
         res.status(400).json({

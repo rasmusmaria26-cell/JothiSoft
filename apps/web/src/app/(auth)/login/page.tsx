@@ -9,6 +9,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
   const [isRegister, setIsRegister] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -28,8 +29,8 @@ export default function LoginPage() {
 
     try {
       if (isRegister) {
-        // Direct Registration Flow with email + password
-        const body = { email: cleanEmail, password, name, language: 'ta' }
+        // Direct Registration Flow with email + password + phone
+        const body = { email: cleanEmail, password, name, phone: phone.trim(), language: 'ta' }
 
         const res = await fetch(`${apiUrl}/auth/register`, {
           method: 'POST',
@@ -222,24 +223,45 @@ export default function LoginPage() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             {isRegister && (
-              <div className="space-y-1.5">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-amber-500/80">
-                  பெயர் · Full Name
-                </label>
-                <div className="relative group">
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="எ.கா. இராமன்"
-                    required
-                    className="w-full bg-slate-950/60 px-4 py-3 pl-10 text-sm rounded-lg border border-white/10 outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-white placeholder-white/30"
-                  />
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 text-base pointer-events-none group-focus-within:text-amber-500/70 transition-colors">
-                    ✦
-                  </span>
+              <>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-amber-500/80">
+                    பெயர் · Full Name
+                  </label>
+                  <div className="relative group">
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="எ.கா. இராமன்"
+                      required
+                      className="w-full bg-slate-950/60 px-4 py-3 pl-10 text-sm rounded-lg border border-white/10 outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-white placeholder-white/30"
+                    />
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 text-base pointer-events-none group-focus-within:text-amber-500/70 transition-colors">
+                      ✦
+                    </span>
+                  </div>
                 </div>
-              </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-amber-500/80">
+                    தொலைபேசி எண் · Phone Number
+                  </label>
+                  <div className="relative group">
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="எ.கா. 917010379334"
+                      required={isRegister}
+                      className="w-full bg-slate-950/60 px-4 py-3 pl-10 text-sm rounded-lg border border-white/10 outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-white placeholder-white/30"
+                    />
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 text-sm pointer-events-none group-focus-within:text-amber-500/70 transition-colors">
+                      📞
+                    </span>
+                  </div>
+                </div>
+              </>
             )}
 
             <div className="space-y-1.5">
@@ -295,7 +317,7 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              disabled={loading || !email || password.length < 6 || (isRegister && !name)}
+              disabled={loading || !email || password.length < 6 || (isRegister && (!name || !phone))}
               className="w-full py-3.5 mt-2 rounded-lg font-bold text-sm relative overflow-hidden transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:scale-[1.01] active:scale-[0.98] select-none"
               style={{
                 background: 'linear-gradient(135deg, #fcd34d 0%, #d4af37 50%, #b8860b 100%)',
