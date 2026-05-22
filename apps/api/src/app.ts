@@ -39,7 +39,7 @@ app.use((req, res, next) => {
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.jothisoft.com; frame-src https://api.razorpay.com");
+  res.setHeader('Content-Security-Policy', "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.jothisoft.com;");
   next();
 });
 
@@ -66,6 +66,7 @@ import subscriptionRouter from './routes/subscription';
 import profileRouter from './routes/profile';
 import prasnamRouter from './routes/prasnam';
 import citiesRouter from './routes/cities';
+import adminRouter from './routes/admin';
 import { computeSpecialDaysForYear } from './services/specialdays.service';
 
 // Register Routes
@@ -81,6 +82,7 @@ app.use('/api/vastu', vastuRouter);
 app.use('/api/special-days', specialDaysRouter);
 app.use('/api/prasnam', prasnamRouter);
 app.use('/api/cities', citiesRouter);
+app.use('/api/admin', adminRouter);
 
 // Global Error Handler (must be the last middleware)
 app.use(errorHandler);

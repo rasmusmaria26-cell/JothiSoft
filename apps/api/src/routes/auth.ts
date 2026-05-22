@@ -1,8 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { supabaseAdmin } from '../lib/supabase';
 import { authenticate } from '../middleware/auth';
-import { apiLimiter } from '../middleware/rateLimit';
-import { sendOtpSms } from '../services/sms.service';
+import { apiLimiter, authLimiter } from '../middleware/rateLimit';
 
 const router = Router();
 router.use(apiLimiter);
@@ -20,7 +19,7 @@ const otpCache = new Map<string, OtpEntry>();
  * Step 1: If 'otp' is missing, generate and log a verification code, returning otp_sent = true.
  * Step 2: If 'otp' is provided, verify the code and create the user account in Supabase.
  */
-router.post('/register', async (req: Request, res: Response): Promise<void> => {
+router.post('/register', authLimiter, async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password, name, phone, language = 'ta' } = req.body;
 
@@ -48,11 +47,12 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
     }
 
     // 2. Password length validation
-    if (password.length < 6) {
+    const hasNumber = /\d/.test(password);
+    if (password.length < 8 || !hasNumber) {
       res.status(400).json({
         success: false,
         error: 'VALIDATION_ERROR',
-        message: 'கடவுச்சொல் குறைந்தது 6 எழுத்துகள் இருக்க வேண்டும் · Password must be at least 6 characters',
+        message: 'கடவுச்சொல் குறைந்தது 8 எழுத்துகள் மற்றும் ஒரு எண் கொண்டிருக்க வேண்டும் · Password must be at least 8 characters and contain at least one number',
       });
       return;
     }
@@ -100,6 +100,8 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    const trialExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
     // 1. Create user in auth.users using Admin API (with email_confirm: true for seamless dev/prod testing)
     const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email: cleanEmail,
@@ -107,7 +109,13 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
       phone: cleanPhone,
       email_confirm: true, // Set to false here when standard SMTP is fully connected in production!
       phone_confirm: true,
-      user_metadata: { name, language, plan: 'FREE', plan_expires_at: null }
+      user_metadata: {
+        name,
+        language,
+        plan: 'FREE',
+        plan_expires_at: null,
+        trial_expires_at: trialExpiresAt,
+      }
     });
 
     if (authError || !authUser.user) {
@@ -150,23 +158,45 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
  * POST /api/auth/login
  * Signs in user with email and password, returning JWT access and refresh tokens.
  */
-router.post('/login', async (req: Request, res: Response): Promise<void> => {
+router.post('/login', authLimiter, async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, password } = req.body;
+    const { emailOrPhone, email, password } = req.body;
+    const inputVal = (emailOrPhone || email || '').trim();
 
-    if (!email || !password) {
+    if (!inputVal || !password) {
       res.status(400).json({
         success: false,
         error: 'VALIDATION_ERROR',
-        message: 'மின்னஞ்சல் மற்றும் கடவுச்சொல் தேவை · Email and password are required',
+        message: 'மின்னஞ்சல்/தொலைபேசி மற்றும் கடவுச்சொல் தேவை · Email/Phone and password are required',
       });
       return;
     }
 
-    const cleanEmail = email.trim().toLowerCase();
+    let emailToAuth = inputVal.toLowerCase();
+
+    // Check if input is a phone number (e.g. only digits with optional leading +)
+    if (/^\+?[0-9]{7,15}$/.test(inputVal.replace(/\s+/g, ''))) {
+      const cleanPhone = inputVal.replace(/\s+/g, '');
+      const { data: userProfile } = await supabaseAdmin
+        .from('users')
+        .select('email')
+        .eq('phone', cleanPhone)
+        .maybeSingle();
+
+      if (userProfile && userProfile.email) {
+        emailToAuth = userProfile.email;
+      } else {
+        res.status(404).json({
+          success: false,
+          error: 'PHONE_NOT_REGISTERED',
+          message: 'இந்த தொலைபேசி எண் இன்னும் பதிவு செய்யப்படவில்லை · This phone number is not registered yet',
+        });
+        return;
+      }
+    }
 
     const { data: session, error } = await supabaseAdmin.auth.signInWithPassword({
-      email: cleanEmail,
+      email: emailToAuth,
       password,
     });
 
@@ -174,9 +204,34 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
       res.status(401).json({
         success: false,
         error: 'INVALID_CREDENTIALS',
-        message: error?.message || 'மின்னஞ்சல் அல்லது கடவுச்சொல் தவறானது · Invalid email or password',
+        message: error?.message || 'உள்நுழைவு விவரங்கள் தவறானவை · Invalid login credentials',
       });
       return;
+    }
+
+    // Check admin status
+    const adminEmailsEnv = process.env.ADMIN_EMAILS || '';
+    const adminEmails = adminEmailsEnv
+      .split(',')
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean);
+
+    const { data: dbUser } = await supabaseAdmin
+      .from('users')
+      .select('is_admin')
+      .eq('id', session.user.id)
+      .maybeSingle();
+
+    const isAdmin = (session.user.email && adminEmails.includes(session.user.email.toLowerCase())) || !!dbUser?.is_admin;
+
+    // Sync is_admin metadata in auth.users if it differs
+    if (session.user.user_metadata?.is_admin !== isAdmin) {
+      await supabaseAdmin.auth.admin.updateUserById(session.user.id, {
+        user_metadata: {
+          ...session.user.user_metadata,
+          is_admin: isAdmin,
+        },
+      });
     }
 
     res.json({
@@ -185,6 +240,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
         access_token: session.session.access_token,
         refresh_token: session.session.refresh_token,
         expires_at: session.session.expires_at,
+        is_admin: isAdmin,
         user: {
           id: session.user.id,
           email: session.user.email,

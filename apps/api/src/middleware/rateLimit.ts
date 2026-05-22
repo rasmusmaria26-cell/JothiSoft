@@ -25,3 +25,17 @@ export const calcLimiter = rateLimit({
     message: 'Calculation limit reached. Please wait before requesting more charts.',
   },
 });
+
+// Stricter rate limiter for authentication endpoints (login and register)
+export const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // Limit each IP to 10 authentication requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    error: 'TOO_MANY_AUTH_ATTEMPTS',
+    message: 'Too many authentication attempts from this IP. Please try again after 15 minutes.',
+  },
+});
+

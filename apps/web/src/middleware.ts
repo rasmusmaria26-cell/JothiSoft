@@ -1,7 +1,18 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PRO_ROUTES = ['/horoscope', '/kp', '/matching/chart', '/matching/mangal', '/numerology', '/panchangam/muhurtham', '/panchangam/monthly']
+const PRO_ROUTES = [
+  '/horoscope',
+  '/kp',
+  '/matching',
+  '/numerology',
+  '/panchangam/muhurtham',
+  '/panchangam/monthly',
+  '/special',
+  '/vastu',
+  '/prasnam',
+  '/baby-names'
+]
 const AUTH_ROUTES = ['/login', '/otp']
 
 export async function middleware(request: NextRequest) {
@@ -25,25 +36,76 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  // 1. Unauthenticated → redirect to login (except auth routes and static assets)
+  // 1. Unauthenticated → redirect to login (except auth routes, upgrade, and static assets)
   const isAuthRoute = AUTH_ROUTES.some((r) => pathname.startsWith(r))
-  if (!user && !isAuthRoute) {
+  const isUpgradeRoute = pathname.startsWith('/upgrade')
+  if (!user && !isAuthRoute && !isUpgradeRoute) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
   // 2. Authenticated + auth route → redirect to dashboard home (panchangam)
   if (user && isAuthRoute) {
+    const meta = user.user_metadata ?? {}
+    const adminEmailsEnv = process.env.ADMIN_EMAILS || ''
+    const adminEmails = adminEmailsEnv
+      .split(',')
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean)
+    const isBootstrapAdmin = user.email && adminEmails.includes(user.email.toLowerCase())
+    const isAdmin = meta.is_admin === true || isBootstrapAdmin
+
+    if (isAdmin) {
+      return NextResponse.redirect(new URL('/admin', request.url))
+    }
     return NextResponse.redirect(new URL('/panchangam', request.url))
   }
 
-  // 3. PRO gate — read from user_metadata, no network calls
+  // 3. Admin space security: Only admins can access /admin
+  if (pathname.startsWith('/admin')) {
+    if (!user) {
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
+    const meta = user.user_metadata ?? {}
+    const adminEmailsEnv = process.env.ADMIN_EMAILS || ''
+    const adminEmails = adminEmailsEnv
+      .split(',')
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean)
+    const isBootstrapAdmin = user.email && adminEmails.includes(user.email.toLowerCase())
+    const isAdmin = meta.is_admin === true || isBootstrapAdmin
+
+    if (!isAdmin) {
+      return NextResponse.redirect(new URL('/panchangam', request.url))
+    }
+  }
+
+  // 4. PRO gate — read from user_metadata, no network calls
   const isProRoute = PRO_ROUTES.some((r) => pathname.startsWith(r))
   if (isProRoute && user) {
     const meta = user.user_metadata ?? {}
     const plan = meta.plan as string | undefined
     const expiresAt = meta.plan_expires_at ? new Date(meta.plan_expires_at) : null
-    // Temporarily treat all authenticated users as having an active Pro plan for testing
-    const isProActive = true; // plan === 'PRO' && expiresAt && expiresAt > new Date()
+    
+    // Fallback: If trial_expires_at is missing in metadata, calculate from account creation
+    const createdAt = user.created_at ? new Date(user.created_at) : new Date()
+    const trialExpiresAt = meta.trial_expires_at 
+      ? new Date(meta.trial_expires_at) 
+      : new Date(createdAt.getTime() + 24 * 60 * 60 * 1000)
+    
+    const adminEmailsEnv = process.env.ADMIN_EMAILS || ''
+    const adminEmails = adminEmailsEnv
+      .split(',')
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean)
+    const isBootstrapAdmin = user.email && adminEmails.includes(user.email.toLowerCase())
+    const isAdmin = meta.is_admin === true || isBootstrapAdmin
+
+    const now = new Date()
+    const isProActive =
+      isAdmin ||
+      (plan === 'PRO' && expiresAt && expiresAt > now) ||
+      (plan === 'FREE' && trialExpiresAt && trialExpiresAt > now) ||
+      (!plan && trialExpiresAt && trialExpiresAt > now)
 
     if (!isProActive) {
       return NextResponse.redirect(new URL('/upgrade', request.url))

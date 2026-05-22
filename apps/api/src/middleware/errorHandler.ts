@@ -38,9 +38,14 @@ export const errorHandler = (
   }
 
   // General server error
-  res.status(err.status || 500).json({
+  const isProd = process.env.NODE_ENV === 'production';
+  const status = err.status || 500;
+
+  res.status(status).json({
     success: false,
     error: err.code || 'INTERNAL_SERVER_ERROR',
-    message: err.message || 'An unexpected error occurred'
+    message: isProd && status === 500
+      ? 'உள் சேவையக பிழை ஏற்பட்டது · An unexpected server error occurred'
+      : (err.message || 'An unexpected error occurred')
   });
 };

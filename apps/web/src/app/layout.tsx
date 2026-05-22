@@ -32,10 +32,6 @@ export default function RootLayout({
       <body className="font-sans antialiased selection:bg-gold-deep selection:text-text-inverse">
         {children}
         <ToastContainer />
-        <Script
-          src="https://checkout.razorpay.com/v1/checkout.js"
-          strategy="lazyOnload"
-        />
       </body>
     </html>
   );

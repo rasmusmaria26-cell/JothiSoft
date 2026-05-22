@@ -48,11 +48,11 @@ export default function LoginPage() {
         setIsRegister(false)
         setLoading(false)
       } else {
-        // Login Flow with email + password
+        // Login Flow with emailOrPhone + password
         const res = await fetch(`${apiUrl}/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: cleanEmail, password }),
+          body: JSON.stringify({ emailOrPhone: cleanEmail, password }),
         })
 
         const result = await res.json()
@@ -61,7 +61,7 @@ export default function LoginPage() {
           throw new Error(result.message || 'Invalid credentials')
         }
 
-        const { access_token, refresh_token } = result.data
+        const { access_token, refresh_token, is_admin } = result.data
         
         // Hydrate Supabase browser session
         const { error: sessionError } = await supabase.auth.setSession({
@@ -73,7 +73,11 @@ export default function LoginPage() {
           throw new Error(sessionError.message)
         }
 
-        router.push('/')
+        if (is_admin) {
+          router.push('/admin')
+        } else {
+          router.push('/')
+        }
       }
     } catch (err: any) {
       setError(err.message || 'An unexpected error occurred')
@@ -266,14 +270,20 @@ export default function LoginPage() {
 
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold uppercase tracking-wider text-amber-500/80">
-                மின்னஞ்சல் முகவரி · Email Address
+                {!isRegister
+                  ? 'மின்னஞ்சல் அல்லது தொலைபேசி எண் · Email or Phone Number'
+                  : 'மின்னஞ்சல் முகவரி · Email Address'}
               </label>
               <div className="relative group">
                 <input
-                  type="email"
+                  type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
+                  placeholder={
+                    !isRegister
+                      ? 'மின்னஞ்சல் அல்லது தொலைபேசி எண் · Email or Phone Number'
+                      : 'name@example.com'
+                  }
                   required
                   className="w-full bg-slate-950/60 px-4 py-3 pl-10 text-sm rounded-lg border border-white/10 outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-white placeholder-white/30"
                 />
