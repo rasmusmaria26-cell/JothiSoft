@@ -46,6 +46,16 @@ const YOGAS_TA = [
   'சித்தம்', 'சாத்தியம்', 'சுபம்', 'சுக்கிலம்', 'பிரம்மம்', 'இந்திரம்', 'வைதிருதி'
 ];
 
+const KARANAS = [
+  'Bava', 'Balava', 'Kaulava', 'Taitila', 'Gara', 'Vanija', 'Vishti',
+  'Shakuni', 'Chatushpada', 'Naga', 'Kintughna'
+];
+
+const KARANAS_TA = [
+  'பவம்', 'பாலவம்', 'கௌலவம்', 'சைதிலம்', 'கரசை', 'வணிசை', 'பத்திரை',
+  'சகுனி', 'சதுஷ்பாதம்', 'நாகவம்', 'கிம்ஸ்துக்னம்'
+];
+
 /**
  * Get approximate Sidereal longitudes for Sun and Moon for a given time
  */
@@ -84,6 +94,37 @@ export const getLocalPanchangam = (date: Date) => {
   const yogaValue = (moonSidereal + sunSidereal) / (360 / 27);
   const yogaIndex = Math.floor(yogaValue) % 27;
 
+  // 4. Calculate Karana
+  const karanaValue = Math.floor(tithiValue * 2);
+  let karanaIndex = 0;
+  let karanaName = '';
+  let karanaNameTa = '';
+
+  if (karanaValue === 0) {
+    karanaName = 'Kintughna';
+    karanaNameTa = 'கிம்ஸ்துக்னம்';
+    karanaIndex = 11;
+  } else if (karanaValue >= 57) {
+    if (karanaValue === 57) {
+      karanaName = 'Shakuni';
+      karanaNameTa = 'சகுனி';
+      karanaIndex = 8;
+    } else if (karanaValue === 58) {
+      karanaName = 'Chatushpada';
+      karanaNameTa = 'சதுஷ்பாதம்';
+      karanaIndex = 9;
+    } else {
+      karanaName = 'Naga';
+      karanaNameTa = 'நாகவம்';
+      karanaIndex = 10;
+    }
+  } else {
+    const movableIndex = (karanaValue - 1) % 7;
+    karanaName = KARANAS[movableIndex];
+    karanaNameTa = KARANAS_TA[movableIndex];
+    karanaIndex = movableIndex + 1;
+  }
+
   return {
     tithi: {
       index: tithiIndex + 1, // 1-indexed for some APIs
@@ -101,6 +142,11 @@ export const getLocalPanchangam = (date: Date) => {
       index: yogaIndex + 1,
       name: YOGAS[yogaIndex],
       name_ta: YOGAS_TA[yogaIndex]
+    },
+    karana: {
+      index: karanaIndex,
+      name: karanaName,
+      name_ta: karanaNameTa
     }
   };
 };

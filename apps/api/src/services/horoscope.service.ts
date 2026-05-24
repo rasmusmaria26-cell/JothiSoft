@@ -1,5 +1,6 @@
 import { cachedProkeralaFetch } from '../lib/prokerala';
 import { formatDatetime, formatCoordinates } from '../lib/utils';
+import { getLocalPanchangam } from './localPanchangam.service';
 
 export interface PlanetData {
   planet: string;
@@ -38,6 +39,32 @@ export interface HoroscopeResponse {
   rasi_chart: HoroscopeChart;
   navamsam_chart: HoroscopeChart;
   predictions: PredictionData;
+  dasha_balance?: {
+    years: number;
+    months: number;
+    days: number;
+    lord: string;
+    lagna_degree: number;
+  };
+  current_dasha?: {
+    mahadasha: string;
+    antardasha: string;
+    antardasha_end: string;
+  };
+  panchangam?: {
+    tithi: {
+      name: string;
+      name_ta: string;
+    };
+    yoga: {
+      name: string;
+      name_ta: string;
+    };
+    karana: {
+      name: string;
+      name_ta: string;
+    };
+  };
 }
 
 const ZODIAC_SIGNS = [
@@ -220,6 +247,42 @@ export const calculateHoroscope = async (
     }
   };
 
+  // Moon node raw longitude for Vimshottari Dasha calculation
+  const rawMoon = rawPlanets.find((p: any) => standardizePlanetName(p.name || p.planet) === 'Moon');
+  const moonLongitude = rawMoon ? rawMoon.longitude : 0;
+
+  // Calculate dasha balance at birth
+  const nakshatraSpan = 360 / 27; // 13.33333 degrees
+  const nakshatraIndex = Math.floor(moonLongitude / nakshatraSpan) % 27;
+  const startingLordIndex = nakshatraIndex % 9;
+  const startingDasaLord = DASA_LORDS[startingLordIndex];
+  
+  const positionInNakshatra = moonLongitude - (nakshatraIndex * nakshatraSpan);
+  const fractionElapsed = positionInNakshatra / nakshatraSpan;
+  
+  const startingDasaYears = DASA_YEARS[startingDasaLord];
+  const remainingYears = (1 - fractionElapsed) * startingDasaYears;
+
+  const balanceYears = Math.floor(remainingYears);
+  const balanceMonthsFraction = (remainingYears - balanceYears) * 12;
+  const balanceMonths = Math.floor(balanceMonthsFraction);
+  const balanceDays = Math.floor((balanceMonthsFraction - balanceMonths) * 30);
+
+  // Calculate current active dasha
+  const dashaResult = calculateVimshottariDasha(date, moonLongitude);
+  const formatDateToDDMMYYYY = (dateStr: string): string => {
+    if (!dateStr) return '—';
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return dateStr;
+  };
+
+  // Calculate local panchangam (Tithi, Yoga, Karana)
+  const birthDateObj = new Date(datetime);
+  const localPanchangam = getLocalPanchangam(birthDateObj);
+
   return {
     lagna: {
       sign: lagnaSign,
@@ -230,7 +293,33 @@ export const calculateHoroscope = async (
     planets: mappedPlanets,
     rasi_chart,
     navamsam_chart,
-    predictions
+    predictions,
+    dasha_balance: {
+      years: balanceYears,
+      months: balanceMonths,
+      days: balanceDays,
+      lord: startingDasaLord,
+      lagna_degree: lagnaDegree
+    },
+    current_dasha: {
+      mahadasha: dashaResult.current.dasha,
+      antardasha: dashaResult.current.bhukti,
+      antardasha_end: formatDateToDDMMYYYY(dashaResult.current.ends_at)
+    },
+    panchangam: {
+      tithi: {
+        name: localPanchangam.tithi.name,
+        name_ta: localPanchangam.tithi.name_ta
+      },
+      yoga: {
+        name: localPanchangam.yoga.name,
+        name_ta: localPanchangam.yoga.name_ta
+      },
+      karana: {
+        name: localPanchangam.karana.name,
+        name_ta: localPanchangam.karana.name_ta
+      }
+    }
   };
 };
 

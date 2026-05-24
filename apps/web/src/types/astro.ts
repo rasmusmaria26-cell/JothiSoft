@@ -37,6 +37,32 @@ export interface HoroscopeResponse {
   rasi_chart: HoroscopeChart;
   navamsam_chart: HoroscopeChart;
   predictions: PredictionData;
+  dasha_balance?: {
+    years: number;
+    months: number;
+    days: number;
+    lord: string;
+    lagna_degree: number;
+  };
+  current_dasha?: {
+    mahadasha: string;
+    antardasha: string;
+    antardasha_end: string;
+  };
+  panchangam?: {
+    tithi: {
+      name: string;
+      name_ta: string;
+    };
+    yoga: {
+      name: string;
+      name_ta: string;
+    };
+    karana: {
+      name: string;
+      name_ta: string;
+    };
+  };
 }
 
 export interface DashaPeriod {

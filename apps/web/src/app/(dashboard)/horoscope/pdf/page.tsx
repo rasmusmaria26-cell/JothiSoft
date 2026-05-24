@@ -15,6 +15,8 @@ export default function HoroscopePdfPage() {
 
   // Form State
   const [name, setName] = useState('')
+  const [fatherName, setFatherName] = useState('')
+  const [motherName, setMotherName] = useState('')
   const [dob, setDob] = useState('')
   const [tob, setTob] = useState('')
   const [selectedCity, setSelectedCity] = useState<CityData | null>(null)
@@ -33,6 +35,10 @@ export default function HoroscopePdfPage() {
       formTitle: 'பிறப்பு விவரங்கள்',
       name: 'முழு பெயர்',
       namePlaceholder: 'எ.கா. காவ்யா',
+      fatherName: 'தந்தை பெயர்',
+      fatherPlaceholder: 'எ.கா. ராமச்சந்திரன்',
+      motherName: 'தாய் பெயர்',
+      motherPlaceholder: 'எ.கா. சரஸ்வதி',
       dob: 'பிறந்த தேதி',
       tob: 'பிறந்த நேரம்',
       place: 'பிறந்த இடம்',
@@ -49,6 +55,10 @@ export default function HoroscopePdfPage() {
       formTitle: 'Birth Details',
       name: 'Full Name',
       namePlaceholder: 'e.g. Kavya',
+      fatherName: "Father's Name",
+      fatherPlaceholder: 'e.g. Ramachandran',
+      motherName: "Mother's Name",
+      motherPlaceholder: 'e.g. Saraswathi',
       dob: 'Date of Birth',
       tob: 'Time of Birth',
       place: 'Birth Place',
@@ -174,6 +184,34 @@ export default function HoroscopePdfPage() {
                   </div>
                 </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-medium text-text-primary ml-1">
+                      {t.fatherName}
+                    </label>
+                    <input 
+                      type="text"
+                      value={fatherName}
+                      onChange={(e) => setFatherName(e.target.value)}
+                      placeholder={t.fatherPlaceholder}
+                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-medium text-text-primary ml-1">
+                      {t.motherName}
+                    </label>
+                    <input 
+                      type="text"
+                      value={motherName}
+                      onChange={(e) => setMotherName(e.target.value)}
+                      placeholder={t.motherPlaceholder}
+                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
+                    />
+                  </div>
+                </div>
+
                 {/* Language Toggle */}
                 <div className="flex flex-col gap-2 mt-2">
                   <label className="text-sm font-medium text-text-primary ml-1">
@@ -288,7 +326,23 @@ export default function HoroscopePdfPage() {
               {horoscopeData && (
                 <SanjeeviReport 
                   data={horoscopeData} 
-                  profile={{ name, dob, tob, place: selectedCity?.name || 'Unknown' }} 
+                  profile={{ 
+                    name, 
+                    dob, 
+                    tob, 
+                    place: selectedCity?.name || 'Unknown',
+                    fatherName: fatherName || undefined,
+                    motherName: motherName || undefined,
+                    tithi: reportLanguage === 'ta' 
+                      ? horoscopeData.panchangam?.tithi.name_ta 
+                      : horoscopeData.panchangam?.tithi.name,
+                    yoga: reportLanguage === 'ta' 
+                      ? horoscopeData.panchangam?.yoga.name_ta 
+                      : horoscopeData.panchangam?.yoga.name,
+                    karana: reportLanguage === 'ta' 
+                      ? horoscopeData.panchangam?.karana.name_ta 
+                      : horoscopeData.panchangam?.karana.name
+                  }} 
                   language={reportLanguage}
                 />
               )}
