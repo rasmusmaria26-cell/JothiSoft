@@ -13,6 +13,7 @@ export default function AdminLayout({
   const pathname = usePathname()
   const router = useRouter()
   const { logout, user, loading } = useAuth()
+  const [sidebarOpen, setSidebarOpen] = React.useState(false)
 
   const handleLogout = async () => {
     await logout()
@@ -40,16 +41,26 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen text-white" style={{ background: 'var(--bg-page)' }}>
+    <div className="flex min-h-screen text-white relative overflow-hidden" style={{ background: 'var(--bg-page)' }}>
+      {/* Mobile Sidebar Backdrop Overlay */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 z-30 md:hidden transition-opacity duration-300"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside
-        className="w-64 border-r flex flex-col justify-between shrink-0"
+        className={`fixed inset-y-0 left-0 z-40 w-64 border-r flex flex-col justify-between shrink-0 transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
         style={{ background: 'var(--bg-card)', borderColor: 'var(--bg-border)' }}
       >
         <div className="flex flex-col">
           {/* Header */}
           <div className="p-6 border-b border-[var(--bg-border)] flex items-center justify-between">
-            <Link href="/admin" className="flex flex-col">
+            <Link href="/admin" className="flex flex-col" onClick={() => setSidebarOpen(false)}>
               <span className="font-extrabold text-lg tracking-wider" style={{ color: 'var(--gold-bright)', fontFamily: "'Anek Tamil', sans-serif" }}>
                 ஜோதிசாஃப்ட் Admin
               </span>
@@ -57,12 +68,21 @@ export default function AdminLayout({
                 Control Panel
               </span>
             </Link>
+
+            {/* Mobile Close Button */}
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-[var(--bg-active)] md:hidden cursor-pointer"
+            >
+              ✕
+            </button>
           </div>
 
           {/* Navigation Links */}
           <nav className="p-4 space-y-1.5 flex-1">
             <Link
               href="/admin"
+              onClick={() => setSidebarOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-150 ${
                 isActive('/admin')
                   ? 'text-[#1a1209]'
@@ -77,6 +97,7 @@ export default function AdminLayout({
 
             <Link
               href="/admin/users"
+              onClick={() => setSidebarOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-150 ${
                 isActive('/admin/users')
                   ? 'text-[#1a1209]'
@@ -117,21 +138,32 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col min-h-screen overflow-y-auto">
+      <main className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
         <header
-          className="h-16 border-b flex items-center justify-between px-8 shrink-0"
+          className="h-16 border-b flex items-center justify-between px-4 md:px-8 shrink-0"
           style={{ background: 'var(--bg-card)', borderColor: 'var(--bg-border)' }}
         >
-          <h2 className="text-sm font-semibold text-white/60">
-            {pathname === '/admin' && 'System Analytics & Overview'}
-            {pathname.startsWith('/admin/users') && 'Registered Astrology Users'}
-          </h2>
+          <div className="flex items-center gap-3">
+            {/* Hamburger Button for Mobile */}
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-2 -ml-2 rounded-lg text-white/70 hover:text-white hover:bg-[var(--bg-active)] md:hidden cursor-pointer"
+              aria-label="Open sidebar"
+            >
+              ☰
+            </button>
+            <h2 className="text-sm font-semibold text-white/60 truncate max-w-[180px] sm:max-w-none">
+              {pathname === '/admin' && 'System Analytics & Overview'}
+              {pathname.startsWith('/admin/users') && 'Registered Astrology Users'}
+            </h2>
+          </div>
           <div className="flex items-center gap-4 text-xs font-bold text-white/40">
-            <span>Server status: <span className="text-green-400">● Online</span></span>
+            <span className="hidden sm:inline">Server status: <span className="text-green-400">● Online</span></span>
+            <span className="sm:hidden text-green-400">● Online</span>
           </div>
         </header>
 
-        <div className="p-8 flex-1">
+        <div className="p-4 md:p-8 flex-1">
           {children}
         </div>
       </main>
