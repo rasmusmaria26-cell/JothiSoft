@@ -11,6 +11,8 @@ const port = process.env.PORT || 4000;
 const allowedOrigins = [
   'https://jothisoft.com',
   'https://www.jothisoft.com',
+  'https://jothisoft.in',
+  'https://www.jothisoft.in',
   'http://localhost:3000',
 ];
 
