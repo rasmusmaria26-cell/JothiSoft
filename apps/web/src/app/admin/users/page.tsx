@@ -46,10 +46,10 @@ export default function AdminUsersListPage() {
     <div className="space-y-6">
       {/* Controls & Actions header */}
       <div
-        className="p-6 rounded-[var(--radius-lg)] border flex flex-col sm:flex-row items-center gap-4 justify-between"
+        className="p-4 sm:p-6 rounded-[var(--radius-lg)] border flex flex-col md:flex-row items-center gap-4 justify-between"
         style={{ background: 'var(--bg-card)', borderColor: 'var(--bg-border)' }}
       >
-        <div className="relative w-full sm:max-w-md">
+        <div className="relative w-full md:max-w-md">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-sm">🔍</span>
           <input
             type="text"
@@ -60,12 +60,12 @@ export default function AdminUsersListPage() {
           />
         </div>
 
-        <div className="flex items-center gap-3 w-full sm:w-auto shrink-0 justify-end">
+        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto shrink-0 justify-between md:justify-end">
           <span className="text-xs text-white/40 font-semibold hidden md:inline">வடிகட்டி · Filter:</span>
           <select
             value={filter}
             onChange={handleFilterChange}
-            className="bg-slate-950/60 text-xs px-4 py-2.5 rounded-lg border border-white/10 text-white/80 outline-none focus:border-amber-500/50 min-w-[140px]"
+            className="bg-slate-950/60 text-xs px-4 py-2.5 rounded-lg border border-white/10 text-white/80 outline-none focus:border-amber-500/50 min-w-[120px] sm:min-w-[140px] flex-1 sm:flex-initial"
           >
             <option value="ALL">All Accounts</option>
             <option value="PRO">PRO Members</option>
@@ -76,14 +76,14 @@ export default function AdminUsersListPage() {
 
           <button
             onClick={() => mutate()}
-            className="px-4 py-2.5 rounded-lg text-xs font-bold bg-[var(--bg-elevated)] border border-[var(--bg-border)] hover:bg-[var(--bg-active)] transition-colors text-white/80"
+            className="px-4 py-2.5 rounded-lg text-xs font-bold bg-[var(--bg-elevated)] border border-[var(--bg-border)] hover:bg-[var(--bg-active)] transition-colors text-white/80 shrink-0"
           >
             🔄 Refresh
           </button>
         </div>
       </div>
 
-      {/* Users table */}
+      {/* Users table / Mobile list */}
       <div
         className="rounded-[var(--radius-lg)] border overflow-hidden"
         style={{ background: 'var(--bg-card)', borderColor: 'var(--bg-border)' }}
@@ -102,67 +102,113 @@ export default function AdminUsersListPage() {
             🔍 No user accounts match your search query or filter.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="border-b text-white/50 font-bold uppercase tracking-wider bg-black/10" style={{ borderColor: 'var(--bg-border)' }}>
-                  <th className="p-4 pl-6">Profile Details</th>
-                  <th className="p-4">Contact Phone</th>
-                  <th className="p-4">Registered Date</th>
-                  <th className="p-4">Access Status</th>
-                  <th className="p-4 pr-6 text-right">Management Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[var(--bg-border)]">
-                {data.users.map((user) => (
-                  <tr key={user.id} className="hover:bg-[var(--bg-active)] transition-colors">
-                    <td className="p-4 pl-6">
-                      <Link href={`/admin/users/${user.id}`} className="hover:underline font-bold text-white flex flex-col gap-0.5">
-                        <span>{user.name || 'Anonymous User'}</span>
-                        <span className="text-[10px] font-normal text-white/40">{user.email || 'No email registered'}</span>
-                      </Link>
-                    </td>
-                    <td className="p-4 font-mono font-medium text-white/80">
-                      {user.phone}
-                    </td>
-                    <td className="p-4 text-white/60">
-                      {new Date(user.created_at).toLocaleDateString(undefined, {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                      })}
-                    </td>
-                    <td className="p-4">
-                      <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold tracking-wide ${getStatusBadgeClass(user.calculatedStatus)}`}>
-                        {user.calculatedStatus}
-                      </span>
-                    </td>
-                    <td className="p-4 pr-6 text-right">
-                      <Link
-                        href={`/admin/users/${user.id}`}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold bg-[var(--bg-elevated)] border border-[var(--bg-border)] hover:bg-[var(--bg-active)] transition-all duration-150 text-white/95"
-                      >
-                        🔧 Manage & Activate
-                      </Link>
-                    </td>
+          <div>
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="border-b text-white/50 font-bold uppercase tracking-wider bg-black/10" style={{ borderColor: 'var(--bg-border)' }}>
+                    <th className="p-4 pl-6">Profile Details</th>
+                    <th className="p-4">Contact Phone</th>
+                    <th className="p-4">Registered Date</th>
+                    <th className="p-4">Access Status</th>
+                    <th className="p-4 pr-6 text-right">Management Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-[var(--bg-border)]">
+                  {data.users.map((user) => (
+                    <tr key={user.id} className="hover:bg-[var(--bg-active)] transition-colors">
+                      <td className="p-4 pl-6">
+                        <Link href={`/admin/users/${user.id}`} className="hover:underline font-bold text-white flex flex-col gap-0.5">
+                          <span>{user.name || 'Anonymous User'}</span>
+                          <span className="text-[10px] font-normal text-white/40">{user.email || 'No email registered'}</span>
+                        </Link>
+                      </td>
+                      <td className="p-4 font-mono font-medium text-white/80">
+                        {user.phone}
+                      </td>
+                      <td className="p-4 text-white/60">
+                        {new Date(user.created_at).toLocaleDateString(undefined, {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        })}
+                      </td>
+                      <td className="p-4">
+                        <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold tracking-wide ${getStatusBadgeClass(user.calculatedStatus)}`}>
+                          {user.calculatedStatus}
+                        </span>
+                      </td>
+                      <td className="p-4 pr-6 text-right">
+                        <Link
+                          href={`/admin/users/${user.id}`}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold bg-[var(--bg-elevated)] border border-[var(--bg-border)] hover:bg-[var(--bg-active)] transition-all duration-150 text-white/95"
+                        >
+                          🔧 Manage & Activate
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Card List View */}
+            <div className="md:hidden divide-y divide-[var(--bg-border)]">
+              {data.users.map((user) => (
+                <div key={user.id} className="p-4 space-y-3 hover:bg-[var(--bg-active)] transition-colors">
+                  <div className="flex items-start justify-between gap-3">
+                    <Link href={`/admin/users/${user.id}`} className="hover:underline font-bold text-white flex flex-col gap-0.5">
+                      <span className="text-sm">{user.name || 'Anonymous User'}</span>
+                      <span className="text-[10px] font-normal text-white/45 truncate max-w-[200px]">{user.email || 'No email registered'}</span>
+                    </Link>
+                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold tracking-wide shrink-0 ${getStatusBadgeClass(user.calculatedStatus)}`}>
+                      {user.calculatedStatus}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 text-[11px] text-white/70 font-medium bg-black/10 p-2.5 rounded-lg border border-white/5">
+                    <div className="space-y-0.5">
+                      <span className="text-white/40 block text-[9px] uppercase tracking-wider">Phone</span>
+                      <span className="font-mono text-white/90">{user.phone}</span>
+                    </div>
+                    <div className="space-y-0.5">
+                      <span className="text-white/40 block text-[9px] uppercase tracking-wider">Joined</span>
+                      <span>
+                        {new Date(user.created_at).toLocaleDateString(undefined, {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        })}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Link
+                      href={`/admin/users/${user.id}`}
+                      className="w-full justify-center inline-flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-[10px] font-bold bg-[var(--bg-elevated)] border border-[var(--bg-border)] hover:bg-[var(--bg-active)] transition-all duration-150 text-white/95"
+                    >
+                      🔧 Manage & Activate
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
 
             {/* Pagination Controls */}
             {data.totalPages > 1 && (
-              <div className="p-5 border-t border-[var(--bg-border)] flex items-center justify-between text-xs text-white/60 bg-black/5">
+              <div className="p-4 sm:p-5 border-t border-[var(--bg-border)] flex flex-col sm:flex-row gap-3 items-center justify-between text-xs text-white/60 bg-black/5">
                 <span>
                   Showing page <span className="text-white font-bold">{page}</span> of{' '}
                   <span className="text-white font-bold">{data.totalPages}</span> ({data.total} total)
                 </span>
 
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full sm:w-auto">
                   <button
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="px-3 py-1.5 rounded bg-[var(--bg-elevated)] border border-[var(--bg-border)] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[var(--bg-active)] transition-colors font-bold"
+                    className="flex-1 sm:flex-initial px-3 py-1.5 rounded bg-[var(--bg-elevated)] border border-[var(--bg-border)] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[var(--bg-active)] transition-colors font-bold"
                   >
                     ◀ Prev
                   </button>
@@ -170,7 +216,7 @@ export default function AdminUsersListPage() {
                   <button
                     onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
                     disabled={page === data.totalPages}
-                    className="px-3 py-1.5 rounded bg-[var(--bg-elevated)] border border-[var(--bg-border)] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[var(--bg-active)] transition-colors font-bold"
+                    className="flex-1 sm:flex-initial px-3 py-1.5 rounded bg-[var(--bg-elevated)] border border-[var(--bg-border)] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[var(--bg-active)] transition-colors font-bold"
                   >
                     Next ▶
                   </button>
