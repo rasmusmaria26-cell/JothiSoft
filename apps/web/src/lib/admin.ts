@@ -85,14 +85,16 @@ export const adminApi = {
   },
 
   /**
-   * Manually activate/extend a user's PRO plan by 30 days
+   * Manually activate/extend a user's PRO plan by 30 days or Lifetime
    */
   activateUser: async (
     userId: string,
-    paymentNote?: string
+    paymentNote?: string,
+    duration?: '30_DAYS' | 'LIFETIME'
   ): Promise<{ plan: string; expires_at: string }> => {
     const res = await api.post(`/admin/users/${userId}/activate`, {
       payment_note: paymentNote,
+      duration,
     });
     return res.data;
   },
