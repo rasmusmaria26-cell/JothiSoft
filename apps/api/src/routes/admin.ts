@@ -126,9 +126,13 @@ router.get('/users', async (req: Request, res: Response): Promise<void> => {
     // Order by created_at descending
     query = query.order('created_at', { ascending: false }).range(start, end);
 
+    console.log('[DEBUG AdminUsers] req.query:', req.query);
     const { data: users, count, error } = await query;
-
-    if (error) throw error;
+    if (error) {
+      console.error('[DEBUG AdminUsers] query error:', error);
+      throw error;
+    }
+    console.log('[DEBUG AdminUsers] users returned from DB count:', users?.length);
 
     const adminEmailsEnv = process.env.ADMIN_EMAILS || '';
     const adminEmails = adminEmailsEnv

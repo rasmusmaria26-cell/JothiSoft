@@ -16,11 +16,12 @@ const allowedOrigins = [
   'http://localhost:3000',
 ];
 
-app.use(cors({
-  origin: (origin, callback) => {
+const corsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
     if (!origin) return callback(null, true);
     
     const isAllowed = allowedOrigins.includes(origin) || 
+      origin.includes('jothisoft') || 
       origin.endsWith('.vercel.app') || 
       origin.endsWith('.onrender.com') ||
       /^http:\/\/localhost:\d+$/.test(origin);
@@ -31,8 +32,13 @@ app.use(cors({
       callback(null, false);
     }
   },
-  credentials: true
-}));
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Cache-Control', 'Pragma'],
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 // Custom secure HTTP headers middleware (bypasses helmet dependency overhead)
 app.use((req, res, next) => {

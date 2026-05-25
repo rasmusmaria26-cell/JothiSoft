@@ -108,7 +108,7 @@ export function CategorySection({
         viewport={{ once: true, margin: '-30px' }}
       >
         {modules.map((mod) => (
-          <motion.div key={mod.href} variants={cardItem}>
+          <motion.div key={`${mod.labelEn}-${mod.href}`} variants={cardItem}>
             <ModuleCard {...mod} colorHex={colorHex} />
           </motion.div>
         ))}

@@ -39,3 +39,16 @@ export const authLimiter = rateLimit({
   },
 });
 
+// Custom, generous rate limiter for cities autocomplete search
+export const citiesLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 500, // Limit each IP to 500 search requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    error: 'TOO_MANY_REQUESTS',
+    message: 'Too many search requests from this IP, please try again shortly',
+  },
+});
+

@@ -90,7 +90,7 @@ const NAKSHATRAS = [
   'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra',
   'Punarvasu', 'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni',
   'Hasta', 'Chitra', 'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha',
-  'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana', 'Dhanishtha', 'Shatabhisha',
+  'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana', 'Dhanishta', 'Shatabhisha',
   'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'
 ];
 
@@ -304,7 +304,7 @@ export const calculateHoroscope = async (
     current_dasha: {
       mahadasha: dashaResult.current.dasha,
       antardasha: dashaResult.current.bhukti,
-      antardasha_end: formatDateToDDMMYYYY(dashaResult.current.ends_at)
+      antardasha_end: formatDateToDDMMYYYY(dashaResult.current.bhukti_ends_at || dashaResult.current.ends_at)
     },
     panchangam: {
       tithi: {
@@ -409,6 +409,7 @@ export const calculateVimshottariDasha = (birthDateStr: string, moonLongitude: n
   let currentDasa = 'Ketu';
   let currentBhukti = 'Ketu';
   let currentEnds = '';
+  let currentBhuktiEnds = '';
 
   for (const period of timeline) {
     const start = new Date(period.start_date);
@@ -423,6 +424,7 @@ export const calculateVimshottariDasha = (birthDateStr: string, moonLongitude: n
         const bEnd = new Date(bh.end_date);
         if (now >= bStart && now <= bEnd) {
           currentBhukti = bh.dasha_lord;
+          currentBhuktiEnds = bh.end_date;
           break;
         }
       }
@@ -435,7 +437,8 @@ export const calculateVimshottariDasha = (birthDateStr: string, moonLongitude: n
       dasha: currentDasa,
       bhukti: currentBhukti,
       anthara: 'Swayam',
-      ends_at: currentEnds || timeline[0].end_date
+      ends_at: currentEnds || timeline[0].end_date,
+      bhukti_ends_at: currentBhuktiEnds || currentEnds || timeline[0].end_date
     },
     timeline
   };

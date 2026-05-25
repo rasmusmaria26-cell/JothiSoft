@@ -18,6 +18,7 @@ export default function AdminUserDetailPage() {
   const [activating, setActivating] = useState(false)
   const [roleToggling, setRoleToggling] = useState(false)
   const [paymentNote, setPaymentNote] = useState('')
+  const [duration, setDuration] = useState<'30_DAYS' | 'LIFETIME'>('30_DAYS')
 
   const loadUserDetail = async () => {
     try {
@@ -41,8 +42,12 @@ export default function AdminUserDetailPage() {
   const handleActivatePro = async () => {
     try {
       setActivating(true)
-      const res = await adminApi.activateUser(userId, paymentNote.trim() || undefined)
-      addToast(`PRO Activated successfully! Valid until ${new Date(res.expires_at).toLocaleDateString()}`, 'success')
+      const res = await adminApi.activateUser(userId, paymentNote.trim() || undefined, duration)
+      const isLifetime = duration === 'LIFETIME'
+      const validityMsg = isLifetime 
+        ? 'PRO Activated successfully for Lifetime!' 
+        : `PRO Activated successfully! Valid until ${new Date(res.expires_at).toLocaleDateString()}`
+      addToast(validityMsg, 'success')
       setPaymentNote('')
       await loadUserDetail() // refresh page details
     } catch (err: any) {
@@ -157,7 +162,9 @@ export default function AdminUserDetailPage() {
               <span className="text-white/40 font-semibold block uppercase tracking-wider">PRO Plan Expiration</span>
               <span className="text-sm text-white/80">
                 {user.subscription?.expires_at
-                  ? new Date(user.subscription.expires_at).toLocaleString()
+                  ? new Date(user.subscription.expires_at).getFullYear() === 2099
+                    ? '✨ Lifetime / வாழ்நாள்'
+                    : new Date(user.subscription.expires_at).toLocaleString()
                   : 'N/A'}
               </span>
             </div>
@@ -182,6 +189,26 @@ export default function AdminUserDetailPage() {
             {/* Manual Activation Box */}
             <div className="space-y-3.5">
               <div className="space-y-1.5">
+                <label className="block text-[10px] font-bold text-white/40 uppercase tracking-wider">Plan Duration</label>
+                <div className="flex rounded-md border border-white/10 overflow-hidden bg-slate-950/40 p-0.5">
+                  {(['30_DAYS', 'LIFETIME'] as const).map((d) => (
+                    <button
+                      key={d}
+                      type="button"
+                      onClick={() => setDuration(d)}
+                      className={`flex-1 py-1.5 text-xs font-semibold rounded transition-all duration-150 cursor-pointer ${
+                        duration === d
+                          ? 'bg-[var(--gold-deep)] text-[#1a1209]'
+                          : 'text-white/60 hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      {d === '30_DAYS' ? '30 Days' : '⭐ Lifetime'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
                 <label className="block text-[10px] font-bold text-white/40 uppercase tracking-wider">Payment Reference / Note</label>
                 <input
                   type="text"
@@ -198,7 +225,11 @@ export default function AdminUserDetailPage() {
                 className="w-full py-2.5 rounded text-xs font-bold transition-all duration-150 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 style={{ background: 'var(--gold-deep)', color: '#1a1209' }}
               >
-                {activating ? 'செயல்படுத்தப்படுகிறது... · Activating...' : 'Manual PRO Activation (30 Days)'}
+                {activating
+                  ? 'செயல்படுத்தப்படுகிறது... · Activating...'
+                  : duration === 'LIFETIME'
+                  ? 'Manual Lifetime Activation'
+                  : 'Manual PRO Activation (30 Days)'}
               </button>
             </div>
 
@@ -269,7 +300,9 @@ export default function AdminUserDetailPage() {
                       {new Date(log.starts_at).toLocaleString()}
                     </td>
                     <td className="p-4 text-white/60 font-semibold">
-                      {new Date(log.expires_at).toLocaleString()}
+                      {new Date(log.expires_at).getFullYear() === 2099
+                        ? '✨ Lifetime / வாழ்நாள்'
+                        : new Date(log.expires_at).toLocaleString()}
                     </td>
                     <td className="p-4 text-white/40">
                       {new Date(log.created_at).toLocaleString()}

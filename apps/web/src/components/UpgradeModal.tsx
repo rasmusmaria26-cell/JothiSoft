@@ -1,11 +1,13 @@
 'use client'
 
+import { useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
 
 export default function UpgradeModal() {
   const { user } = useAuth()
   const router = useRouter()
+  const [selectedPlan, setSelectedPlan] = useState<'MONTHLY' | 'LIFETIME'>('MONTHLY')
 
   // Format activation message for WhatsApp
   const phone = user?.phone || ''
@@ -13,7 +15,13 @@ export default function UpgradeModal() {
   const name = user?.user_metadata?.name || ''
   const userId = user?.id || ''
 
-  const messageText = `வணக்கம் JothiSoft, நான் PRO சந்தாவை செயல்படுத்த விரும்புகிறேன். 
+  const messageText = selectedPlan === 'LIFETIME'
+    ? `வணக்கம் JothiSoft, நான் PRO வாழ்நாள் சந்தாவை (₹2,999) செயல்படுத்த விரும்புகிறேன். 
+ID: ${userId}
+Name: ${name}
+Phone: ${phone}
+Email: ${email}`
+    : `வணக்கம் JothiSoft, நான் PRO மாதாந்திர சந்தாவை (₹299) செயல்படுத்த விரும்புகிறேன். 
 ID: ${userId}
 Name: ${name}
 Phone: ${phone}
@@ -53,9 +61,60 @@ Email: ${email}`;
       </div>
 
       <div className="space-y-5 py-2">
-        <h4 className="text-center font-bold text-lg" style={{ color: 'var(--gold-bright)' }}>
-          PRO மாதாந்திர சந்தா · PRO Monthly Subscription
+        <h4 className="text-center font-semibold text-xs tracking-wider uppercase opacity-85" style={{ color: 'var(--text-secondary)' }}>
+          சந்தா திட்டத்தை தேர்ந்தெடுக்கவும் · Choose Your Plan
         </h4>
+
+        {/* Pricing Cards Selector */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Monthly Card */}
+          <button
+            type="button"
+            onClick={() => setSelectedPlan('MONTHLY')}
+            className={`text-left p-4 rounded-[var(--radius-md)] border relative transition-all duration-300 active:scale-[0.98] cursor-pointer flex flex-col justify-between h-28 overflow-hidden group ${
+              selectedPlan === 'MONTHLY'
+                ? 'border-[var(--gold-bright)] shadow-[0_0_15px_rgba(212,175,55,0.15)] bg-yellow-500/5'
+                : 'border-[var(--bg-border)] bg-[var(--bg-elevated)] opacity-60 hover:opacity-100 hover:border-white/20'
+            }`}
+          >
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider group-hover:text-[var(--gold-bright)] transition-colors" style={{ color: selectedPlan === 'MONTHLY' ? 'var(--gold-bright)' : 'var(--text-muted)' }}>
+                Monthly · மாதாந்திர
+              </p>
+              <h5 className="text-base font-bold mt-1 text-white">PRO Monthly</h5>
+            </div>
+            <div className="flex items-baseline gap-1 mt-2">
+              <span className="text-xl font-extrabold text-[var(--gold-bright)]">₹299</span>
+              <span className="text-[10px] opacity-50 text-white">/ month</span>
+            </div>
+          </button>
+
+          {/* Lifetime Card */}
+          <button
+            type="button"
+            onClick={() => setSelectedPlan('LIFETIME')}
+            className={`text-left p-4 rounded-[var(--radius-md)] border relative transition-all duration-300 active:scale-[0.98] cursor-pointer flex flex-col justify-between h-28 overflow-hidden group ${
+              selectedPlan === 'LIFETIME'
+                ? 'border-[var(--gold-bright)] shadow-[0_0_15px_rgba(212,175,55,0.25)] bg-yellow-500/10'
+                : 'border-[var(--bg-border)] bg-[var(--bg-elevated)] opacity-60 hover:opacity-100 hover:border-white/20'
+            }`}
+          >
+            {/* Golden Best Value badge */}
+            <span className="absolute top-1.5 right-2 text-[8px] bg-gradient-to-r from-amber-500 to-yellow-400 text-black px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wide shadow-md z-10">
+              Best Value · சிறந்த தேர்வு
+            </span>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider group-hover:text-[var(--gold-bright)] transition-colors" style={{ color: selectedPlan === 'LIFETIME' ? 'var(--gold-bright)' : 'var(--text-muted)' }}>
+                Lifetime · வாழ்நாள்
+              </p>
+              <h5 className="text-base font-bold mt-1 text-white">PRO Lifetime</h5>
+            </div>
+            <div className="flex items-baseline gap-1 mt-2">
+              <span className="text-xl font-extrabold text-[var(--gold-bright)]">₹2,999</span>
+              <span className="text-[10px] opacity-50 text-white">one-time</span>
+            </div>
+          </button>
+        </div>
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
@@ -89,15 +148,6 @@ Email: ${email}`;
           </div>
         </div>
 
-        {/* Price Tag */}
-        <div
-          className="text-center py-4 rounded-[var(--radius-md)] border font-bold text-2xl flex flex-col items-center justify-center"
-          style={{ background: 'var(--bg-elevated)', borderColor: 'var(--bg-border)', color: 'var(--gold-bright)' }}
-        >
-          <span>₹299 / மாதம்</span>
-          <span className="text-sm font-normal" style={{ color: 'var(--text-muted)' }}>₹299 / Month</span>
-        </div>
-
         {/* Step-by-Step Offline Payment */}
         <div className="bg-slate-950/40 p-4 rounded-xl border border-[var(--bg-border)] space-y-3">
           <h5 className="font-bold text-sm text-center tracking-wide" style={{ color: 'var(--gold-bright)' }}>
@@ -105,11 +155,11 @@ Email: ${email}`;
           </h5>
           <ol className="list-decimal list-inside space-y-2 text-xs text-white/80 pl-1">
             <li>
-              <span className="font-medium text-white">GPay / PhonePe / Paytm</span> மூலம் <span className="font-bold text-[var(--gold-bright)]">9943485055</span> எண்ணிற்கு <span className="font-bold text-[var(--gold-bright)]">₹299</span> செலுத்தவும்.
-              <p className="text-white/40 ml-4 mt-0.5">Pay ₹299 to 9943485055 via GPay / PhonePe / Paytm.</p>
+              <span className="font-medium text-white">GPay / PhonePe / Paytm</span> மூலம் <span className="font-bold text-[var(--gold-bright)]">9943485055</span> எண்ணிற்கு <span className="font-bold text-[var(--gold-bright)]">{selectedPlan === 'LIFETIME' ? '₹2,999' : '₹299'}</span> செலுத்தவும்.
+              <p className="text-white/40 ml-4 mt-0.5">Pay {selectedPlan === 'LIFETIME' ? '₹2,999' : '₹299'} to 9943485055 via GPay / PhonePe / Paytm.</p>
             </li>
             <li>
-              பணம் செலுத்திய ரசீதை <span className="font-medium text-white">WhatsApp</span> மூலம் அனுப்பி உங்கள் கணக்கை செயல்படுத்தக் கூறவும்.
+              பணம் செலுத்திய ರசீதை <span className="font-medium text-white">WhatsApp</span> மூலம் அனுப்பி உங்கள் கணக்கை செயல்படுத்தக் கூறவும்.
               <p className="text-white/40 ml-4 mt-0.5">Send the payment receipt on WhatsApp to request manual activation.</p>
             </li>
           </ol>
