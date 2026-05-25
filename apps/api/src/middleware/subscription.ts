@@ -55,7 +55,7 @@ export const requireSubscription = async (
       : new Date(createdAt.getTime() + 24 * 60 * 60 * 1000);
 
     const isProActiveInMeta =
-      (metaPlan === 'PRO' && metaExpiresAt && metaExpiresAt > now) ||
+      (metaPlan === 'PRO' && (!metaExpiresAt || metaExpiresAt > now)) ||
       (metaPlan === 'FREE' && metaTrialExpiresAt && metaTrialExpiresAt > now) ||
       (!metaPlan && metaTrialExpiresAt && metaTrialExpiresAt > now);
 
@@ -76,7 +76,7 @@ export const requireSubscription = async (
 
     if (sub) {
       // Check 1: Active PRO subscription in DB
-      if (sub.plan === 'PRO' && sub.expires_at && new Date(sub.expires_at) > now) {
+      if (sub.plan === 'PRO' && (!sub.expires_at || new Date(sub.expires_at) > now)) {
         return next();
       }
 
@@ -86,6 +86,13 @@ export const requireSubscription = async (
         if (trialExpires > now) {
           return next();
         }
+      }
+    } else {
+      // Ultimate Fallback: If no DB subscription record exists, calculate trial from user's account creation date in Auth
+      const accountCreatedAt = req.user.created_at ? new Date(req.user.created_at) : new Date();
+      const trialExpires = new Date(accountCreatedAt.getTime() + 24 * 60 * 60 * 1000);
+      if (trialExpires > now) {
+        return next();
       }
     }
 

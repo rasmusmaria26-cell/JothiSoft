@@ -103,11 +103,39 @@ export async function middleware(request: NextRequest) {
     const now = new Date()
     const isProActive =
       isAdmin ||
-      (plan === 'PRO' && expiresAt && expiresAt > now) ||
+      (plan === 'PRO' && (!expiresAt || expiresAt > now)) ||
       (plan === 'FREE' && trialExpiresAt && trialExpiresAt > now) ||
       (!plan && trialExpiresAt && trialExpiresAt > now)
 
     if (!isProActive) {
+      // Database Fallback: Check subscriptions directly from the database to bypass stale browser JWT cookies
+      const { data: dbSub } = await supabase
+        .from('subscriptions')
+        .select('plan, expires_at, created_at')
+        .eq('user_id', user.id)
+        .maybeSingle()
+
+      if (dbSub) {
+        if (dbSub.plan === 'PRO') {
+          const dbExpires = dbSub.expires_at ? new Date(dbSub.expires_at) : null
+          if (!dbExpires || dbExpires > now) {
+            return response
+          }
+        } else if (dbSub.plan === 'FREE' && dbSub.created_at) {
+          const dbTrialExpires = new Date(new Date(dbSub.created_at).getTime() + 24 * 60 * 60 * 1000)
+          if (dbTrialExpires > now) {
+            return response
+          }
+        }
+      } else {
+        // Ultimate Fallback: If no DB subscription record exists, calculate trial from user's account creation date
+        const accountCreatedAt = user.created_at ? new Date(user.created_at) : new Date()
+        const dbTrialExpires = new Date(accountCreatedAt.getTime() + 24 * 60 * 60 * 1000)
+        if (dbTrialExpires > now) {
+          return response
+        }
+      }
+
       return NextResponse.redirect(new URL('/upgrade', request.url))
     }
   }
