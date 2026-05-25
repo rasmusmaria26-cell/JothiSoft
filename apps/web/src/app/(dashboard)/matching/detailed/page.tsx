@@ -551,10 +551,28 @@ export default function DeepMatchPage() {
             key="results-view"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-col gap-6"
+            className="flex flex-col gap-6 relative"
           >
+            {/* Top Premium Actions Bar (Hidden on Print) */}
+            <div className="print:hidden w-full flex items-center justify-between gap-4 p-3 bg-[#2e2115]/50 border border-gold-deep/30 rounded-xl backdrop-blur-md">
+              <button 
+                onClick={() => setBasicResult(null)}
+                className="flex items-center gap-2 text-sm text-text-secondary hover:text-gold-bright transition-colors bg-transparent border-0 cursor-pointer py-1.5 px-3 font-semibold"
+              >
+                <ArrowLeft size={16} />
+                {language === 'ta' ? 'புதிய பொருத்தம் (New Match)' : 'New Match'}
+              </button>
+              <button 
+                onClick={() => window.print()}
+                className="flex items-center gap-2 text-sm bg-gold-deep/20 text-gold-bright px-4 py-2 rounded-lg border border-gold-deep/30 hover:bg-gold-deep/30 transition-all font-bold cursor-pointer hover:shadow-[0_0_12px_rgba(201,146,42,0.15)]"
+              >
+                <Printer size={18} />
+                {language === 'ta' ? 'பிரிண்ட் செய்க (Print)' : 'Print Report'}
+              </button>
+            </div>
+
             {/* Tabs Navigation */}
-            <div className="flex items-center justify-between border-b border-bg-border pb-1 overflow-x-auto gap-4">
+            <div className="flex items-center border-b border-bg-border pb-1 overflow-x-auto gap-4 scrollbar-thin">
               <div className="flex items-center gap-2">
                 {(['overview', 'porutham', 'dosha', 'dasa'] as const).map((tab) => (
                   <button
@@ -570,14 +588,18 @@ export default function DeepMatchPage() {
                   </button>
                 ))}
               </div>
-              <button
-                onClick={() => window.print()}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-gold-deep/10 hover:bg-gold-deep/20 border border-gold-deep/30 text-gold-bright text-xs font-bold transition-all cursor-pointer hover:shadow-[0_0_12px_rgba(201,146,42,0.15)] flex-shrink-0 mr-2"
-              >
-                <Printer size={14} />
-                {language === 'ta' ? 'பிரிண்ட் செய்க (Print)' : 'Print Report'}
-              </button>
             </div>
+
+            {/* Floating Mobile Print Button (Hidden on Print) */}
+            <button
+              onClick={() => window.print()}
+              className="print:hidden fixed bottom-6 right-6 md:hidden bg-gold-bright hover:bg-gold-bright/90 text-black border border-gold-deep/30 p-5 rounded-full shadow-2xl hover:scale-105 transition-transform z-50 flex items-center justify-center cursor-pointer"
+              style={{ boxShadow: '0 8px 32px rgba(201,146,42,0.3)' }}
+              title={language === 'ta' ? 'அச்சிடு (Print)' : 'Print'}
+            >
+              <Printer size={26} className="text-black" />
+            </button>
+
 
             {/* Tab Contents */}
             <div className="flex flex-col gap-6">

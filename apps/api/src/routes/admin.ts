@@ -282,7 +282,7 @@ router.get('/users/:userId', async (req: Request, res: Response): Promise<void> 
 router.post('/users/:userId/activate', async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = req.params.userId as string;
-    const { payment_note = '' } = req.body;
+    const { payment_note = '', duration = '30_DAYS' } = req.body;
     const adminEmail = req.user.email || 'Admin';
 
     // 1. Fetch current subscription details
@@ -295,20 +295,26 @@ router.post('/users/:userId/activate', async (req: Request, res: Response): Prom
     if (subErr) throw subErr;
 
     const now = new Date();
-    let newExpires: Date;
+    let newExpiresStr: string | null = null;
     const isNewSubscription = !sub;
 
-    if (sub) {
-      let currentExpires = sub.expires_at ? new Date(sub.expires_at) : null;
-      // Calculate new expiration date (extend by 30 days)
-      if (sub.plan === 'PRO' && currentExpires && currentExpires > now) {
-        newExpires = new Date(currentExpires.getTime() + 30 * 24 * 60 * 60 * 1000);
+    if (duration !== 'LIFETIME') {
+      let newExpires: Date;
+      if (sub) {
+        let currentExpires = sub.expires_at ? new Date(sub.expires_at) : null;
+        // Calculate new expiration date (extend by 30 days)
+        if (sub.plan === 'PRO' && currentExpires && currentExpires > now) {
+          newExpires = new Date(currentExpires.getTime() + 30 * 24 * 60 * 60 * 1000);
+        } else {
+          newExpires = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+        }
       } else {
         newExpires = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
       }
+      newExpiresStr = newExpires.toISOString();
+    }
 
-      const newExpiresStr = newExpires.toISOString();
-
+    if (sub) {
       // 2. Update the subscription in Supabase
       const { error: updateErr } = await supabaseAdmin
         .from('subscriptions')
@@ -321,9 +327,6 @@ router.post('/users/:userId/activate', async (req: Request, res: Response): Prom
 
       if (updateErr) throw updateErr;
     } else {
-      newExpires = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
-      const newExpiresStr = newExpires.toISOString();
-
       // 2. Insert the subscription in Supabase
       const { error: insertErr } = await supabaseAdmin
         .from('subscriptions')
@@ -336,8 +339,6 @@ router.post('/users/:userId/activate', async (req: Request, res: Response): Prom
 
       if (insertErr) throw insertErr;
     }
-
-    const newExpiresStr = newExpires.toISOString();
 
     // 4. Update the user metadata in Supabase Auth dynamically so Next.js middleware and frontend is updated instantly
     const { error: authMetaErr } = await supabaseAdmin.auth.admin.updateUserById(userId, {
