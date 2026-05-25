@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Heart, ArrowLeft, RefreshCw, CheckCircle2, XCircle, 
-  AlertTriangle, Users, Sparkles, MapPin, Lock, Unlock, HelpCircle 
+  AlertTriangle, Users, Sparkles, MapPin, Lock, Unlock, HelpCircle, Printer
 } from 'lucide-react'
 import Link from 'next/link'
 import { useLanguage } from '@/context/LanguageContext'
@@ -265,12 +265,12 @@ export default function DeepMatchPage() {
     })
   }, [])
 
-  // Background Dasa Sandhi tab fetch
+  // Background Dasa Sandhi fetch immediately on result load for PRO users (enables instant complete printing!)
   useEffect(() => {
-    if (activeTab === 'dasa' && plan === 'PRO' && basicResult && !dasaResult && !dasaLoading) {
+    if (plan === 'PRO' && basicResult && !dasaResult && !dasaLoading) {
       fetchDasaSandhi()
     }
-  }, [activeTab, plan, basicResult])
+  }, [plan, basicResult])
 
   const handleDetailedMatch = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -377,7 +377,8 @@ export default function DeepMatchPage() {
   }
 
   return (
-    <div className="max-w-[1100px] mx-auto flex flex-col gap-6 px-4 py-6">
+    <>
+      <div className="max-w-[1100px] mx-auto flex flex-col gap-6 px-4 py-6 print:hidden">
       {/* Header back link */}
       <div className="flex items-center justify-between">
         <Link 
@@ -553,20 +554,29 @@ export default function DeepMatchPage() {
             className="flex flex-col gap-6"
           >
             {/* Tabs Navigation */}
-            <div className="flex items-center gap-2 border-b border-bg-border overflow-x-auto pb-1">
-              {(['overview', 'porutham', 'dosha', 'dasa'] as const).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-2 text-sm font-semibold whitespace-nowrap border-b-2 transition-all cursor-pointer ${
-                    activeTab === tab 
-                      ? 'border-gold-bright text-gold-bright' 
-                      : 'border-transparent text-text-secondary hover:text-text-primary'
-                  }`}
-                >
-                  {labels[tab]}
-                </button>
-              ))}
+            <div className="flex items-center justify-between border-b border-bg-border pb-1 overflow-x-auto gap-4">
+              <div className="flex items-center gap-2">
+                {(['overview', 'porutham', 'dosha', 'dasa'] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`px-4 py-2 text-sm font-semibold whitespace-nowrap border-b-2 transition-all cursor-pointer ${
+                      activeTab === tab 
+                        ? 'border-gold-bright text-gold-bright' 
+                        : 'border-transparent text-text-secondary hover:text-text-primary'
+                    }`}
+                  >
+                    {labels[tab]}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => window.print()}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-gold-deep/10 hover:bg-gold-deep/20 border border-gold-deep/30 text-gold-bright text-xs font-bold transition-all cursor-pointer hover:shadow-[0_0_12px_rgba(201,146,42,0.15)] flex-shrink-0 mr-2"
+              >
+                <Printer size={14} />
+                {language === 'ta' ? 'பிரிண்ட் செய்க (Print)' : 'Print Report'}
+              </button>
             </div>
 
             {/* Tab Contents */}
@@ -967,5 +977,212 @@ export default function DeepMatchPage() {
         )}
       </AnimatePresence>
     </div>
+
+      {/* Printable Report View (Visible only during print) */}
+      {basicResult && (
+        <div className="hidden print:block text-black bg-white min-h-screen p-6 font-sans">
+          {/* Header */}
+          <div className="text-center border-b-2 border-gray-800 pb-4 mb-6">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+              {language === 'ta' ? 'ஜோதிசாஃப்ட் | ஜாதகப் பொருத்த அறிக்கை' : 'JothiSoft | Horoscope Compatibility Report'}
+            </h1>
+            <p className="text-xs text-gray-500 mt-1 uppercase tracking-widest font-semibold">
+              {language === 'ta' ? 'விளக்கமான திருமணப் பொருத்த கணிப்பு' : 'Detailed Marriage Compatibility Analysis'}
+            </p>
+            <p className="text-[10px] text-gray-400 mt-0.5">
+              Generated on {new Date().toLocaleDateString()}
+            </p>
+          </div>
+
+          {/* Unified Overview Cards */}
+          <div className="grid grid-cols-2 gap-6 mb-6">
+            <div className="border border-gray-300 rounded-lg p-4">
+              <h3 className="text-sm font-bold text-gray-800 border-b border-gray-300 pb-1 mb-2">
+                {labels.groom} ({boyName || 'Groom'})
+              </h3>
+              <div className="grid grid-cols-2 gap-y-1 text-xs">
+                <span className="text-gray-500">{labels.nakshatra}:</span>
+                <span className="font-bold text-gray-900">{language === 'ta' ? basicResult.boy_star_ta : basicResult.boy_star}</span>
+                <span className="text-gray-500">{language === 'ta' ? 'பிறந்த தேதி:' : 'DOB:'}</span>
+                <span className="font-bold text-gray-900">{boyDob}</span>
+                <span className="text-gray-500">{language === 'ta' ? 'இராசி:' : 'Moon Sign:'}</span>
+                <span className="font-bold text-gray-900">{basicResult.boy_lagna.sign}</span>
+                <span className="text-gray-500">{language === 'ta' ? 'லக்னம்:' : 'Lagna Sign:'}</span>
+                <span className="font-bold text-gray-900">{basicResult.boy_lagna.sign}</span>
+              </div>
+            </div>
+
+            <div className="border border-gray-300 rounded-lg p-4">
+              <h3 className="text-sm font-bold text-gray-800 border-b border-gray-300 pb-1 mb-2">
+                {labels.bride} ({girlName || 'Bride'})
+              </h3>
+              <div className="grid grid-cols-2 gap-y-1 text-xs">
+                <span className="text-gray-500">{labels.nakshatra}:</span>
+                <span className="font-bold text-gray-900">{language === 'ta' ? basicResult.girl_star_ta : basicResult.girl_star}</span>
+                <span className="text-gray-500">{language === 'ta' ? 'பிறந்த தேதி:' : 'DOB:'}</span>
+                <span className="font-bold text-gray-900">{girlDob}</span>
+                <span className="text-gray-500">{language === 'ta' ? 'இராசி:' : 'Moon Sign:'}</span>
+                <span className="font-bold text-gray-900">{basicResult.girl_lagna.sign}</span>
+                <span className="text-gray-500">{language === 'ta' ? 'லக்னம்:' : 'Lagna Sign:'}</span>
+                <span className="font-bold text-gray-900">{basicResult.girl_lagna.sign}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Verdict & Score */}
+          <div className="border border-gray-300 rounded-lg p-4 text-center mb-6 bg-gray-50">
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">{labels.compatibilityIndex}</span>
+            <h2 className="text-3xl font-extrabold text-gray-900 mt-1">{basicResult.overview_score}%</h2>
+            <h3 className="text-sm font-bold text-gray-800 mt-1.5">
+              {basicResult.overview_score >= 75 
+                ? labels.excellentMatch 
+                : basicResult.overview_score >= 55 
+                  ? labels.moderateMatch 
+                  : labels.poorMatch
+              }
+            </h3>
+          </div>
+
+          {/* Rasi Charts Side-by-Side */}
+          <div className="grid grid-cols-2 gap-6 mb-8">
+            <div className="flex flex-col items-center">
+              <RasiChart
+                chart={basicResult.boy_chart}
+                planets={basicResult.boy_planets}
+                title={`${labels.groom} ${labels.chartTitle}`}
+                lagnaSign={basicResult.boy_lagna.sign}
+                isPrint={true}
+                language={language}
+              />
+            </div>
+            <div className="flex flex-col items-center">
+              <RasiChart
+                chart={basicResult.girl_chart}
+                planets={basicResult.girl_planets}
+                title={`${labels.bride} ${labels.chartTitle}`}
+                lagnaSign={basicResult.girl_lagna.sign}
+                isPrint={true}
+                language={language}
+              />
+            </div>
+          </div>
+
+          {/* 10 Poruthams Table */}
+          <div className="mb-8">
+            <h3 className="text-sm font-bold text-gray-800 border-b border-gray-300 pb-2 mb-3">
+              {language === 'ta' ? '10 நட்சத்திர பொருத்தங்களின் விவரங்கள்' : '10 Nakshatra Kootas Compatibility Details'}
+            </h3>
+            <table className="w-full text-left text-xs border-collapse border border-gray-300">
+              <thead>
+                <tr className="bg-gray-100 text-gray-700 font-bold border-b border-gray-300">
+                  <th className="p-2 border border-gray-300">{language === 'ta' ? 'பொருத்தம்' : 'Porutham'}</th>
+                  <th className="p-2 border border-gray-300 text-center">{language === 'ta' ? 'நிலை' : 'Status'}</th>
+                  <th className="p-2 border border-gray-300 text-center">{language === 'ta' ? 'புள்ளிகள்' : 'Points'}</th>
+                  <th className="p-2 border border-gray-300">{language === 'ta' ? 'விவரம்' : 'Significance'}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {basicResult.star_result.poruthams.map((p) => {
+                  const info = PORUTHAM_INFO[p.type] || { nameTa: p.type, nameEn: p.type, descTa: '-', descEn: '-' }
+                  return (
+                    <tr key={p.type} className="border-b border-gray-300">
+                      <td className="p-2 border border-gray-300 font-semibold">
+                        {language === 'ta' ? info.nameTa : info.nameEn}
+                      </td>
+                      <td className="p-2 border border-gray-300 text-center font-bold">
+                        <span className={p.passed ? 'text-green-700' : 'text-red-700'}>
+                          {p.passed ? (language === 'ta' ? 'பொருந்தும்' : 'Passed') : (language === 'ta' ? 'பொருந்தாது' : 'Failed')}
+                        </span>
+                      </td>
+                      <td className="p-2 border border-gray-300 text-center font-bold font-mono">
+                        {p.score} / {p.weight}
+                      </td>
+                      <td className="p-2 border border-gray-300 text-gray-600">
+                        {language === 'ta' ? info.descTa : info.descEn}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Dosha Check */}
+          <div className="grid grid-cols-2 gap-6 mb-8">
+            <div className="border border-gray-300 rounded-lg p-4">
+              <h3 className="text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-300 pb-1 mb-3">
+                {labels.maleficDiff} (Papasamyam)
+              </h3>
+              <div className="grid grid-cols-2 gap-y-1 text-xs">
+                <span className="text-gray-500">{labels.groom}:</span>
+                <span className="font-bold text-gray-900">{basicResult.horo_result.papasamyam.boy_score}</span>
+                <span className="text-gray-500">{labels.bride}:</span>
+                <span className="font-bold text-gray-900">{basicResult.horo_result.papasamyam.girl_score}</span>
+                <span className="text-gray-500">{labels.difference}:</span>
+                <span className="font-bold text-gray-900">{basicResult.horo_result.papasamyam.difference}</span>
+                <span className="text-gray-500">{labels.compatibleStatus}:</span>
+                <span className={`font-bold ${basicResult.horo_result.papasamyam.compatible ? 'text-green-700' : 'text-red-700'}`}>
+                  {basicResult.horo_result.papasamyam.compatible ? (language === 'ta' ? 'பொருந்தும்' : 'Compatible') : (language === 'ta' ? 'பொருந்தாது' : 'Incompatible')}
+                </span>
+              </div>
+            </div>
+
+            <div className="border border-gray-300 rounded-lg p-4">
+              <h3 className="text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-300 pb-1 mb-3">
+                {labels.sevvaiAlignment} (Mangal Dosha)
+              </h3>
+              <div className="grid grid-cols-2 gap-y-1 text-xs">
+                <span className="text-gray-500">{labels.groom}:</span>
+                <span className="font-bold text-gray-900">{basicResult.horo_result.mangal_dosha.boy_has_dosha ? (language === 'ta' ? 'உண்டு' : 'Yes') : (language === 'ta' ? 'இல்லை' : 'No')}</span>
+                <span className="text-gray-500">{labels.bride}:</span>
+                <span className="font-bold text-gray-900">{basicResult.horo_result.mangal_dosha.girl_has_dosha ? (language === 'ta' ? 'உண்டு' : 'Yes') : (language === 'ta' ? 'இல்லை' : 'No')}</span>
+                <span className="text-gray-500">{labels.compatibleStatus}:</span>
+                <span className={`font-bold ${basicResult.horo_result.mangal_dosha.compatible ? 'text-green-700' : 'text-red-700'}`}>
+                  {basicResult.horo_result.mangal_dosha.compatible ? (language === 'ta' ? 'பொருந்தும்' : 'Compatible') : (language === 'ta' ? 'பொருந்தாது' : 'Incompatible')}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Dasa Sandhi timeline */}
+          {plan === 'PRO' && dasaResult && (
+            <div className="border border-gray-300 rounded-lg p-4">
+              <h3 className="text-xs font-bold text-gray-800 uppercase tracking-wider border-b border-gray-300 pb-1 mb-3">
+                {language === 'ta' ? 'தசா சந்தி காலப் பொருத்தம்' : 'Vimshottari Dasa Sandhi Timeline'}
+              </h3>
+              <div className="text-xs mb-3">
+                <span className="text-gray-500">{labels.dasaSeverity} </span>
+                <span className="font-bold uppercase text-gray-900">{labels[dasaResult.summary_severity]}</span>
+              </div>
+              {dasaResult.clashes.length === 0 ? (
+                <p className="text-xs text-green-700 font-semibold">{labels.noClashMsg}</p>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {dasaResult.clashes.map((clash, idx) => (
+                    <div key={idx} className="border border-gray-200 rounded p-3 bg-gray-50">
+                      <div className="flex justify-between font-bold text-xs text-gray-800 mb-1">
+                        <span>{labels[clash.severity]}</span>
+                        <span>{labels.gapLabel} {clash.gap_months} M</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-[11px] mb-1.5">
+                        <div>
+                          <span className="text-gray-500">{labels.groom}:</span> <span className="font-bold">{clash.boy_planet}</span> (Age: {clash.boy_age})
+                        </div>
+                        <div>
+                          <span className="text-gray-500">{labels.bride}:</span> <span className="font-bold">{clash.girl_planet}</span> (Age: {clash.girl_age})
+                        </div>
+                      </div>
+                      <p className="text-[10px] text-gray-600 italic">
+                        <strong>{labels.adviceLabel}</strong> {language === 'ta' ? clash.advice_ta : clash.advice_en}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </>
   )
 }
