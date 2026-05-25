@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "JothiSoft | Professional Tamil Astrology",
@@ -32,6 +32,7 @@ export default function RootLayout({
       <body className="font-sans antialiased selection:bg-gold-deep selection:text-text-inverse">
         {children}
         <ToastContainer />
+        <Analytics />
       </body>
     </html>
   );
