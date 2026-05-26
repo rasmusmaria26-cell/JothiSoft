@@ -8,6 +8,31 @@ import { apiLimiter } from '../middleware/rateLimit';
 const router = Router();
 router.use(apiLimiter);
 
+const getTithiIndexByName = (name: string, paksha: string): number => {
+  const tithiNames = [
+    "pratipada", "dvitiya", "tritiya", "chaturthi", "panchami",
+    "shashthi", "saptami", "ashtami", "navami", "dashami",
+    "ekadashi", "dwadashi", "trayodashi", "chaturdashi", "purnima"
+  ];
+  const cleanName = name.toLowerCase().trim();
+  const cleanPaksha = paksha.toLowerCase().trim();
+  
+  if (cleanName === 'amavasya') {
+    return 30;
+  }
+  
+  const baseIndex = tithiNames.indexOf(cleanName);
+  if (baseIndex === -1) {
+    return 1;
+  }
+  
+  if (cleanPaksha.includes('krishna')) {
+    return baseIndex + 16;
+  } else {
+    return baseIndex + 1;
+  }
+};
+
 // Endpoint: /api/panchangam/daily
 // Allowed as GET/POST for flexibility
 router.all('/daily', authenticate, async (req: Request, res: Response, next) => {
@@ -28,7 +53,7 @@ router.all('/daily', authenticate, async (req: Request, res: Response, next) => 
       parseFloat(lat),
       parseFloat(lng),
       parseFloat(utcOffset),
-      language || 'ta'
+      'en' // Force English query so names map to translation dictionaries perfectly on frontend
     );
 
     const RAHU_KALAM = [
@@ -44,22 +69,39 @@ router.all('/daily', authenticate, async (req: Request, res: Response, next) => 
     const dateObj = new Date(date as string);
     const dayOfWeek = dateObj.getDay();
 
+    const normalizeKaranam = (name: string): string => {
+      const lower = name.toLowerCase();
+      if (lower.includes('bava')) return 'Bava';
+      if (lower.includes('balava')) return 'Balava';
+      if (lower.includes('kaulava')) return 'Kaulava';
+      if (lower.includes('taitila')) return 'Taitila';
+      if (lower.includes('garaja') || lower.includes('gara')) return 'Garaja';
+      if (lower.includes('vanija') || lower.includes('vanise')) return 'Vanija';
+      if (lower.includes('vishti') || lower.includes('bhadra')) return 'Vishti';
+      if (lower.includes('shakuni')) return 'Shakuni';
+      if (lower.includes('chatushpada')) return 'Chatushpada';
+      if (lower.includes('naga')) return 'Naga';
+      if (lower.includes('kimstughna') || lower.includes('kintughna')) return 'Kimstughna';
+      return name;
+    };
+
     // Map fields
     let tithiVal = { name: 'Dwitiya', index: 2 };
     let pakshaVal = 'Shukla';
     if (p.tithi && p.tithi.length > 0) {
+      const rawPaksha = p.tithi[0].paksha || 'Shukla';
+      pakshaVal = rawPaksha.toLowerCase().includes('krishna') ? 'Krishna' : 'Shukla';
       tithiVal = {
         name: p.tithi[0].name || 'Dwitiya',
-        index: p.tithi[0].index || 2
+        index: getTithiIndexByName(p.tithi[0].name || 'Dwitiya', pakshaVal)
       };
-      pakshaVal = p.tithi[0].paksha || 'Shukla';
     }
 
     let nakshatraVal = { name: 'Ashwini', index: 1, pada: 1 };
     if (p.nakshatra && p.nakshatra.length > 0) {
       nakshatraVal = {
         name: p.nakshatra[0].name || 'Ashwini',
-        index: p.nakshatra[0].index || 1,
+        index: p.nakshatra[0].id !== undefined ? (p.nakshatra[0].id + 1) : (p.nakshatra[0].index || 1),
         pada: p.nakshatra[0].pada || 1
       };
     }
@@ -68,14 +110,14 @@ router.all('/daily', authenticate, async (req: Request, res: Response, next) => 
     if (p.yoga && p.yoga.length > 0) {
       yogaVal = {
         name: p.yoga[0].name || 'Siddhi',
-        index: p.yoga[0].index || 1
+        index: p.yoga[0].id !== undefined ? (p.yoga[0].id + 1) : (p.yoga[0].index || 1)
       };
     }
 
     let karanamVal = { name: 'Bava' };
-    if (p.karanam && p.karanam.length > 0) {
+    if (p.karana && p.karana.length > 0) {
       karanamVal = {
-        name: p.karanam[0].name || 'Bava'
+        name: normalizeKaranam(p.karana[0].name || 'Bava')
       };
     }
 
@@ -461,7 +503,7 @@ router.get('/detailed', authenticate, async (req: Request, res: Response, next: 
     const targetOffset = tz_offset !== undefined ? parseFloat(tz_offset as string) : 5.5;
     const lang = (language as string) || 'ta';
 
-    const p = await getDailyPanchangam(date as string, targetLat, targetLng, targetOffset, lang);
+    const p = await getDailyPanchangam(date as string, targetLat, targetLng, targetOffset, 'en');
 
     const RAHU_KALAM = [
       { start: '16:30', end: '18:00' }, // Sunday
@@ -476,22 +518,39 @@ router.get('/detailed', authenticate, async (req: Request, res: Response, next: 
     const dateObj = new Date(date as string);
     const dayOfWeek = dateObj.getDay();
 
+    const normalizeKaranam = (name: string): string => {
+      const lower = name.toLowerCase();
+      if (lower.includes('bava')) return 'Bava';
+      if (lower.includes('balava')) return 'Balava';
+      if (lower.includes('kaulava')) return 'Kaulava';
+      if (lower.includes('taitila')) return 'Taitila';
+      if (lower.includes('garaja') || lower.includes('gara')) return 'Garaja';
+      if (lower.includes('vanija') || lower.includes('vanise')) return 'Vanija';
+      if (lower.includes('vishti') || lower.includes('bhadra')) return 'Vishti';
+      if (lower.includes('shakuni')) return 'Shakuni';
+      if (lower.includes('chatushpada')) return 'Chatushpada';
+      if (lower.includes('naga')) return 'Naga';
+      if (lower.includes('kimstughna') || lower.includes('kintughna')) return 'Kimstughna';
+      return name;
+    };
+
     // Map fields
     let tithiVal = { name: 'Dwitiya', index: 2 };
     let pakshaVal = 'Shukla';
     if (p.tithi && p.tithi.length > 0) {
+      const rawPaksha = p.tithi[0].paksha || 'Shukla';
+      pakshaVal = rawPaksha.toLowerCase().includes('krishna') ? 'Krishna' : 'Shukla';
       tithiVal = {
         name: p.tithi[0].name || 'Dwitiya',
-        index: p.tithi[0].index || 2
+        index: getTithiIndexByName(p.tithi[0].name || 'Dwitiya', pakshaVal)
       };
-      pakshaVal = p.tithi[0].paksha || 'Shukla';
     }
 
     let nakshatraVal = { name: 'Ashwini', index: 1, pada: 1 };
     if (p.nakshatra && p.nakshatra.length > 0) {
       nakshatraVal = {
         name: p.nakshatra[0].name || 'Ashwini',
-        index: p.nakshatra[0].index || 1,
+        index: p.nakshatra[0].id !== undefined ? (p.nakshatra[0].id + 1) : (p.nakshatra[0].index || 1),
         pada: p.nakshatra[0].pada || 1
       };
     }
@@ -500,14 +559,14 @@ router.get('/detailed', authenticate, async (req: Request, res: Response, next: 
     if (p.yoga && p.yoga.length > 0) {
       yogaVal = {
         name: p.yoga[0].name || 'Siddhi',
-        index: p.yoga[0].index || 1
+        index: p.yoga[0].id !== undefined ? (p.yoga[0].id + 1) : (p.yoga[0].index || 1)
       };
     }
 
     let karanamVal = { name: 'Bava' };
-    if (p.karanam && p.karanam.length > 0) {
+    if (p.karana && p.karana.length > 0) {
       karanamVal = {
-        name: p.karanam[0].name || 'Bava'
+        name: normalizeKaranam(p.karana[0].name || 'Bava')
       };
     }
 

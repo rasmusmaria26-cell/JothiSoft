@@ -85,7 +85,7 @@ export default function LoginPage() {
         } else if (role === 'retailer') {
           window.location.href = '/retailer'
         } else {
-          window.location.href = '/'
+          window.location.href = '/?ref=login'
         }
       }
     } catch (err: any) {
