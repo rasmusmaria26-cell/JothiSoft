@@ -24,6 +24,10 @@ export const requireSubscription = async (
     const userId = req.user.id;
     const email = req.user.email;
 
+    // Add role bypass so admin and retailer always pass the subscription gate
+    const role = req.user?.user_metadata?.role;
+    if (role === 'admin' || role === 'retailer') return next();
+
     // 1. Bypass check for bootstrap administrators
     const adminEmailsEnv = process.env.ADMIN_EMAILS || '';
     const adminEmails = adminEmailsEnv

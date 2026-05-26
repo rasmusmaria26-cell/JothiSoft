@@ -261,22 +261,36 @@ export default function MonthlyPanchangamPage() {
     }
   }
 
-  // ── Styling helpers ──────────────────────────────────────────────────────────
   const getPakshaStyles = (paksha: 'shukla' | 'krishna') => {
     if (paksha === 'shukla') {
-      return 'bg-emerald-950/30 border border-emerald-500/20 text-emerald-300'
+      return {
+        className: 'bg-emerald-100/90 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-500/30 font-bold',
+        style: { color: 'var(--success)' }
+      }
     }
-    return 'bg-amber-950/20 border border-amber-500/10 text-amber-300'
+    return {
+      className: 'bg-amber-100/90 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-500/20 font-bold',
+      style: { color: 'var(--warning)' }
+    }
   }
 
-  const getTithiSpecialClass = (tithi: string) => {
+  const getTithiSpecialStyles = (tithi: string) => {
     const l = tithi.toLowerCase()
     if (l === 'amavasya') {
-      return 'bg-red-950/40 border border-red-500/40 text-red-300 shadow-sm shadow-red-500/10'
+      return {
+        className: 'bg-red-100 dark:bg-red-950/45 border border-red-300 dark:border-red-500/40 shadow-sm font-bold',
+        style: { color: 'var(--danger)' }
+      }
     } else if (l === 'purnima') {
-      return 'bg-yellow-950/40 border border-[#c9922a]/40 text-[#f2c96a] shadow-sm shadow-[#c9922a]/10'
+      return {
+        className: 'bg-amber-100 dark:bg-yellow-950/45 border border-amber-300 dark:border-[#c9922a]/40 shadow-sm font-bold',
+        style: { color: 'var(--warning)' }
+      }
     } else if (l === 'ekadashi') {
-      return 'bg-emerald-950/45 border border-emerald-400/40 text-emerald-300'
+      return {
+        className: 'bg-emerald-100 dark:bg-emerald-950/45 border border-emerald-300 dark:border-emerald-400/40 shadow-sm font-bold',
+        style: { color: 'var(--success)' }
+      }
     }
     return null
   }
@@ -343,9 +357,8 @@ export default function MonthlyPanchangamPage() {
       <div
         className="rounded-xl border p-4 mb-6 flex flex-col lg:flex-row items-center gap-4 justify-between"
         style={{
-          background: 'rgba(15, 15, 36, 0.45)',
-          borderColor: 'rgba(201, 146, 42, 0.15)',
-          backdropFilter: 'blur(20px)'
+          background: 'var(--bg-card)',
+          borderColor: 'var(--bg-border)'
         }}
       >
         {/* Month / Year Toggles */}
@@ -363,7 +376,7 @@ export default function MonthlyPanchangamPage() {
               value={month}
               onChange={(e) => setMonth(Number(e.target.value))}
               className="bg-bg-elevated border border-bg-border rounded-lg px-3 py-1.5 text-xs sm:text-sm text-text-primary font-bold focus:outline-none focus:border-gold-mid transition-all"
-              style={{ background: 'rgba(26, 18, 9, 0.65)' }}
+              style={{ background: 'var(--bg-elevated)' }}
             >
               {MONTHS_MAP.map((m) => (
                 <option key={m.value} value={m.value}>
@@ -377,7 +390,7 @@ export default function MonthlyPanchangamPage() {
               value={year}
               onChange={(e) => setYear(Number(e.target.value))}
               className="bg-bg-elevated border border-bg-border rounded-lg px-3 py-1.5 text-xs sm:text-sm text-text-primary font-bold focus:outline-none focus:border-gold-mid transition-all"
-              style={{ background: 'rgba(26, 18, 9, 0.65)' }}
+              style={{ background: 'var(--bg-elevated)' }}
             >
               {Array.from({ length: 16 }, (_, i) => 2020 + i).map((y) => (
                 <option key={y} value={y}>
@@ -426,13 +439,13 @@ export default function MonthlyPanchangamPage() {
           >
             {/* GRID VIEW (Desktop/Tablet) */}
             {viewMode === 'grid' && (
-              <div className="hidden md:block rounded-xl border border-white/5 overflow-hidden">
+              <div className="hidden md:block rounded-xl border border-[var(--bg-border)] overflow-hidden">
                 {/* Calendar Headers */}
                 <div 
-                  className="grid grid-cols-7 border-b text-center py-3 text-xs font-bold text-gold-bright tracking-wider uppercase"
+                  className="grid grid-cols-7 border-b text-center py-3 text-xs font-bold text-[var(--gold-deep)] tracking-wider uppercase"
                   style={{
-                    background: 'rgba(26, 18, 9, 0.45)',
-                    borderColor: 'rgba(74, 56, 40, 0.3)'
+                    background: 'var(--bg-elevated)',
+                    borderColor: 'var(--bg-border)'
                   }}
                 >
                   {WEEKDAY_HEADERS[language].map((h) => (
@@ -441,38 +454,40 @@ export default function MonthlyPanchangamPage() {
                 </div>
 
                 {/* Grid Cells */}
-                <div className="grid grid-cols-7 bg-black/10 gap-[1px]">
+                <div className="grid grid-cols-7 bg-[var(--bg-border)] gap-[1px]">
                   {/* Empty offsets */}
                   {gridSpacers.map((offset) => (
                     <div 
                       key={`spacer-${offset}`} 
                       className="min-h-[110px] p-2"
-                      style={{ background: 'rgba(26, 18, 9, 0.15)' }}
+                      style={{ background: 'var(--bg-page)' }}
                     />
                   ))}
 
                   {/* Days */}
                   {daysData.map((day, idx) => {
                     const dateNum = idx + 1
-                    const specialClass = getTithiSpecialClass(day.tithi)
                     const specialLabel = getDayLabel(day.tithi)
 
                     return (
                       <div
                         key={day.date}
                         onClick={() => handleDayClick(day)}
-                        className="min-h-[120px] p-2.5 transition-all duration-200 hover:bg-[#2e2115]/40 hover:scale-[1.01] flex flex-col justify-between cursor-pointer relative border-b border-r"
+                        className="min-h-[120px] p-2.5 transition-all duration-200 hover:bg-[var(--bg-active)] hover:scale-[1.01] flex flex-col justify-between cursor-pointer relative border-b border-r"
                         style={{
-                          background: 'rgba(26, 18, 9, 0.45)',
-                          borderColor: 'rgba(74, 56, 40, 0.3)'
+                          background: 'var(--bg-card)',
+                          borderColor: 'var(--bg-border)'
                         }}
                       >
                         {/* Day Card Header */}
                         <div className="flex items-center justify-between">
-                          <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${getPakshaStyles(day.paksha)}`}>
+                          <span 
+                            className={`text-xs px-2 py-0.5 rounded-full ${getPakshaStyles(day.paksha).className}`}
+                            style={getPakshaStyles(day.paksha).style}
+                          >
                             {isTa ? day.paksha_ta.split(' ')[0] : day.paksha.toUpperCase()}
                           </span>
-                          <span className="text-sm font-mono font-bold text-[#fff3cc]">
+                          <span className="text-sm font-mono font-bold text-[var(--text-primary)]">
                             {dateNum}
                           </span>
                         </div>
@@ -480,14 +495,27 @@ export default function MonthlyPanchangamPage() {
                         {/* Badges / Text summary */}
                         <div className="mt-3 flex flex-col gap-1.5">
                           {/* Tithi Badge */}
-                          <div className={`text-[10px] sm:text-xs font-bold truncate rounded px-1.5 py-0.5 max-w-full ${
-                            specialClass || 'text-text-primary bg-white/5 border border-white/5'
-                          }`}>
-                            {isTa ? day.tithi_ta : day.tithi}
-                          </div>
+                          {(() => {
+                            const special = getTithiSpecialStyles(day.tithi)
+                            if (special) {
+                              return (
+                                <div 
+                                  className={`text-[10px] sm:text-xs truncate rounded px-1.5 py-0.5 max-w-full ${special.className}`}
+                                  style={special.style}
+                                >
+                                  {isTa ? day.tithi_ta : day.tithi}
+                                </div>
+                              )
+                            }
+                            return (
+                              <div className="text-[10px] sm:text-xs font-bold truncate rounded px-1.5 py-0.5 max-w-full text-[var(--text-primary)] bg-[var(--bg-elevated)] border border-[var(--bg-border)]">
+                                {isTa ? day.tithi_ta : day.tithi}
+                              </div>
+                            )
+                          })()}
 
                           {/* Nakshatra Badge */}
-                          <div className="text-[10px] sm:text-xs text-text-secondary truncate bg-[#241a0f]/50 border border-white/5 rounded px-1.5 py-0.5 font-medium">
+                          <div className="text-[10px] sm:text-xs text-[var(--text-secondary)] truncate bg-[var(--bg-active)] border border-[var(--bg-border)] rounded px-1.5 py-0.5 font-medium">
                             {isTa ? day.nakshatra_ta : day.nakshatra}
                           </div>
                         </div>
@@ -508,7 +536,6 @@ export default function MonthlyPanchangamPage() {
               <div className="md:hidden space-y-3">
                 {daysData.map((day, idx) => {
                   const dateNum = idx + 1
-                  const specialClass = getTithiSpecialClass(day.tithi)
                   const specialLabel = getDayLabel(day.tithi)
 
                   return (
@@ -517,14 +544,14 @@ export default function MonthlyPanchangamPage() {
                       onClick={() => handleDayClick(day)}
                       className="rounded-xl border p-3 flex items-center justify-between gap-3 active:scale-[0.98] transition-all cursor-pointer"
                       style={{
-                        background: 'rgba(26, 18, 9, 0.45)',
-                        borderColor: 'rgba(74, 56, 40, 0.4)'
+                        background: 'var(--bg-card)',
+                        borderColor: 'var(--bg-border)'
                       }}
                     >
                       {/* Left side date indicator */}
                       <div className="flex items-center gap-3">
                         <div 
-                          className="h-10 w-10 rounded-lg flex flex-col items-center justify-center font-mono font-bold text-[#fff3cc]"
+                          className="h-10 w-10 rounded-lg flex flex-col items-center justify-center font-mono font-bold text-[var(--text-primary)]"
                           style={{ background: 'rgba(201, 146, 42, 0.1)' }}
                         >
                           <span className="text-base leading-none">{dateNum}</span>
@@ -536,18 +563,38 @@ export default function MonthlyPanchangamPage() {
                         <div>
                           {/* Tithi name and Nakshatra name list */}
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className={`text-[11px] font-bold px-1.5 py-0.5 rounded ${
-                              specialClass || 'text-text-primary bg-white/5'
-                            }`}>
-                              {isTa ? day.tithi_ta : day.tithi}
-                            </span>
-                            <span className="text-[11px] text-text-secondary bg-[#241a0f]/50 px-1.5 py-0.5 rounded font-medium border border-white/5">
+                            {(() => {
+                              const special = getTithiSpecialStyles(day.tithi)
+                              if (special) {
+                                return (
+                                  <span 
+                                    className={`text-[11px] font-bold px-1.5 py-0.5 rounded border ${special.className}`}
+                                    style={special.style}
+                                  >
+                                    {isTa ? day.tithi_ta : day.tithi}
+                                  </span>
+                                )
+                              }
+                              return (
+                                <span className="text-[11px] font-bold px-1.5 py-0.5 rounded border text-[var(--text-primary)] bg-[var(--bg-elevated)] border-[var(--bg-border)]">
+                                  {isTa ? day.tithi_ta : day.tithi}
+                                </span>
+                              )
+                            })()}
+                            <span className="text-[11px] text-[var(--text-secondary)] bg-[var(--bg-active)] px-1.5 py-0.5 rounded font-medium border border-[var(--bg-border)]">
                               {isTa ? day.nakshatra_ta : day.nakshatra}
                             </span>
                           </div>
 
                           <div className="flex items-center gap-1.5 mt-1">
-                            <span className="text-[9px] uppercase tracking-wider text-text-muted">
+                            <span 
+                              className="text-[9px] uppercase tracking-wider px-1.5 py-0.2 rounded-full font-bold"
+                              style={{
+                                ...getPakshaStyles(day.paksha).style,
+                                background: getPakshaStyles(day.paksha).className.includes('emerald') ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)',
+                                border: `1px solid ${getPakshaStyles(day.paksha).className.includes('emerald') ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)'}`
+                              }}
+                            >
                               {isTa ? day.paksha_ta : `${day.paksha} paksha`}
                             </span>
                           </div>
@@ -593,8 +640,8 @@ export default function MonthlyPanchangamPage() {
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               className="relative w-full max-w-xl rounded-t-2xl border-t p-5 overflow-hidden shadow-2xl z-10"
               style={{
-                background: '#1a1209', // Sleek dark mode background
-                borderColor: 'rgba(201, 146, 42, 0.3)'
+                background: 'var(--bg-card)',
+                borderColor: 'var(--bg-border)'
               }}
             >
               {/* Top notch */}
@@ -610,7 +657,10 @@ export default function MonthlyPanchangamPage() {
 
               {/* Day Header details */}
               <div className="mb-6">
-                <span className={`text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full ${getPakshaStyles(activeDay.paksha)}`}>
+                <span 
+                  className={`text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full ${getPakshaStyles(activeDay.paksha).className}`}
+                  style={getPakshaStyles(activeDay.paksha).style}
+                >
                   {isTa ? activeDay.paksha_ta : `${activeDay.paksha.toUpperCase()} PAKSHA`}
                 </span>
 
@@ -643,7 +693,7 @@ export default function MonthlyPanchangamPage() {
                   >
                     {/* Primary Timing Cards (Sunrise, Sunset, Rahu Kalam) */}
                     <div className="grid grid-cols-3 gap-3">
-                      <div className="p-3 bg-black/30 border border-white/5 rounded-xl flex flex-col justify-between">
+                      <div className="p-3 bg-[var(--bg-elevated)] border border-[var(--bg-border)] rounded-xl flex flex-col justify-between">
                         <span className="text-[9px] uppercase font-bold text-text-muted block">
                           {labels.sunrise}
                         </span>
@@ -653,7 +703,7 @@ export default function MonthlyPanchangamPage() {
                         </div>
                       </div>
 
-                      <div className="p-3 bg-black/30 border border-white/5 rounded-xl flex flex-col justify-between">
+                      <div className="p-3 bg-[var(--bg-elevated)] border border-[var(--bg-border)] rounded-xl flex flex-col justify-between">
                         <span className="text-[9px] uppercase font-bold text-text-muted block">
                           {labels.sunset}
                         </span>
@@ -677,22 +727,22 @@ export default function MonthlyPanchangamPage() {
                     </div>
 
                     {/* Detailed Tithi & Nakshatra indices */}
-                    <div className="p-4 bg-black/20 border border-white/5 rounded-xl space-y-3">
-                      <div className="flex justify-between border-b border-white/5 pb-2">
+                    <div className="p-4 bg-[var(--bg-elevated)] border border-[var(--bg-border)] rounded-xl space-y-3">
+                      <div className="flex justify-between border-b border-[var(--bg-border)] pb-2">
                         <span className="text-xs text-text-secondary">{isTa ? 'திதி' : 'Tithi'}</span>
                         <span className="text-xs font-bold text-gold-bright">
                           {isTa ? activeDay.tithi_ta : activeDay.tithi} (Index: {activeDay.tithi_index})
                         </span>
                       </div>
 
-                      <div className="flex justify-between border-b border-white/5 pb-2">
+                      <div className="flex justify-between border-b border-[var(--bg-border)] pb-2">
                         <span className="text-xs text-text-secondary">{isTa ? 'நட்சத்திரம்' : 'Nakshatra'}</span>
                         <span className="text-xs font-bold text-gold-bright">
                           {isTa ? activeDay.nakshatra_ta : activeDay.nakshatra} (Index: {activeDay.nakshatra_index})
                         </span>
                       </div>
 
-                      <div className="flex justify-between border-b border-white/5 pb-2">
+                      <div className="flex justify-between border-b border-[var(--bg-border)] pb-2">
                         <span className="text-xs text-text-secondary">{labels.yogam}</span>
                         <span className="text-xs font-bold text-text-primary">
                           {isTa ? activeDay.yogam_ta : activeDay.yogam}
@@ -709,14 +759,14 @@ export default function MonthlyPanchangamPage() {
 
                     {/* Planetary Coordinates (Lazily loaded) */}
                     {detailedData && (
-                      <div className="p-4 bg-[#241a0f]/40 border border-gold-mid/10 rounded-xl">
+                      <div className="p-4 bg-[var(--bg-active)] border border-[var(--bg-border)] rounded-xl">
                         <h4 className="text-xs font-bold text-gold-bright mb-3 flex items-center gap-1.5">
                           <Compass size={13} className="text-gold-mid" />
                           {isTa ? 'சூரிய / சந்திர பாகை நிலைகள்' : 'Planetary Coordinates'}
                         </h4>
 
                         <div className="grid grid-cols-2 gap-3">
-                          <div className="p-2.5 bg-black/20 border border-white/5 rounded-lg flex items-center justify-between">
+                          <div className="p-2.5 bg-[var(--bg-elevated)] border border-[var(--bg-border)] rounded-lg flex items-center justify-between">
                             <div>
                               <span className="text-[9px] uppercase font-bold text-text-muted block">
                                 {labels.sunLongitude}
@@ -728,7 +778,7 @@ export default function MonthlyPanchangamPage() {
                             <Sun size={16} className="text-yellow-400 opacity-60" />
                           </div>
 
-                          <div className="p-2.5 bg-black/20 border border-white/5 rounded-lg flex items-center justify-between">
+                          <div className="p-2.5 bg-[var(--bg-elevated)] border border-[var(--bg-border)] rounded-lg flex items-center justify-between">
                             <div>
                               <span className="text-[9px] uppercase font-bold text-text-muted block">
                                 {labels.moonLongitude}

@@ -257,9 +257,8 @@ export default function HoroscopePage() {
           <div 
             className="rounded-xl border p-5 relative overflow-hidden"
             style={{
-              background: 'rgba(15, 15, 36, 0.45)',
-              borderColor: 'rgba(201, 146, 42, 0.2)',
-              backdropFilter: 'blur(20px)'
+              background: 'var(--bg-card)',
+              borderColor: 'var(--bg-border)'
             }}
           >
             <h2 className="text-sm sm:text-base font-bold text-gold-bright mb-4 flex items-center gap-2 border-b border-white/5 pb-2">
@@ -287,7 +286,7 @@ export default function HoroscopePage() {
                       onChange={(e) => setName(e.target.value)}
                       placeholder={labels.namePlaceholder}
                       className="w-full bg-bg-elevated/45 border border-bg-border rounded-md pl-10 pr-4 py-2 text-sm text-text-primary focus:outline-none focus:border-gold-mid transition-colors"
-                      style={{ background: 'rgba(26, 18, 9, 0.45)' }}
+                      style={{ background: 'var(--bg-elevated)' }}
                     />
                   </div>
                 </div>
@@ -306,7 +305,7 @@ export default function HoroscopePage() {
                         value={dob}
                         onChange={(e) => setDob(e.target.value)}
                         className="w-full bg-bg-elevated/45 border border-bg-border rounded-md pl-10 pr-3 py-2 text-sm text-text-primary focus:outline-none focus:border-gold-mid transition-colors"
-                        style={{ background: 'rgba(26, 18, 9, 0.45)' }}
+                        style={{ background: 'var(--bg-elevated)' }}
                       />
                     </div>
                   </div>
@@ -323,7 +322,7 @@ export default function HoroscopePage() {
                         value={tob}
                         onChange={(e) => setTob(e.target.value)}
                         className="w-full bg-bg-elevated/45 border border-bg-border rounded-md pl-10 pr-3 py-2 text-sm text-text-primary focus:outline-none focus:border-gold-mid transition-colors"
-                        style={{ background: 'rgba(26, 18, 9, 0.45)' }}
+                        style={{ background: 'var(--bg-elevated)' }}
                       />
                     </div>
                   </div>
@@ -411,8 +410,8 @@ export default function HoroscopePage() {
                 exit={{ opacity: 0, y: -15 }}
                 className="rounded-xl border p-12 text-center flex flex-col items-center justify-center gap-4"
                 style={{
-                  background: 'rgba(15, 15, 36, 0.25)',
-                  borderColor: 'rgba(42, 42, 74, 0.4)',
+                  background: 'var(--bg-card)',
+                  borderColor: 'var(--bg-border)',
                   minHeight: '400px'
                 }}
               >
@@ -438,9 +437,8 @@ export default function HoroscopePage() {
                 exit={{ opacity: 0, y: -15 }}
                 className="rounded-xl border p-4 sm:p-6"
                 style={{
-                  background: 'rgba(15, 15, 36, 0.45)',
-                  borderColor: 'rgba(201, 146, 42, 0.25)',
-                  backdropFilter: 'blur(20px)'
+                  background: 'var(--bg-card)',
+                  borderColor: 'var(--bg-border)'
                 }}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-4 mb-6">
@@ -454,7 +452,7 @@ export default function HoroscopePage() {
                   </div>
 
                   {/* Tabs Selector */}
-                  <div className="flex bg-black/40 border border-bg-border p-1 rounded-lg self-start">
+                  <div className="flex bg-[var(--bg-elevated)] border border-bg-border p-1 rounded-lg self-start">
                     {[
                       { id: 'charts', label: labels.tabCharts },
                       { id: 'planets', label: labels.tabPlanets },
@@ -556,8 +554,8 @@ export default function HoroscopePage() {
                             href="/horoscope/antharam"
                             className="p-4 rounded-xl border border-gold-mid/30 hover:border-gold-bright transition-all duration-300 flex items-center justify-between gap-4 group"
                             style={{
-                              background: 'linear-gradient(135deg, #3a2b1c 0%, #2e2115 100%)',
-                              boxShadow: '0 0 15px rgba(201, 146, 42, 0.08)'
+                              background: 'linear-gradient(135deg, var(--gold-tint) 0%, var(--gold-subtle) 100%)',
+                              boxShadow: '0 0 15px var(--gold-tint)'
                             }}
                           >
                             <div className="flex items-center gap-3">

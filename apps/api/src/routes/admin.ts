@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { supabaseAdmin } from '../lib/supabase';
 import { authenticate } from '../middleware/auth';
 import { requireAdmin } from '../middleware/adminAuth';
+import { requireRole } from '../middleware/role';
 
 const router = Router();
 
@@ -71,131 +72,125 @@ router.get('/stats', async (req: Request, res: Response): Promise<void> => {
   }
 });
 
-/**
- * GET /api/admin/users
- * Returns a paginated, filterable, and searchable list of registered users.
- */
-router.get('/users', async (req: Request, res: Response): Promise<void> => {
+// GET /api/admin/users — full user list with filters
+router.get('/users', authenticate, requireRole('admin'), async (req, res, next) => {
   try {
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 20;
-    const search = (req.query.search as string || '').trim();
-    
-    // Map uppercase/lowercase filter from frontend to the expected backend key
-    const filterInput = (req.query.filter as string || '').trim().toUpperCase();
-    let filter = '';
-    if (filterInput === 'PRO') filter = 'active_pro';
-    else if (filterInput === 'TRIAL') filter = 'active_trial';
-    else if (filterInput === 'EXPIRED') filter = 'expired';
-    else if (filterInput === 'ADMIN') filter = 'admin';
-    else if (filterInput && filterInput !== 'ALL') {
-      filter = filterInput.toLowerCase();
+    const { role, filter, search, page = '1', limit = '10' } = req.query;
+    const pageNum = parseInt(page as string) || 1;
+    const limitNum = parseInt(limit as string) || 10;
+
+    // 1. Fetch a large list of users from Supabase Auth to allow accurate global searching & filtering
+    const { data: { users }, error } = await supabaseAdmin.auth.admin.listUsers({
+      page:    1,
+      perPage: 1000,
+    });
+
+    if (error) return next(error);
+
+    // 2. Fetch all retailer-to-customer linkages from DB
+    const { data: retailerLinks } = await supabaseAdmin
+      .from('retailer_customers')
+      .select('*');
+
+    const links = retailerLinks || [];
+    let filtered = users;
+
+    // 3. Apply Search
+    const searchVal = search as string;
+    if (searchVal) {
+      const term = searchVal.toLowerCase();
+      filtered = filtered.filter(u => 
+        (u.email && u.email.toLowerCase().includes(term)) ||
+        (u.phone && u.phone.includes(term)) ||
+        (u.user_metadata?.name && u.user_metadata.name.toLowerCase().includes(term))
+      );
     }
 
-    const start = (page - 1) * limit;
-    const end = start + limit - 1;
-    const now = new Date().toISOString();
-
-    let selectString = '*, subscriptions(plan, expires_at, created_at)';
-
-    // If filtering on subscription attributes, use inner join to filter database-side
-    if (filter === 'active_trial' || filter === 'active_pro' || filter === 'expired') {
-      selectString = '*, subscriptions!inner(plan, expires_at, created_at)';
+    // 4. Apply Filter (ALL, PRO, TRIAL, EXPIRED, ADMIN, RETAILER_UPGRADED, DIRECT_SIGNUP, or specific role)
+    const filterVal = (filter || role) as string;
+    if (filterVal && filterVal !== 'ALL') {
+      if (filterVal === 'PRO') {
+        filtered = filtered.filter(u => u.user_metadata?.plan === 'PRO');
+      } else if (filterVal === 'TRIAL') {
+        filtered = filtered.filter(u => u.user_metadata?.plan === 'FREE' || u.user_metadata?.plan === 'TRIAL');
+      } else if (filterVal === 'EXPIRED') {
+        filtered = filtered.filter(u => !u.user_metadata?.plan || u.user_metadata?.plan === 'EXPIRED');
+      } else if (filterVal === 'ADMIN') {
+        filtered = filtered.filter(u => u.user_metadata?.role === 'admin' || u.user_metadata?.is_admin === true);
+      } else if (filterVal === 'RETAILER_UPGRADED') {
+        filtered = filtered.filter(u => links.some(l => l.customer_id === u.id));
+      } else if (filterVal === 'DIRECT_SIGNUP') {
+        filtered = filtered.filter(u => 
+          u.user_metadata?.role === 'customer' && !links.some(l => l.customer_id === u.id)
+        );
+      } else {
+        filtered = filtered.filter(u => u.user_metadata?.role === filterVal);
+      }
     }
 
-    let query = supabaseAdmin
-      .from('users')
-      .select(selectString, { count: 'exact' });
+    // 5. Paginate the filtered results
+    const total = filtered.length;
+    const totalPages = Math.ceil(total / limitNum);
+    const offset = (pageNum - 1) * limitNum;
+    const paginatedUsers = filtered.slice(offset, offset + limitNum);
 
-    // Apply search queries
-    if (search) {
-      query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%,phone.ilike.%${search}%`);
-    }
-
-    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-
-    // Apply filters
-    if (filter === 'active_trial') {
-      query = query.eq('subscriptions.plan', 'FREE').gt('subscriptions.created_at', twentyFourHoursAgo);
-    } else if (filter === 'active_pro') {
-      query = query.eq('subscriptions.plan', 'PRO').gt('subscriptions.expires_at', now);
-    } else if (filter === 'expired') {
-      query = query.or(`plan.eq.PRO,expires_at.lte.${now},plan.eq.FREE,created_at.lte.${twentyFourHoursAgo}`, { foreignTable: 'subscriptions' });
-    }
-
-    // Order by created_at descending
-    query = query.order('created_at', { ascending: false }).range(start, end);
-
-    console.log('[DEBUG AdminUsers] req.query:', req.query);
-    const { data: users, count, error } = await query;
-    if (error) {
-      console.error('[DEBUG AdminUsers] query error:', error);
-      throw error;
-    }
-    console.log('[DEBUG AdminUsers] users returned from DB count:', users?.length);
-
-    const adminEmailsEnv = process.env.ADMIN_EMAILS || '';
-    const adminEmails = adminEmailsEnv
-      .split(',')
-      .map((e) => e.trim().toLowerCase())
-      .filter(Boolean);
-
-    // Map to include calculated status for convenience
-    let processedUsers = (users || []).map((u: any) => {
-      const sub = u.subscriptions?.[0] || u.subscriptions || null;
-      let status = 'EXPIRED';
+    // Map to required AdminUserDetail properties with calculatedStatus & upgradedBy retailer tags
+    const mappedUsers = paginatedUsers.map(u => {
+      const adminEmailsEnv = process.env.ADMIN_EMAILS || '';
+      const adminEmails = adminEmailsEnv
+        .split(',')
+        .map((e) => e.trim().toLowerCase())
+        .filter(Boolean);
 
       const isUserAdmin = (u.email && adminEmails.includes(u.email.toLowerCase())) || u.user_metadata?.is_admin === true;
-
+      let calculatedStatus: 'TRIAL' | 'PRO' | 'EXPIRED' | 'ADMIN' = 'EXPIRED';
       if (isUserAdmin) {
-        status = 'ADMIN';
-      } else if (sub) {
-        if (sub.plan === 'PRO' && sub.expires_at && new Date(sub.expires_at) > new Date()) {
-          status = 'PRO';
-        } else if (sub.plan === 'FREE' && sub.created_at) {
-          const trialExpires = new Date(new Date(sub.created_at).getTime() + 24 * 60 * 60 * 1000);
-          if (trialExpires > new Date()) {
-            status = 'TRIAL';
-          }
-        }
+        calculatedStatus = 'ADMIN';
+      } else if (u.user_metadata?.plan === 'PRO') {
+        calculatedStatus = 'PRO';
+      } else if (u.user_metadata?.plan === 'FREE' || u.user_metadata?.plan === 'TRIAL') {
+        calculatedStatus = 'TRIAL';
       }
 
-      const subWithNote = sub ? {
-        ...sub,
-        payment_note: u.user_metadata?.payment_note || null,
-      } : null;
+      // Check if user has been upgraded by a retailer
+      const link = links.find(l => l.customer_id === u.id);
+      let upgradedBy = null;
+      if (link) {
+        const retailerUser = users.find(r => r.id === link.retailer_id);
+        upgradedBy = {
+          retailerId: link.retailer_id,
+          name: retailerUser?.user_metadata?.name || 'Unknown Retailer',
+          email: retailerUser?.email || '',
+          phone: retailerUser?.phone || '',
+          activated_at: link.activated_at || link.created_at,
+        };
+      }
 
       return {
-        ...u,
-        is_admin: isUserAdmin,
-        subscription: subWithNote,
-        calculatedStatus: status,
+        id:              u.id,
+        phone:           u.phone || '',
+        email:           u.email || '',
+        name:            u.user_metadata?.name || 'Anonymous User',
+        role:            u.user_metadata?.role ?? 'customer',
+        plan:            u.user_metadata?.plan ?? 'FREE',
+        plan_expires_at: u.user_metadata?.plan_expires_at,
+        created_at:      u.created_at,
+        calculatedStatus,
+        upgradedBy,
       };
     });
 
-    // Handle in-memory admin filter if requested
-    if (filter === 'admin') {
-      processedUsers = processedUsers.filter((u: any) => u.is_admin);
-    }
-
-    res.json({
+    return res.json({
       success: true,
       data: {
-        users: processedUsers,
-        total: count || processedUsers.length,
-        page,
-        limit,
-        totalPages: Math.ceil((count || processedUsers.length) / limit),
-      },
+        total,
+        page: pageNum,
+        limit: limitNum,
+        totalPages,
+        users: mappedUsers,
+      }
     });
-  } catch (error: any) {
-    console.error('[Admin Users Search Error]:', error);
-    res.status(500).json({
-      success: false,
-      error: 'USERS_FETCH_FAILED',
-      message: error.message || 'Failed to search or filter users',
-    });
-  }
+  } catch (err) { next(err); }
 });
 
 /**
@@ -505,6 +500,124 @@ router.get('/expiring', async (req: Request, res: Response): Promise<void> => {
       error: 'EXPIRING_USERS_FETCH_FAILED',
       message: error.message || 'Failed to fetch users expiring soon',
     });
+  }
+});
+
+// POST /api/admin/retailers/create — create a retailer account
+router.post('/retailers/create', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { email, password, name, phone } = req.body;
+
+    const { data: user, error } = await supabaseAdmin.auth.admin.createUser({
+      email,
+      password,
+      phone,
+      email_confirm: true,
+      phone_confirm: true,
+      user_metadata: {
+        name,
+        role: 'retailer',
+      },
+    });
+
+    if (error) {
+      res.status(400).json({ success: false, error: 'CREATE_RETAILER_FAILED', message: error.message });
+      return;
+    }
+
+    res.status(201).json({
+      success: true,
+      data: {
+        retailer: {
+          id:    user.user.id,
+          email: user.user.email,
+          name:  user.user.user_metadata.name,
+        },
+      },
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: 'SERVER_ERROR', message: err.message });
+  }
+});
+
+// GET /api/admin/retailers/:id/customers — see any retailer's customer list
+router.get('/retailers/:id/customers', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    const { data, error } = await supabaseAdmin
+      .from('retailer_customers')
+      .select('customer_id, activated_at, plan_given, expires_at')
+      .eq('retailer_id', id);
+
+    if (error) {
+      res.status(400).json({ success: false, error: 'DB_ERROR', message: error.message });
+      return;
+    }
+
+    const customerIds = data?.map(item => item.customer_id) || [];
+    if (customerIds.length === 0) {
+      res.json({ success: true, customers: [] });
+      return;
+    }
+
+    const { data: { users }, error: usersError } = await supabaseAdmin.auth.admin.listUsers();
+    if (usersError) {
+      res.status(400).json({ success: false, error: 'AUTH_ERROR', message: usersError.message });
+      return;
+    }
+
+    const customers = data.map(link => {
+      const u = users.find(user => user.id === link.customer_id);
+      return {
+        id:           link.customer_id,
+        email:        u?.email,
+        phone:        u?.phone,
+        name:         u?.user_metadata?.name,
+        activated_at: link.activated_at,
+        plan_given:   link.plan_given,
+        expires_at:   link.expires_at,
+      };
+    });
+
+    res.json({ success: true, customers });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: 'SERVER_ERROR', message: err.message });
+  }
+});
+
+// PUT /api/admin/users/:id/role — change any user's role
+router.put('/users/:id/role', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { role } = req.body;
+
+    if (!['admin', 'retailer', 'customer'].includes(role)) {
+      res.status(400).json({ success: false, message: 'Invalid role specified.' });
+      return;
+    }
+
+    const { data: user, error } = await supabaseAdmin.auth.admin.updateUserById(id as string, {
+      user_metadata: { role },
+    });
+
+    if (error) {
+      res.status(400).json({ success: false, error: 'UPDATE_FAILED', message: error.message });
+      return;
+    }
+
+    res.json({
+      success: true,
+      message: `Successfully set role to ${role}`,
+      data: {
+        user: {
+          id:   user.user.id,
+          role: user.user.user_metadata.role,
+        },
+      },
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: 'SERVER_ERROR', message: err.message });
   }
 });
 

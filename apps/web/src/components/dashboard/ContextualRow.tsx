@@ -70,11 +70,11 @@ export function ContextualRow() {
             >
               <Link
                 href={item.href}
-                className="flex items-center gap-[9px] rounded-[var(--radius-md)] px-[10px] py-[12px] sm:py-[9px]"
+                className="flex items-center gap-[9px] rounded-[var(--radius-md)] px-[10px] py-[12px] sm:py-[9px] border"
                 style={{
-                  background: 'rgba(15, 15, 36, 0.75)',
+                  background: 'var(--bg-card)',
+                  borderColor: 'var(--bg-border)',
                   backdropFilter: 'blur(12px)',
-                  border: `1px solid ${item.colorHex}28`,
                 }}
               >
                 <div
@@ -84,7 +84,7 @@ export function ContextualRow() {
                   <Icon size={13} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-semibold text-text-secondary leading-tight">
+                  <p className="text-[10px] font-semibold text-[var(--text-primary)] leading-tight">
                     {item.label}
                   </p>
                   <p className="text-[10px] sm:text-[9px] italic mt-[1px]" style={{ color: 'var(--text-muted)' }}>

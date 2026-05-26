@@ -61,7 +61,7 @@ export default function LoginPage() {
           throw new Error(result.message || 'Invalid credentials')
         }
 
-        const { access_token, refresh_token, is_admin } = result.data
+        const { access_token, refresh_token, is_admin, role } = result.data
         
         // Hydrate Supabase browser session
         const { error: sessionError } = await supabase.auth.setSession({
@@ -73,8 +73,10 @@ export default function LoginPage() {
           throw new Error(sessionError.message)
         }
 
-        if (is_admin) {
+        if (role === 'admin' || is_admin) {
           router.push('/admin')
+        } else if (role === 'retailer') {
+          router.push('/retailer')
         } else {
           router.push('/')
         }

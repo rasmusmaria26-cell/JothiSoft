@@ -153,7 +153,7 @@ export default function VastuDaysPage() {
       <motion.div variants={item}>
         <div
           className="inline-flex items-center gap-3 p-3 rounded-xl"
-          style={{ background: '#2e2115', border: '1px solid rgba(201, 146, 42, 0.3)' }}
+          style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-border)' }}
         >
           <label className="text-[13px] font-semibold text-text-muted">{labels.year}:</label>
           <div className="flex items-center gap-1">
@@ -162,10 +162,10 @@ export default function VastuDaysPage() {
                 key={y}
                 onClick={() => setYear(y)}
                 className={`px-3 py-1.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${year === y
-                    ? 'text-[#1a1209] shadow-md'
+                    ? 'text-text-primary shadow-md'
                     : 'text-text-secondary hover:text-text-primary'
                   }`}
-                style={year === y ? { background: '#c9922a' } : {}}
+                style={year === y ? { background: 'var(--bg-active)' } : {}}
               >
                 {y}
               </button>
@@ -229,10 +229,10 @@ export default function VastuDaysPage() {
                   <div
                     className="rounded-2xl overflow-hidden transition-all duration-300"
                     style={{
-                      background: '#2e2115',
+                      background: 'var(--bg-card)',
                       border: upcoming
-                        ? '1px solid rgba(201, 146, 42, 0.5)'
-                        : '1px solid rgba(201, 146, 42, 0.2)',
+                        ? '1px solid var(--gold-mid)'
+                        : '1px solid var(--bg-border)',
                       boxShadow: upcoming ? '0 0 20px rgba(201, 146, 42, 0.08)' : 'none'
                     }}
                   >
@@ -243,12 +243,12 @@ export default function VastuDaysPage() {
                           {/* Date Badge */}
                           <div
                             className="flex flex-col items-center justify-center w-16 h-16 rounded-xl shrink-0"
-                            style={{ background: upcoming ? 'rgba(201, 146, 42, 0.15)' : 'rgba(255,255,255,0.04)' }}
+                            style={{ background: upcoming ? 'var(--gold-tint)' : 'var(--bg-active)' }}
                           >
                             <span className="text-[11px] text-text-muted font-medium">
                               {new Date(day.gregorian_date).toLocaleString('en', { month: 'short' })}
                             </span>
-                            <span className="text-[26px] font-black leading-tight" style={{ color: upcoming ? '#c9922a' : '#888' }}>
+                            <span className="text-[26px] font-black leading-tight" style={{ color: upcoming ? 'var(--gold-deep)' : 'var(--text-disabled)' }}>
                               {new Date(day.gregorian_date).getDate()}
                             </span>
                             <span className="text-[10px] text-text-muted">
@@ -265,7 +265,7 @@ export default function VastuDaysPage() {
                               {upcoming && (
                                 <span
                                   className="px-2 py-0.5 rounded-full text-[10px] font-bold"
-                                  style={{ background: 'rgba(201, 146, 42, 0.2)', color: '#c9922a' }}
+                                  style={{ background: 'var(--gold-tint)', color: 'var(--gold-deep)' }}
                                 >
                                   <Sparkles size={9} className="inline mr-1" />
                                   {language === 'ta' ? 'வரவிருக்கும்' : 'Upcoming'}
@@ -306,9 +306,9 @@ export default function VastuDaysPage() {
                           onClick={() => setExpandedDay(isExpanded ? null : day.id)}
                           className="shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-colors cursor-pointer"
                           style={{
-                            background: isExpanded ? 'rgba(201, 146, 42, 0.2)' : 'rgba(255,255,255,0.05)',
-                            color: isExpanded ? '#c9922a' : '#888',
-                            border: '1px solid rgba(255,255,255,0.08)'
+                            background: isExpanded ? 'var(--bg-active)' : 'var(--bg-page)',
+                            color: isExpanded ? 'var(--gold-deep)' : 'var(--text-muted)',
+                            border: '1px solid var(--bg-border)'
                           }}
                         >
                           {isExpanded ? (
@@ -332,7 +332,7 @@ export default function VastuDaysPage() {
                         >
                           <div
                             className="px-5 pb-5"
-                            style={{ borderTop: '1px solid rgba(201, 146, 42, 0.15)' }}
+                            style={{ borderTop: '1px solid var(--bg-border)' }}
                           >
                             <p className="text-[12px] font-semibold text-text-muted mt-4 mb-3 uppercase tracking-wider">
                               {labels.activities}
@@ -344,15 +344,15 @@ export default function VastuDaysPage() {
                                   className="flex items-center justify-between p-3 rounded-xl"
                                   style={{
                                     background: act.highly_auspicious
-                                      ? 'rgba(201, 146, 42, 0.12)'
+                                      ? 'var(--gold-tint)'
                                       : act.auspicious
                                         ? 'rgba(42, 172, 138, 0.08)'
-                                        : 'rgba(255,255,255,0.03)',
+                                        : 'var(--bg-page)',
                                     border: act.highly_auspicious
-                                      ? '1px solid rgba(201, 146, 42, 0.3)'
+                                      ? '1px solid var(--gold-mid)'
                                       : act.auspicious
                                         ? '1px solid rgba(42, 172, 138, 0.2)'
-                                        : '1px solid rgba(255,255,255,0.06)'
+                                        : '1px solid var(--bg-border)'
                                   }}
                                 >
                                   <div className="flex items-center gap-2.5">
@@ -378,7 +378,7 @@ export default function VastuDaysPage() {
                             {day.highly_auspicious_window && (
                               <div
                                 className="mt-4 p-3 rounded-xl text-[12px] leading-relaxed"
-                                style={{ background: 'rgba(201, 146, 42, 0.1)', border: '1px solid rgba(201, 146, 42, 0.25)' }}
+                                style={{ background: 'var(--gold-subtle)', border: '1px solid var(--bg-border)' }}
                               >
                                 <Sparkles size={13} className="text-gold-bright inline mr-1.5 mb-0.5" />
                                 <span className="text-gold-mid">

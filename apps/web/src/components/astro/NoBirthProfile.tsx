@@ -27,8 +27,8 @@ export function NoBirthProfile() {
     <div 
       className="max-w-xl mx-auto my-12 p-8 rounded-2xl border text-center transition-all duration-300"
       style={{
-        background: '#2e2115',
-        borderColor: '#c9922a',
+        background: 'var(--bg-card)',
+        borderColor: 'var(--bg-border)',
         boxShadow: '0 0 25px rgba(201, 146, 42, 0.12)'
       }}
     >

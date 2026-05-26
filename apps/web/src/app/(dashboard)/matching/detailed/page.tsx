@@ -238,8 +238,8 @@ export default function DeepMatchPage() {
 
   // Exact card styling requested by user
   const cardStyle = {
-    background: '#2e2115',
-    border: '1px solid rgba(201, 146, 42, 0.4)',
+    background: 'var(--bg-card)',
+    border: '1px solid var(--bg-border)',
     borderRadius: '14px',
     boxShadow: '0 0 24px rgba(201, 146, 42, 0.06)',
     padding: '20px'
@@ -403,7 +403,7 @@ export default function DeepMatchPage() {
       </div>
 
       {error && (
-        <div className="bg-red-950/40 border border-red-800 text-red-200 rounded-lg p-3 text-sm flex items-center gap-2">
+        <div className="bg-[var(--cat-marriage)]/10 border border-[var(--cat-marriage)] text-[var(--cat-marriage)] rounded-lg p-3 text-sm flex items-center gap-2">
           <AlertTriangle size={16} />
           {error}
         </div>
@@ -554,7 +554,7 @@ export default function DeepMatchPage() {
             className="flex flex-col gap-6 relative"
           >
             {/* Top Premium Actions Bar (Hidden on Print) */}
-            <div className="print:hidden w-full flex items-center justify-between gap-4 p-3 bg-[#2e2115]/50 border border-gold-deep/30 rounded-xl backdrop-blur-md">
+            <div className="print:hidden w-full flex items-center justify-between gap-4 p-3 bg-[var(--bg-card)] border border-bg-border rounded-xl">
               <button 
                 onClick={() => setBasicResult(null)}
                 className="flex items-center gap-2 text-sm text-text-secondary hover:text-gold-bright transition-colors bg-transparent border-0 cursor-pointer py-1.5 px-3 font-semibold"
@@ -756,11 +756,11 @@ export default function DeepMatchPage() {
                               </td>
                               <td className="py-3 text-center">
                                 {p.passed ? (
-                                  <span className="bg-green-950/40 text-green-400 border border-green-800 text-[11px] px-2 py-0.5 rounded font-bold">
+                                  <span className="bg-[var(--cat-panchangam)]/15 text-[var(--cat-panchangam)] border border-[var(--cat-panchangam)]/35 text-[11px] px-2 py-0.5 rounded font-bold">
                                     {labels.passed}
                                   </span>
                                 ) : (
-                                  <span className="bg-red-950/40 text-red-400 border border-red-900 text-[11px] px-2 py-0.5 rounded font-bold">
+                                  <span className="bg-[var(--cat-marriage)]/15 text-[var(--cat-marriage)] border border-[var(--cat-marriage)]/35 text-[11px] px-2 py-0.5 rounded font-bold">
                                     {labels.failed}
                                   </span>
                                 )}
@@ -805,8 +805,8 @@ export default function DeepMatchPage() {
                         <div className="text-[24px] font-bold text-gold-bright font-mono">{basicResult.horo_result.papasamyam.difference}</div>
                         <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
                           basicResult.horo_result.papasamyam.compatible
-                            ? 'bg-green-950/50 border border-green-800 text-green-400'
-                            : 'bg-red-950/50 border border-red-800 text-red-400'
+                            ? 'bg-[var(--cat-panchangam)]/15 border border-[var(--cat-panchangam)]/35 text-[var(--cat-panchangam)]'
+                            : 'bg-[var(--cat-marriage)]/15 border border-[var(--cat-marriage)]/35 text-[var(--cat-marriage)]'
                         }`}>
                           {basicResult.horo_result.papasamyam.compatible ? labels.passed : labels.failed}
                         </span>
@@ -832,7 +832,7 @@ export default function DeepMatchPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center text-center">
                       <div className="bg-bg-page/50 border border-bg-border rounded-xl p-4 flex flex-col gap-1.5">
                         <span className="text-[11px] uppercase tracking-wider text-text-muted font-bold">{labels.groom}</span>
-                        <span className={`text-[16px] font-bold ${basicResult.horo_result.mangal_dosha.boy_has_dosha ? 'text-red-400' : 'text-green-400'}`}>
+                        <span className={`text-[16px] font-bold ${basicResult.horo_result.mangal_dosha.boy_has_dosha ? 'text-[var(--cat-marriage)]' : 'text-[var(--cat-panchangam)]'}`}>
                           {basicResult.horo_result.mangal_dosha.boy_has_dosha ? labels.yes : labels.no}
                         </span>
                         <span className="text-[11px] text-text-muted">Sevvai Dosham</span>
@@ -842,8 +842,8 @@ export default function DeepMatchPage() {
                         <span className="text-[11px] uppercase tracking-wider text-text-muted font-bold">{labels.compatibleStatus}</span>
                         <span className={`text-[14px] font-bold px-3 py-1 rounded-full ${
                           basicResult.horo_result.mangal_dosha.compatible
-                            ? 'bg-green-950/50 border border-green-800 text-green-400'
-                            : 'bg-red-950/50 border border-red-800 text-red-400'
+                            ? 'bg-[var(--cat-panchangam)]/15 border border-[var(--cat-panchangam)]/35 text-[var(--cat-panchangam)]'
+                            : 'bg-[var(--cat-marriage)]/15 border border-[var(--cat-marriage)]/35 text-[var(--cat-marriage)]'
                         }`}>
                           {basicResult.horo_result.mangal_dosha.compatible ? labels.passed : labels.failed}
                         </span>
@@ -851,7 +851,7 @@ export default function DeepMatchPage() {
 
                       <div className="bg-bg-page/50 border border-bg-border rounded-xl p-4 flex flex-col gap-1.5">
                         <span className="text-[11px] uppercase tracking-wider text-text-muted font-bold">{labels.bride}</span>
-                        <span className={`text-[16px] font-bold ${basicResult.horo_result.mangal_dosha.girl_has_dosha ? 'text-red-400' : 'text-green-400'}`}>
+                        <span className={`text-[16px] font-bold ${basicResult.horo_result.mangal_dosha.girl_has_dosha ? 'text-[var(--cat-marriage)]' : 'text-[var(--cat-panchangam)]'}`}>
                           {basicResult.horo_result.mangal_dosha.girl_has_dosha ? labels.yes : labels.no}
                         </span>
                         <span className="text-[11px] text-text-muted">Sevvai Dosham</span>
@@ -901,10 +901,10 @@ export default function DeepMatchPage() {
                     <div style={cardStyle} className="flex flex-col gap-6 animate-fade-in">
                       <div className="flex items-center justify-between border-b border-bg-border pb-3">
                         <h3 className="text-[16px] font-bold text-gold-bright flex items-center gap-2">
-                          <Unlock size={18} className="text-green-400" />
+                          <Unlock size={18} className="text-[var(--cat-panchangam)]" />
                           {language === 'ta' ? 'தசா சந்தி காலப் பொருத்தம்' : 'Vimshottari Dasa Sandhi Timeline Analysis'}
                         </h3>
-                        <span className="text-[11px] bg-green-950/40 border border-green-800 text-green-400 px-2 py-0.5 rounded font-bold uppercase">
+                        <span className="text-[11px] bg-[var(--cat-panchangam)]/15 border border-[var(--cat-panchangam)]/35 text-[var(--cat-panchangam)] px-2 py-0.5 rounded font-bold uppercase">
                           PRO UNLOCKED
                         </span>
                       </div>
@@ -920,21 +920,21 @@ export default function DeepMatchPage() {
                             <span className="text-[14px] text-text-secondary">{labels.dasaSeverity}</span>
                             <span className={`text-sm font-bold px-3 py-1 rounded-full uppercase ${
                               dasaResult.summary_severity === 'severe' 
-                                ? 'bg-red-950/60 border border-red-800 text-red-400' 
+                                ? 'bg-[var(--cat-marriage)]/15 border border-[var(--cat-marriage)] text-[var(--cat-marriage)]' 
                                 : dasaResult.summary_severity === 'moderate'
-                                  ? 'bg-amber-950/60 border border-amber-800 text-amber-400'
+                                  ? 'bg-[var(--cat-prasnam)]/15 border border-[var(--cat-prasnam)] text-[var(--cat-prasnam)]'
                                   : dasaResult.summary_severity === 'mild'
-                                    ? 'bg-yellow-950/60 border border-yellow-800 text-yellow-300'
-                                    : 'bg-green-950/60 border border-green-800 text-green-400'
+                                    ? 'bg-[var(--gold-tint)] border border-[var(--gold-mid)]/40 text-[var(--gold-deep)] dark:text-[var(--gold-bright)]'
+                                    : 'bg-[var(--cat-panchangam)]/15 border border-[var(--cat-panchangam)] text-[var(--cat-panchangam)]'
                             }`}>
                               {labels[dasaResult.summary_severity]}
                             </span>
                           </div>
 
                           {dasaResult.clashes.length === 0 ? (
-                            <div className="bg-green-950/20 border border-green-800 rounded-lg p-5 flex flex-col items-center text-center gap-2">
-                              <CheckCircle2 className="text-green-400" size={32} />
-                              <p className="text-[14px] text-green-200 leading-relaxed font-semibold">
+                            <div className="bg-[var(--cat-panchangam)]/10 border border-[var(--cat-panchangam)]/40 rounded-lg p-5 flex flex-col items-center text-center gap-2">
+                              <CheckCircle2 className="text-[var(--cat-panchangam)]" size={32} />
+                              <p className="text-[14px] text-[var(--text-primary)] leading-relaxed font-semibold">
                                 {labels.noClashMsg}
                               </p>
                             </div>
@@ -945,10 +945,10 @@ export default function DeepMatchPage() {
                                   <div className="flex items-center justify-between border-b border-bg-border/60 pb-2">
                                     <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase ${
                                       clash.severity === 'severe' 
-                                        ? 'bg-red-950/80 border border-red-800 text-red-400'
+                                        ? 'bg-[var(--cat-marriage)]/15 border border-[var(--cat-marriage)] text-[var(--cat-marriage)]'
                                         : clash.severity === 'moderate'
-                                          ? 'bg-amber-950/80 border border-amber-800 text-amber-400'
-                                          : 'bg-yellow-950/80 border border-yellow-800 text-yellow-300'
+                                          ? 'bg-[var(--cat-prasnam)]/15 border border-[var(--cat-prasnam)] text-[var(--cat-prasnam)]'
+                                          : 'bg-[var(--gold-tint)] border border-[var(--gold-mid)]/40 text-[var(--gold-deep)] dark:text-[var(--gold-bright)]'
                                     }`}>
                                       {labels[clash.severity]}
                                     </span>
@@ -970,7 +970,7 @@ export default function DeepMatchPage() {
                                     </div>
                                   </div>
 
-                                  <div className="bg-bg-page/60 rounded p-3 text-[13px] text-text-secondary leading-relaxed border-l-2 border-gold-deep flex flex-col gap-1 mt-2">
+                                  <div className="bg-bg-page/60 rounded p-3 text-[13px] text-text-secondary leading-relaxed border-l-2 border-[var(--gold-deep)] flex flex-col gap-1 mt-2">
                                     <span className="text-[10px] uppercase font-bold text-text-muted">{labels.adviceLabel}</span>
                                     <p>{language === 'ta' ? clash.advice_ta : clash.advice_en}</p>
                                   </div>

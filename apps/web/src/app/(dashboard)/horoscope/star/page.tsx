@@ -140,21 +140,17 @@ export default function StarReadingsPage() {
           <div className="lg:col-span-4 flex flex-col gap-6">
             {/* Star Selector Box */}
             <div 
-              className="p-5 rounded-2xl border backdrop-blur-sm flex flex-col gap-4"
-              style={{
-                background: 'rgba(15, 15, 36, 0.65)',
-                borderColor: 'rgba(42, 42, 74, 0.5)',
-              }}
+              className="p-5 rounded-2xl border bg-[var(--bg-card)] border-[var(--bg-border)] flex flex-col gap-4"
             >
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-semibold text-text-primary">{t.selectStar}</label>
                 <select
                   value={selectedStar}
                   onChange={(e) => setSelectedStar(e.target.value)}
-                  className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all font-bold cursor-pointer"
+                  className="w-full bg-[var(--bg-page)] border border-[var(--bg-border)] rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all font-bold cursor-pointer"
                 >
                   {Object.keys(NAKSHATRA_DATA).map((key) => (
-                    <option key={key} value={key} className="bg-bg-page text-white font-bold">
+                    <option key={key} value={key} className="bg-[var(--bg-page)] text-[var(--text-primary)] font-bold">
                       {isTa ? NAKSHATRA_DATA[key].nameTa : NAKSHATRA_DATA[key].nameEn}
                     </option>
                   ))}
@@ -185,11 +181,7 @@ export default function StarReadingsPage() {
               {/* Technical Astro Stats Card */}
               <motion.div 
                 variants={itemVariants}
-                className="p-5 rounded-2xl border flex flex-col gap-3 relative overflow-hidden"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(15, 15, 36, 0.8), rgba(20, 20, 45, 0.6))',
-                  borderColor: 'rgba(42, 42, 74, 0.5)',
-                }}
+                className="p-5 rounded-2xl border flex flex-col gap-3 relative overflow-hidden bg-[var(--bg-card)] border-[var(--bg-border)]"
               >
                 <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-gold-mid/5 rounded-full blur-xl pointer-events-none" />
                 <h3 className="text-xs font-bold text-gold-bright uppercase tracking-wider flex items-center gap-2 border-b border-white/5 pb-2">
@@ -199,15 +191,15 @@ export default function StarReadingsPage() {
                 <div className="flex flex-col gap-2.5 text-sm">
                   <div className="flex justify-between items-center">
                     <span className="text-text-secondary">{t.rulingPlanet}</span>
-                    <span className="font-bold text-white">{isTa ? starInfo.rulingPlanetTa : starInfo.rulingPlanet}</span>
+                    <span className="font-bold text-[var(--text-primary)]">{isTa ? starInfo.rulingPlanetTa : starInfo.rulingPlanet}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-text-secondary">{t.deity}</span>
-                    <span className="font-bold text-white">{isTa ? starInfo.deityTa : starInfo.deity}</span>
+                    <span className="font-bold text-[var(--text-primary)]">{isTa ? starInfo.deityTa : starInfo.deity}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-text-secondary">{t.symbol}</span>
-                    <span className="font-bold text-white">{isTa ? starInfo.symbolTa : starInfo.symbol}</span>
+                    <span className="font-bold text-[var(--text-primary)]">{isTa ? starInfo.symbolTa : starInfo.symbol}</span>
                   </div>
                 </div>
               </motion.div>
@@ -215,11 +207,7 @@ export default function StarReadingsPage() {
               {/* Lucky Indicators Card */}
               <motion.div 
                 variants={itemVariants}
-                className="p-5 rounded-2xl border flex flex-col gap-3 relative overflow-hidden"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(15, 15, 36, 0.8), rgba(20, 20, 45, 0.6))',
-                  borderColor: 'rgba(42, 42, 74, 0.5)',
-                }}
+                className="p-5 rounded-2xl border flex flex-col gap-3 relative overflow-hidden bg-[var(--bg-card)] border-[var(--bg-border)]"
               >
                 <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-blue-500/5 rounded-full blur-xl pointer-events-none" />
                 <h3 className="text-xs font-bold text-gold-bright uppercase tracking-wider flex items-center gap-2 border-b border-white/5 pb-2">
@@ -229,19 +217,19 @@ export default function StarReadingsPage() {
                 <div className="flex flex-col gap-2.5 text-sm">
                   <div className="flex justify-between items-center">
                     <span className="text-text-secondary">{t.luckyNumber}</span>
-                    <span className="font-mono font-bold text-white">{starInfo.luckyNumber}</span>
+                    <span className="font-mono font-bold text-[var(--text-primary)]">{starInfo.luckyNumber}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-text-secondary">{t.luckyColor}</span>
-                    <span className="font-bold text-white">{isTa ? starInfo.luckyColorTa : starInfo.luckyColor}</span>
+                    <span className="font-bold text-[var(--text-primary)]">{isTa ? starInfo.luckyColorTa : starInfo.luckyColor}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-text-secondary">{t.luckyDay}</span>
-                    <span className="font-bold text-white">{isTa ? starInfo.luckyDayTa : starInfo.luckyDay}</span>
+                    <span className="font-bold text-[var(--text-primary)]">{isTa ? starInfo.luckyDayTa : starInfo.luckyDay}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-text-secondary">{t.gemstone}</span>
-                    <span className="font-bold text-white">{isTa ? starInfo.gemstoneTa : starInfo.gemstone}</span>
+                    <span className="font-bold text-[var(--text-primary)]">{isTa ? starInfo.gemstoneTa : starInfo.gemstone}</span>
                   </div>
                 </div>
               </motion.div>
@@ -251,7 +239,7 @@ export default function StarReadingsPage() {
           {/* Right Column: Dynamic Predictions Tabs */}
           <div className="lg:col-span-8 flex flex-col gap-6">
             {/* Elegant Tab Headers Selector */}
-            <div className="flex bg-black/40 border border-bg-border p-1 rounded-xl w-full overflow-x-auto select-none no-scrollbar">
+            <div className="flex bg-[var(--bg-elevated)] border border-[var(--bg-border)] p-1 rounded-xl w-full overflow-x-auto select-none no-scrollbar">
               {(['personality', 'career', 'love', 'finance', 'health'] as const).map((tab) => {
                 const isActive = activeTab === tab
                 return (
@@ -263,7 +251,7 @@ export default function StarReadingsPage() {
                       flex-1 min-w-[90px] py-3 rounded-lg text-xs font-bold transition-all cursor-pointer text-center whitespace-nowrap
                       ${isActive 
                         ? 'bg-gold-deep text-white shadow-sm' 
-                        : 'text-text-secondary hover:text-white'
+                        : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                       }
                     `}
                   >
@@ -281,12 +269,7 @@ export default function StarReadingsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.18 }}
-                className="p-6 sm:p-8 rounded-2xl border min-h-[300px] flex flex-col gap-6 relative overflow-hidden"
-                style={{
-                  background: 'rgba(15, 15, 36, 0.45)',
-                  borderColor: 'rgba(201, 146, 42, 0.25)',
-                  backdropFilter: 'blur(20px)'
-                }}
+                className="p-6 sm:p-8 rounded-2xl border min-h-[300px] flex flex-col gap-6 relative overflow-hidden bg-[var(--bg-card)] border-[var(--bg-border)]"
               >
                 <div className="absolute top-6 right-6 w-32 h-32 bg-gold-mid/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -300,7 +283,7 @@ export default function StarReadingsPage() {
                     {activeTab === 'health' && <ShieldAlert size={22} />}
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white tracking-wide">
+                    <h3 className="text-lg font-bold text-[var(--text-primary)] tracking-wide">
                       {t.tabs[activeTab]} – {isTa ? starInfo.nameTa : starInfo.nameEn}
                     </h3>
                     <p className="text-xs text-text-muted mt-0.5">

@@ -200,8 +200,8 @@ export function BookChartReport({ data, dasa, profile, language }: BookChartRepo
           <div className={DIVIDER} />
 
           {/* Charts side by side */}
-          <div className="grid grid-cols-2 gap-8 flex-1">
-            <div className="flex flex-col items-center gap-2">
+          <div className="grid grid-cols-2 gap-8 justify-items-center">
+            <div className="flex flex-col items-center gap-2 w-full max-w-[300px] print:max-w-[260px]">
               <RasiChart
                 chart={data.rasi_chart}
                 planets={data.planets}
@@ -211,7 +211,7 @@ export function BookChartReport({ data, dasa, profile, language }: BookChartRepo
                 language={language}
               />
             </div>
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center gap-2 w-full max-w-[300px] print:max-w-[260px]">
               <RasiChart
                 chart={data.navamsam_chart}
                 planets={data.planets}

@@ -125,21 +125,21 @@ export default function MuhurthamPage() {
   const getCardStyle = (status: string) => {
     switch (status) {
       case 'highly_auspicious':
-        return 'border-green-500/40 hover:border-green-500 hover:shadow-[0_0_15px_rgba(34,197,94,0.15)] bg-green-950/5'
+        return 'border-green-500/40 hover:border-green-500 hover:shadow-[0_0_15px_rgba(34,197,94,0.15)] bg-green-500/5'
       case 'auspicious':
-        return 'border-emerald-500/30 hover:border-emerald-500 hover:shadow-[0_0_15px_rgba(16,185,129,0.12)] bg-emerald-950/5'
+        return 'border-emerald-500/30 hover:border-emerald-500 hover:shadow-[0_0_15px_rgba(16,185,129,0.12)] bg-emerald-500/5'
       case 'average':
-        return 'border-[#4a3828] hover:border-[#c9922a]/50 hover:shadow-[0_0_15px_rgba(201,146,42,0.1)]'
+        return 'border-[var(--bg-border)] hover:border-[var(--gold-mid)]/50 hover:shadow-[0_0_15px_rgba(201,146,42,0.1)]'
       default:
-        return 'border-red-950/40 opacity-70 hover:opacity-100 hover:border-red-900/50 bg-red-950/5'
+        return 'border-red-500/10 opacity-70 hover:opacity-100 hover:border-red-500/30 bg-red-500/5'
     }
   }
 
   const getScoreColor = (score: number) => {
-    if (score >= 75) return 'text-green-400'
-    if (score >= 55) return 'text-emerald-400'
-    if (score >= 35) return 'text-amber-400'
-    return 'text-red-400'
+    if (score >= 75) return 'text-green-600 dark:text-green-400'
+    if (score >= 55) return 'text-emerald-600 dark:text-emerald-400'
+    if (score >= 35) return 'text-amber-600 dark:text-amber-400'
+    return 'text-red-600 dark:text-red-400'
   }
 
   return (
@@ -149,28 +149,28 @@ export default function MuhurthamPage() {
       <div className="flex items-center justify-between">
         <Link
           href="/"
-          className="flex items-center gap-2 text-[#d4b896] hover:text-[#f2c96a] transition-all text-sm"
+          className="flex items-center gap-2 text-text-muted hover:text-gold-bright transition-all text-sm"
         >
           <ArrowLeft size={16} />
           {labels.back}
         </Link>
-        <span className="text-[11px] font-mono text-[#8a7060]">VERSION 4.0</span>
+        <span className="text-[11px] font-mono text-text-disabled">VERSION 4.0</span>
       </div>
 
       {/* Hero Intro */}
-      <div className="flex flex-col gap-2 border-b border-[#4a3828] pb-4">
-        <h1 className="text-2xl md:text-3xl font-black text-[#f2c96a] tracking-tight font-display flex items-center gap-2.5">
-          <Clock className="text-[#f2c96a] w-7 h-7" />
+      <div className="flex flex-col gap-2 border-b border-[var(--bg-border)] pb-4">
+        <h1 className="text-2xl md:text-3xl font-black text-text-primary tracking-tight font-display flex items-center gap-2.5">
+          <Clock className="text-gold-mid w-7 h-7" />
           {labels.title}
         </h1>
-        <p className="text-sm text-[#d4b896] leading-relaxed max-w-[800px]">
+        <p className="text-sm text-text-secondary leading-relaxed max-w-[800px]">
           {labels.subtitle}
         </p>
       </div>
 
       {/* Category selector strip */}
       <div className="flex flex-col gap-3">
-        <h3 className="text-sm font-semibold uppercase tracking-wider text-[#8a7060]">
+        <h3 className="text-sm font-semibold uppercase tracking-wider text-text-muted">
           {labels.categoryHeading}
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
@@ -183,8 +183,8 @@ export default function MuhurthamPage() {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all duration-200 hover:-translate-y-0.5 ${
                   isSelected
-                    ? `${cat.color} border-[#c9922a] ring-2 ring-[#c9922a]/20 scale-[1.02] shadow-lg`
-                    : 'bg-[#241a0f] border-[#4a3828] text-[#8a7060] hover:text-[#f5e6c8] hover:border-[#8a7060]/50'
+                    ? `${cat.color} border-[var(--gold-mid)] ring-2 ring-[var(--gold-mid)]/20 scale-[1.02] shadow-lg`
+                    : 'bg-[var(--bg-card)] border-[var(--bg-border)] text-text-muted hover:text-text-primary hover:border-[var(--gold-mid)]'
                 }`}
               >
                 <Icon className="w-6 h-6 mb-2 shrink-0" />
@@ -198,27 +198,27 @@ export default function MuhurthamPage() {
       </div>
 
       {/* Chennai location alert */}
-      <div className="flex items-center gap-2 bg-[#2e2115] border border-[#4a3828] p-3.5 rounded-xl text-xs text-[#d4b896]">
-        <Info className="w-4.5 h-4.5 text-[#f2c96a] shrink-0" />
+      <div className="flex items-center gap-2 bg-[var(--bg-card)] border border-[var(--bg-border)] p-3.5 rounded-xl text-xs text-text-secondary">
+        <Info className="w-4.5 h-4.5 text-gold-deep shrink-0" />
         <span>{labels.chennaiNote}</span>
       </div>
 
       {/* Month Navigation Control strip */}
-      <div className="flex items-center justify-between bg-[#241a0f] border border-[#4a3828] p-4 rounded-xl shadow-lg">
+      <div className="flex items-center justify-between bg-[var(--bg-card)] border border-[var(--bg-border)] p-4 rounded-xl shadow-lg">
         <button
           onClick={handlePrevMonth}
-          className="p-2 border border-[#4a3828] bg-[#1a1209] rounded-lg text-[#d4b896] hover:text-[#f2c96a] hover:border-[#8a7060] transition-all"
+          className="p-2 border border-[var(--bg-border)] bg-[var(--bg-page)] rounded-lg text-text-muted hover:text-text-primary hover:border-[var(--gold-mid)] transition-all"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
 
-        <h2 className="text-lg font-bold text-[#f5e6c8] tracking-wide uppercase">
+        <h2 className="text-lg font-bold text-text-primary tracking-wide uppercase">
           {monthYearLabel}
         </h2>
 
         <button
           onClick={handleNextMonth}
-          className="p-2 border border-[#4a3828] bg-[#1a1209] rounded-lg text-[#d4b896] hover:text-[#f2c96a] hover:border-[#8a7060] transition-all"
+          className="p-2 border border-[var(--bg-border)] bg-[var(--bg-page)] rounded-lg text-text-muted hover:text-text-primary hover:border-[var(--gold-mid)] transition-all"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
@@ -263,9 +263,9 @@ export default function MuhurthamPage() {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col gap-3"
           >
-            <div className="flex items-center justify-between text-xs text-[#8a7060] px-1">
+            <div className="flex items-center justify-between text-xs text-text-muted px-1">
               <span>{labels.viewDetails}</span>
-              <span className="font-semibold uppercase text-[#f2c96a]">
+              <span className="font-semibold uppercase text-gold-deep">
                 {activeCategoryLabel}
               </span>
             </div>
@@ -286,16 +286,16 @@ export default function MuhurthamPage() {
                       setSelectedDay(dayObj)
                       setIsModalOpen(true)
                     }}
-                    className={`relative p-4 rounded-xl border bg-[#241a0f] cursor-pointer transition-all duration-200 hover:-translate-y-1 ${cardStyle}`}
+                    className={`relative p-4 rounded-xl border bg-[var(--bg-card)] cursor-pointer transition-all duration-200 hover:-translate-y-1 ${cardStyle}`}
                     whileHover={{ scale: 1.01 }}
                   >
                     {/* Header: Date and Weekday */}
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex flex-col">
-                        <span className="text-2xl font-black text-[#f5e6c8] font-mono leading-none">
+                        <span className="text-2xl font-black text-text-primary font-mono leading-none">
                           {dateNum}
                         </span>
-                        <span className="text-[11px] font-bold text-[#8a7060] mt-1.5 uppercase">
+                        <span className="text-[11px] font-bold text-text-muted mt-1.5 uppercase">
                           {weekdayShort}
                         </span>
                       </div>
@@ -307,7 +307,7 @@ export default function MuhurthamPage() {
                             cx="24"
                             cy="24"
                             r="19"
-                            className="stroke-[#2e2115]"
+                            style={{ stroke: 'var(--bg-active)' }}
                             strokeWidth="3.5"
                             fill="transparent"
                           />
@@ -331,14 +331,14 @@ export default function MuhurthamPage() {
                     {/* Tithi & Nakshatra Summary */}
                     <div className="space-y-1 mt-4">
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="text-[#8a7060]">{isTa ? 'திதி:' : 'Tithi:'}</span>
-                        <span className="font-bold text-[#d4b896] truncate max-w-[100px]" title={dayObj.tithi}>
+                        <span className="text-text-muted">{isTa ? 'திதி:' : 'Tithi:'}</span>
+                        <span className="font-bold text-text-secondary truncate max-w-[100px]" title={dayObj.tithi}>
                           {dayObj.tithi}
                         </span>
                       </div>
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="text-[#8a7060]">{isTa ? 'நட்சத்திரம்:' : 'Star:'}</span>
-                        <span className="font-bold text-[#d4b896] truncate max-w-[100px]" title={dayObj.nakshatra}>
+                        <span className="text-text-muted">{isTa ? 'நட்சத்திரம்:' : 'Star:'}</span>
+                        <span className="font-bold text-text-secondary truncate max-w-[100px]" title={dayObj.nakshatra}>
                           {dayObj.nakshatra}
                         </span>
                       </div>

@@ -121,12 +121,12 @@ export default function PanchapakshiPage() {
 
   const getActivityColor = (activity: string) => {
     switch (activity.toLowerCase()) {
-      case 'ruling': return 'text-[#6ee7a0] border-[#4a7c59] bg-[#4a7c59]/20 shadow-[0_0_15px_rgba(74,124,89,0.2)]'
-      case 'eating': return 'text-[#80c8ff] border-[#1e6fa8] bg-[#1e6fa8]/20 shadow-[0_0_15px_rgba(30,111,168,0.2)]'
-      case 'walking': return 'text-gold-bright border-gold-deep bg-gold-deep/20 shadow-[0_0_15px_rgba(201,146,42,0.2)]'
-      case 'sleeping': return 'text-[#ff90aa] border-[#b0415e] bg-[#b0415e]/20 shadow-[0_0_15px_rgba(176,65,94,0.2)]'
+      case 'ruling': return 'text-emerald-600 dark:text-[#6ee7a0] border-emerald-200 dark:border-[#4a7c59] bg-emerald-500/10 shadow-[0_0_15px_rgba(74,124,89,0.2)]'
+      case 'eating': return 'text-blue-600 dark:text-[#80c8ff] border-blue-200 dark:border-[#1e6fa8] bg-blue-500/10 shadow-[0_0_15px_rgba(30,111,168,0.2)]'
+      case 'walking': return 'text-gold-deep dark:text-gold-bright border-[var(--bg-border)] bg-[var(--gold-tint)] shadow-[0_0_15px_rgba(201,146,42,0.2)]'
+      case 'sleeping': return 'text-rose-600 dark:text-[#ff90aa] border-rose-200 dark:border-[#b0415e] bg-rose-500/10 shadow-[0_0_15px_rgba(176,65,94,0.2)]'
       case 'dying': return 'text-text-muted border-bg-border bg-bg-page shadow-none opacity-80'
-      default: return 'text-gold-bright border-gold-deep bg-gold-deep/20'
+      default: return 'text-gold-deep dark:text-gold-bright border-[var(--bg-border)] bg-[var(--gold-tint)]'
     }
   }
 
@@ -269,7 +269,7 @@ export default function PanchapakshiPage() {
               <button
                 type="submit"
                 disabled={isCalculating}
-                className="w-full h-12 bg-[#1e6fa8] hover:bg-[#155b8a] text-text-inverse font-semibold rounded-lg flex items-center justify-center gap-2.5 transition-all active:scale-[0.99] disabled:opacity-50 text-[15px] mt-2"
+                className="w-full h-12 bg-gold-mid hover:bg-gold-deep text-text-inverse font-semibold rounded-lg flex items-center justify-center gap-2.5 transition-all active:scale-[0.99] disabled:opacity-50 text-[15px] mt-2"
               >
                 {isCalculating ? (
                   <>
@@ -294,15 +294,15 @@ export default function PanchapakshiPage() {
             exit={{ opacity: 0, y: -15 }}
             className="flex flex-col gap-6"
           >
-            {/* Header / Reset */}
+            {/* Results Wrapper */}
             <div className="flex items-center justify-between bg-bg-card border border-bg-border rounded-xl p-5 shadow-xl">
               <div className="flex flex-col gap-1">
-                <span className="text-[14px] text-[#80c8ff] font-medium">{language === 'ta' ? NAKSHATRAS_TA[NAKSHATRAS.indexOf(result.birth_nakshatra)] : result.birth_nakshatra} Nakshatra</span>
+                <span className="text-[14px] text-gold-deep font-semibold">{language === 'ta' ? NAKSHATRAS_TA[NAKSHATRAS.indexOf(result.birth_nakshatra)] : result.birth_nakshatra} Nakshatra</span>
                 <span className="text-[15px] text-text-secondary font-mono">{city?.name}</span>
               </div>
               <button
                 onClick={() => setResult(null)}
-                className="bg-bg-page border border-[#1e6fa8] rounded-full px-5 py-2 text-[13px] text-[#80c8ff] hover:bg-[#1e6fa8]/20 font-semibold flex items-center gap-1.5 transition-all"
+                className="bg-bg-page border border-gold-mid rounded-full px-5 py-2 text-[13px] text-text-primary hover:bg-[var(--bg-active)] font-semibold flex items-center gap-1.5 transition-all"
               >
                 <RefreshCw size={15} />
                 {labels.buttonReset}
@@ -310,8 +310,8 @@ export default function PanchapakshiPage() {
             </div>
 
             {/* Oracle Verdict Card */}
-            <div className="bg-[#241a0f] border border-gold-deep rounded-2xl overflow-hidden shadow-[0_4px_30px_rgba(201,146,42,0.1)] relative">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gold-deep/10 rounded-full blur-[100px] pointer-events-none" />
+            <div className="bg-[var(--bg-card)] border border-[var(--bg-border)] rounded-2xl overflow-hidden shadow-[0_4px_30px_rgba(201,146,42,0.1)] relative">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gold-deep/5 rounded-full blur-[100px] pointer-events-none" />
               
               <div className="p-8 flex flex-col items-center text-center gap-6 relative z-10">
                 {/* Bird Identity */}

@@ -112,8 +112,10 @@ router.post('/register', authLimiter, async (req: Request, res: Response): Promi
       user_metadata: {
         name,
         language,
+        role: 'customer',   // always customer on self-register
         plan: 'FREE',
         plan_expires_at: null,
+        is_admin: false,
         trial_expires_at: trialExpiresAt,
       }
     });
@@ -241,6 +243,7 @@ router.post('/login', authLimiter, async (req: Request, res: Response): Promise<
         refresh_token: session.session.refresh_token,
         expires_at: session.session.expires_at,
         is_admin: isAdmin,
+        role: session.user.user_metadata?.role || 'customer',
         user: {
           id: session.user.id,
           email: session.user.email,

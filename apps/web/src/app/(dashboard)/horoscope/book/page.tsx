@@ -145,13 +145,12 @@ export default function BookChartPage() {
               <p className="text-text-secondary text-sm md:text-base max-w-2xl">{t.subtitle}</p>
             </div>
 
-            {/* Form */}
             <div
-              className="w-full p-5 sm:p-6 rounded-2xl border backdrop-blur-sm"
+              className="w-full p-5 sm:p-6 rounded-2xl border"
               style={{
-                background: 'rgba(15, 15, 36, 0.65)',
-                borderColor: 'rgba(42, 42, 74, 0.5)',
-                boxShadow: '0 8px 32px -4px rgba(0,0,0,0.3)'
+                background: 'var(--bg-card)',
+                borderColor: 'var(--bg-border)',
+                boxShadow: '0 8px 32px -4px rgba(0,0,0,0.1)'
               }}
             >
               <form onSubmit={handleGenerate} className="flex flex-col gap-5">
@@ -224,7 +223,7 @@ export default function BookChartPage() {
             className="flex flex-col w-full relative pb-20"
           >
             {/* Top action bar */}
-            <div className="print:hidden w-full max-w-[210mm] mx-auto flex items-center justify-between mb-6 bg-card-bg/80 border border-bg-border p-3 rounded-xl backdrop-blur-md">
+            <div className="print:hidden w-full max-w-[210mm] mx-auto flex items-center justify-between mb-6 bg-[var(--bg-card)] border border-bg-border p-3 rounded-xl">
               <button onClick={() => { setShowReport(false); setHoroscope(null); setDasa(null) }}
                 className="flex items-center gap-2 text-sm text-text-muted hover:text-white transition-colors">
                 <ArrowLeft size={16} />

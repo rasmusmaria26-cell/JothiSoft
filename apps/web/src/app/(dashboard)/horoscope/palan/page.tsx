@@ -141,10 +141,10 @@ export default function PalanPage() {
             key="form"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="p-5 sm:p-6 rounded-2xl border backdrop-blur-sm"
+            className="p-5 sm:p-6 rounded-2xl border"
             style={{
-              background: 'rgba(15, 15, 36, 0.65)',
-              borderColor: 'rgba(42, 42, 74, 0.5)',
+              background: 'var(--bg-card)',
+              borderColor: 'var(--bg-border)',
             }}
           >
             <p className="text-text-muted text-sm mb-4">{t.noProfile}</p>

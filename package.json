@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "clean": "npx rimraf apps/web/.next apps/web/.turbo .turbo node_modules/.cache"
   },
   "devDependencies": {
     "turbo": "^2.0.0"

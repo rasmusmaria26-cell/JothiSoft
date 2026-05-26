@@ -91,8 +91,8 @@ export function AntharamGrid({
         <div 
           className="p-5 rounded-2xl border transition-all duration-300 max-w-lg"
           style={{
-            background: '#3a2b1c',
-            borderColor: '#c9922a',
+            background: 'var(--bg-active)',
+            borderColor: 'var(--gold-mid)',
             boxShadow: '0 0 25px rgba(201, 146, 42, 0.18)'
           }}
         >
@@ -153,8 +153,8 @@ export function AntharamGrid({
                 key={`${anthara.dasha_lord}-${index}`}
                 className="p-4 rounded-xl border flex flex-col gap-2 transition-all duration-200"
                 style={{
-                  background: isActive ? '#3a2b1c' : '#2e2115',
-                  borderColor: isActive ? '#c9922a' : '#4f3a28',
+                  background: isActive ? 'var(--bg-active)' : 'var(--bg-card)',
+                  borderColor: isActive ? 'var(--gold-mid)' : 'var(--bg-border)',
                   boxShadow: isActive 
                     ? '0 0 15px rgba(201, 146, 42, 0.15)' 
                     : '0 0 10px rgba(0, 0, 0, 0.03)'

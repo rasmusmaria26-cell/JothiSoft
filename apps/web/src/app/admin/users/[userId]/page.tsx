@@ -17,8 +17,27 @@ export default function AdminUserDetailPage() {
   const [loading, setLoading] = useState(true)
   const [activating, setActivating] = useState(false)
   const [roleToggling, setRoleToggling] = useState(false)
+  const [updatingRole, setUpdatingRole] = useState(false)
   const [paymentNote, setPaymentNote] = useState('')
   const [duration, setDuration] = useState<'30_DAYS' | 'LIFETIME'>('30_DAYS')
+
+  const handleUpdateRole = async (newRole: 'admin' | 'retailer' | 'customer') => {
+    if (user?.id === currentAdmin?.id) {
+      addToast('தங்களை தாங்களே மாற்றி அமைக்க முடியாது · You cannot modify your own role.', 'warning')
+      return
+    }
+
+    try {
+      setUpdatingRole(true)
+      await adminApi.updateUserRole(userId, newRole)
+      addToast('பயனர் பங்கு புதுப்பிக்கப்பட்டது · User role updated successfully!', 'success')
+      await loadUserDetail()
+    } catch (err: any) {
+      addToast(err.message || 'Failed to update user role', 'error')
+    } finally {
+      setUpdatingRole(false)
+    }
+  }
 
   const loadUserDetail = async () => {
     try {
@@ -92,7 +111,7 @@ export default function AdminUserDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 gap-3 text-white/60">
+      <div className="flex flex-col items-center justify-center py-20 gap-3 text-[var(--text-secondary)]">
         <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: 'var(--gold-bright)' }} />
         <span className="text-xs">உறுப்பினர் விவரங்கள் ஏற்றப்படுகிறது... · Loading user details...</span>
       </div>
@@ -107,7 +126,7 @@ export default function AdminUserDetailPage() {
       <div>
         <button
           onClick={() => router.push('/admin/users')}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-[var(--bg-elevated)] border border-[var(--bg-border)] hover:bg-[var(--bg-active)] transition-colors text-white/80 hover:text-white cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-[var(--bg-elevated)] border border-[var(--bg-border)] hover:bg-[var(--bg-active)] transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
         >
           ◀ back to users list
         </button>
@@ -122,11 +141,17 @@ export default function AdminUserDetailPage() {
         >
           <div className="flex items-start justify-between border-b border-[var(--bg-border)] pb-4">
             <div>
-              <h3 className="text-xl font-bold text-white flex items-center gap-3">
+              <h3 className="text-xl font-bold text-[var(--text-primary)] flex items-center gap-3">
                 {user.name || 'Anonymous User'}
-                {user.is_admin && <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-yellow-500/10 border border-yellow-500/20 text-yellow-500">ADMIN</span>}
+                {user.role === 'admin' || user.is_admin ? (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-yellow-500/10 border border-yellow-500/20 text-yellow-500">ADMIN</span>
+                ) : user.role === 'retailer' ? (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-500/10 border border-purple-500/20 text-purple-400">RETAILER</span>
+                ) : (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/10 border border-blue-500/20 text-blue-400">CUSTOMER</span>
+                )}
               </h3>
-              <p className="text-xs text-white/40 mt-1">{user.email || 'No email registered'}</p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">{user.email || 'No email registered'}</p>
             </div>
             <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold tracking-wide ${getStatusBadgeClass(user.calculatedStatus)}`}>
               {user.calculatedStatus}
@@ -135,23 +160,23 @@ export default function AdminUserDetailPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs">
             <div className="space-y-1">
-              <span className="text-white/40 font-semibold block uppercase tracking-wider">Mobile Number</span>
-              <span className="font-mono text-sm text-white/80">{user.phone}</span>
+              <span className="text-[var(--text-muted)] font-semibold block uppercase tracking-wider">Mobile Number</span>
+              <span className="font-mono text-sm text-[var(--text-secondary)]">{user.phone}</span>
             </div>
 
             <div className="space-y-1">
-              <span className="text-white/40 font-semibold block uppercase tracking-wider">Registration Date</span>
-              <span className="text-sm text-white/80">{new Date(user.created_at).toLocaleString()}</span>
+              <span className="text-[var(--text-muted)] font-semibold block uppercase tracking-wider">Registration Date</span>
+              <span className="text-sm text-[var(--text-secondary)]">{new Date(user.created_at).toLocaleString()}</span>
             </div>
 
             <div className="space-y-1">
-              <span className="text-white/40 font-semibold block uppercase tracking-wider">Preferred Language</span>
-              <span className="text-sm uppercase font-bold text-white/80">{user.language === 'ta' ? 'தமிழ் (Tamil)' : 'English'}</span>
+              <span className="text-[var(--text-muted)] font-semibold block uppercase tracking-wider">Preferred Language</span>
+              <span className="text-sm uppercase font-bold text-[var(--text-secondary)]">{user.language === 'ta' ? 'தமிழ் (Tamil)' : 'English'}</span>
             </div>
 
             <div className="space-y-1">
-              <span className="text-white/40 font-semibold block uppercase tracking-wider">Trial Expiration</span>
-              <span className="text-sm text-white/80">
+              <span className="text-[var(--text-muted)] font-semibold block uppercase tracking-wider">Trial Expiration</span>
+              <span className="text-sm text-[var(--text-secondary)]">
                 {user.subscription?.trial_expires_at
                   ? new Date(user.subscription.trial_expires_at).toLocaleString()
                   : 'N/A'}
@@ -159,8 +184,8 @@ export default function AdminUserDetailPage() {
             </div>
 
             <div className="space-y-1">
-              <span className="text-white/40 font-semibold block uppercase tracking-wider">PRO Plan Expiration</span>
-              <span className="text-sm text-white/80">
+              <span className="text-[var(--text-muted)] font-semibold block uppercase tracking-wider">PRO Plan Expiration</span>
+              <span className="text-sm text-[var(--text-secondary)]">
                 {user.subscription?.expires_at
                   ? new Date(user.subscription.expires_at).getFullYear() === 2099
                     ? '✨ Lifetime / வாழ்நாள்'
@@ -170,9 +195,9 @@ export default function AdminUserDetailPage() {
             </div>
 
             {user.subscription?.payment_note && (
-              <div className="space-y-1 sm:col-span-2 bg-black/20 p-3 rounded-lg border border-[var(--bg-border)]">
+              <div className="space-y-1 sm:col-span-2 bg-black/10 p-3 rounded-lg border border-[var(--bg-border)]">
                 <span className="text-[var(--gold-bright)] font-semibold block uppercase tracking-wider">Active Payment Note</span>
-                <span className="text-xs text-white/75">{user.subscription.payment_note}</span>
+                <span className="text-xs text-[var(--text-secondary)]">{user.subscription.payment_note}</span>
               </div>
             )}
           </div>
@@ -184,13 +209,13 @@ export default function AdminUserDetailPage() {
           style={{ background: 'var(--bg-card)', borderColor: 'var(--bg-border)' }}
         >
           <div className="space-y-6">
-            <h4 className="text-sm font-bold text-white border-b border-[var(--bg-border)] pb-3">Admin Actions</h4>
+            <h4 className="text-sm font-bold text-[var(--text-primary)] border-b border-[var(--bg-border)] pb-3">Admin Actions</h4>
 
             {/* Manual Activation Box */}
             <div className="space-y-3.5">
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold text-white/40 uppercase tracking-wider">Plan Duration</label>
-                <div className="flex rounded-md border border-white/10 overflow-hidden bg-slate-950/40 p-0.5">
+                <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Plan Duration</label>
+                <div className="flex rounded-md border border-[var(--bg-border)] overflow-hidden bg-[var(--bg-elevated)] p-0.5">
                   {(['30_DAYS', 'LIFETIME'] as const).map((d) => (
                     <button
                       key={d}
@@ -199,7 +224,7 @@ export default function AdminUserDetailPage() {
                       className={`flex-1 py-1.5 text-xs font-semibold rounded transition-all duration-150 cursor-pointer ${
                         duration === d
                           ? 'bg-[var(--gold-deep)] text-[#1a1209]'
-                          : 'text-white/60 hover:text-white hover:bg-white/5'
+                          : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-active)]'
                       }`}
                     >
                       {d === '30_DAYS' ? '30 Days' : '⭐ Lifetime'}
@@ -209,13 +234,27 @@ export default function AdminUserDetailPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold text-white/40 uppercase tracking-wider">Payment Reference / Note</label>
+                <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">User System Role</label>
+                <select
+                  value={user.role || (user.is_admin ? 'admin' : 'customer')}
+                  disabled={updatingRole}
+                  onChange={(e) => handleUpdateRole(e.target.value as 'admin' | 'retailer' | 'customer')}
+                  className="w-full bg-[var(--bg-elevated)] px-3 py-2 text-xs rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] cursor-pointer"
+                >
+                  <option value="customer" className="bg-[var(--bg-page)] text-[var(--text-primary)]">👤 Customer / பயனர்</option>
+                  <option value="retailer" className="bg-[var(--bg-page)] text-[var(--text-primary)]">💼 Retailer / சில்லறை விற்பனையாளர்</option>
+                  <option value="admin" className="bg-[var(--bg-page)] text-[var(--text-primary)]">🔑 Admin / நிர்வாகி</option>
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Payment Reference / Note</label>
                 <input
                   type="text"
                   value={paymentNote}
                   onChange={(e) => setPaymentNote(e.target.value)}
                   placeholder="e.g. GPay Ref: 489270, Cash Paid"
-                  className="w-full bg-slate-950/60 px-3 py-2 text-xs rounded border border-white/10 outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-white placeholder-white/30"
+                  className="w-full bg-[var(--bg-elevated)] px-3 py-2 text-xs rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
                 />
               </div>
 
@@ -236,8 +275,8 @@ export default function AdminUserDetailPage() {
             {/* Role promotion Box */}
             <div className="border-t border-[var(--bg-border)] pt-5 space-y-3">
               <div className="space-y-1">
-                <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider block">Admin Privileges</span>
-                <span className="text-[10px] text-white/50 block">Granting admin rights allows managing other subscriptions.</span>
+                <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider block">Admin Privileges</span>
+                <span className="text-[10px] text-[var(--text-muted)] block">Granting admin rights allows managing other subscriptions.</span>
               </div>
 
               <button
@@ -254,7 +293,7 @@ export default function AdminUserDetailPage() {
             </div>
           </div>
 
-          <div className="text-[10px] text-white/30 text-center mt-6">
+          <div className="text-[10px] text-[var(--text-muted)] text-center mt-6">
             Actions are cryptographically signed & logged.
           </div>
         </div>
@@ -266,19 +305,19 @@ export default function AdminUserDetailPage() {
         style={{ background: 'var(--bg-card)', borderColor: 'var(--bg-border)' }}
       >
         <div className="p-6 border-b border-[var(--bg-border)]">
-          <h3 className="text-base font-bold text-white">செயல்பாட்டு வரலாறு · Manual Activation History Audit Log</h3>
-          <p className="text-xs text-white/45 mt-0.5">Cryptographic logs of all manual subscription updates performed by system administrators</p>
+          <h3 className="text-base font-bold text-[var(--text-primary)]">செயல்பாட்டு வரலாறு · Manual Activation History Audit Log</h3>
+          <p className="text-xs text-[var(--text-muted)] mt-0.5">Cryptographic logs of all manual subscription updates performed by system administrators</p>
         </div>
 
         {user.history.length === 0 ? (
-          <div className="p-12 text-center text-white/30 text-xs">
+          <div className="p-12 text-center text-[var(--text-muted)] text-xs">
             📄 No manual activations have been performed for this user profile yet.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b text-white/50 font-bold uppercase tracking-wider bg-black/10" style={{ borderColor: 'var(--bg-border)' }}>
+                <tr className="border-b text-[var(--text-muted)] font-bold uppercase tracking-wider bg-black/5" style={{ borderColor: 'var(--bg-border)' }}>
                   <th className="p-4 pl-6">Activated By</th>
                   <th className="p-4">Plan / Validity</th>
                   <th className="p-4">Starts At</th>
@@ -293,21 +332,21 @@ export default function AdminUserDetailPage() {
                     <td className="p-4 pl-6 font-mono font-medium text-amber-500">
                       {log.activated_by}
                     </td>
-                    <td className="p-4 font-bold text-white">
+                    <td className="p-4 font-bold text-[var(--text-primary)]">
                       {log.plan}
                     </td>
-                    <td className="p-4 text-white/60">
+                    <td className="p-4 text-[var(--text-muted)]">
                       {new Date(log.starts_at).toLocaleString()}
                     </td>
-                    <td className="p-4 text-white/60 font-semibold">
+                    <td className="p-4 text-[var(--text-muted)] font-semibold">
                       {new Date(log.expires_at).getFullYear() === 2099
                         ? '✨ Lifetime / வாழ்நாள்'
                         : new Date(log.expires_at).toLocaleString()}
                     </td>
-                    <td className="p-4 text-white/40">
+                    <td className="p-4 text-[var(--text-muted)]">
                       {new Date(log.created_at).toLocaleString()}
                     </td>
-                    <td className="p-4 pr-6 text-white/80 italic">
+                    <td className="p-4 pr-6 text-[var(--text-secondary)] italic">
                       {log.payment_note || 'N/A'}
                     </td>
                   </tr>

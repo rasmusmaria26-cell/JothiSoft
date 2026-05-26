@@ -181,12 +181,11 @@ export default function BabyNamesPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Form & Syllables & Shortlist */}
           <div className="lg:col-span-4 flex flex-col gap-6">
-            {/* Input Selection Box */}
             <div 
-              className="p-5 rounded-2xl border backdrop-blur-sm flex flex-col gap-4"
+              className="p-5 rounded-2xl border flex flex-col gap-4"
               style={{
-                background: 'rgba(15, 15, 36, 0.65)',
-                borderColor: 'rgba(42, 42, 74, 0.5)',
+                background: 'var(--bg-card)',
+                borderColor: 'var(--bg-border)',
               }}
             >
               <div className="flex flex-col gap-1.5">
@@ -194,10 +193,10 @@ export default function BabyNamesPage() {
                 <select
                   value={selectedStar}
                   onChange={(e) => setSelectedStar(e.target.value)}
-                  className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all font-bold cursor-pointer"
+                  className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all font-bold cursor-pointer"
                 >
                   {Object.keys(SYLLABLE_MAPPING).map((star) => (
-                    <option key={star} value={star} className="bg-bg-page text-white font-bold">
+                    <option key={star} value={star} className="bg-[var(--bg-elevated)] text-[var(--text-primary)] font-bold">
                       {star}
                     </option>
                   ))}
@@ -215,7 +214,7 @@ export default function BabyNamesPage() {
                       className={`py-2 rounded-xl text-sm font-bold border transition-all cursor-pointer
                         ${selectedPada === pada 
                           ? 'bg-gold-deep border-gold-mid text-white' 
-                          : 'bg-black/20 border-white/5 text-text-secondary hover:text-white'
+                          : 'bg-[var(--bg-elevated)] border-[var(--bg-border)] text-text-secondary hover:text-[var(--text-primary)] hover:bg-[var(--bg-active)]'
                         }`}
                     >
                       {pada}
@@ -237,15 +236,14 @@ export default function BabyNamesPage() {
               )}
             </div>
 
-            {/* Lucky Akshara Highlight Panel */}
             <div 
               className="p-5 rounded-2xl border flex flex-col gap-3 relative overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, rgba(15, 15, 36, 0.85), rgba(20, 20, 45, 0.65))',
-                borderColor: 'rgba(42, 42, 74, 0.5)',
+                background: 'var(--bg-card)',
+                borderColor: 'var(--bg-border)',
               }}
             >
-              <h3 className="text-xs font-bold text-gold-bright uppercase tracking-wider flex items-center gap-1.5 border-b border-white/5 pb-2">
+              <h3 className="text-xs font-bold text-gold-bright uppercase tracking-wider flex items-center gap-1.5 border-b border-[var(--bg-border)] pb-2">
                 <Sparkles size={14} />
                 {t.luckyLetters}
               </h3>
@@ -267,20 +265,19 @@ export default function BabyNamesPage() {
               </div>
             </div>
 
-            {/* Shortlisted Names Box */}
             <div 
-              className="p-5 rounded-2xl border backdrop-blur-sm flex flex-col gap-3"
+              className="p-5 rounded-2xl border flex flex-col gap-3"
               style={{
-                background: 'rgba(15, 15, 36, 0.45)',
-                borderColor: 'rgba(255,255,255,0.05)',
+                background: 'var(--bg-card)',
+                borderColor: 'var(--bg-border)',
               }}
             >
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider flex items-center justify-between border-b border-[var(--bg-border)] pb-2">
                 <span className="flex items-center gap-1.5">
                   <Heart className="text-red-400 fill-red-400" size={14} />
                   {t.shortlistTitle}
                 </span>
-                <span className="font-mono bg-white/5 px-2 py-0.5 rounded text-[10px] text-text-muted">
+                <span className="font-mono bg-[var(--bg-elevated)] px-2 py-0.5 rounded text-[10px] text-text-muted">
                   {shortlisted.length}
                 </span>
               </h3>
@@ -316,12 +313,12 @@ export default function BabyNamesPage() {
                   placeholder={t.searchPlaceholder}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-black/20 border border-bg-border rounded-xl pl-11 pr-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all text-sm"
+                  className="w-full bg-[var(--bg-elevated)] border border-bg-border rounded-xl pl-11 pr-4 py-3 text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all text-sm"
                 />
               </div>
 
               {/* Gender Tab Headers */}
-              <div className="flex bg-black/40 border border-bg-border p-1 rounded-xl w-full sm:w-auto shrink-0 select-none">
+              <div className="flex bg-[var(--bg-card)] border border-bg-border p-1 rounded-xl w-full sm:w-auto shrink-0 select-none">
                 {(['all', 'boy', 'girl', 'unisex'] as const).map((filter) => {
                   const isActive = genderFilter === filter
                   return (
@@ -333,7 +330,7 @@ export default function BabyNamesPage() {
                         px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer text-center whitespace-nowrap
                         ${isActive 
                           ? 'bg-gold-deep text-white shadow-sm' 
-                          : 'text-text-secondary hover:text-white'
+                          : 'text-text-secondary hover:text-[var(--text-primary)]'
                         }
                       `}
                     >
@@ -374,15 +371,15 @@ export default function BabyNamesPage() {
                       <motion.div
                         key={name.nameEn}
                         variants={cardVariants}
-                        className="p-5 rounded-2xl border backdrop-blur-sm flex flex-col justify-between gap-3 relative overflow-hidden transition-all duration-300 hover:border-gold-mid/30"
+                        className="p-5 rounded-2xl border flex flex-col justify-between gap-3 relative overflow-hidden transition-all duration-300 hover:border-gold-mid/30"
                         style={{
-                          background: 'rgba(15, 15, 36, 0.45)',
-                          borderColor: isFav ? 'rgba(201, 146, 42, 0.35)' : 'rgba(42, 42, 74, 0.5)',
+                          background: 'var(--bg-card)',
+                          borderColor: isFav ? 'var(--gold-mid)' : 'var(--bg-border)',
                         }}
                       >
                         <div className="flex justify-between items-start gap-4">
                           <div className="flex flex-col gap-0.5">
-                            <span className="text-xl font-black text-white tracking-wide">
+                            <span className="text-xl font-black text-[var(--text-primary)] tracking-wide">
                               {name.nameEn}
                             </span>
                             <span className="text-sm font-bold text-gold-bright">
@@ -409,7 +406,7 @@ export default function BabyNamesPage() {
                               className={`p-2 rounded-lg border transition-all cursor-pointer
                                 ${isFav 
                                   ? 'bg-red-500/10 border-red-500/35 text-red-400' 
-                                  : 'bg-white/5 border-white/5 text-text-muted hover:text-white hover:bg-white/10'
+                                  : 'bg-[var(--bg-elevated)] border-[var(--bg-border)] text-text-muted hover:text-[var(--text-primary)] hover:bg-[var(--bg-active)]'
                                 }`}
                             >
                               <Heart className={isFav ? 'fill-red-400' : ''} size={14} />
@@ -418,7 +415,7 @@ export default function BabyNamesPage() {
                         </div>
 
                         {/* Meaning */}
-                        <div className="border-t border-white/5 pt-2 flex flex-col gap-0.5 text-xs text-text-secondary">
+                        <div className="border-t border-[var(--bg-border)] pt-2 flex flex-col gap-0.5 text-xs text-text-secondary">
                           <span className="font-semibold text-text-muted">{t.meaningLabel}</span>
                           <p className="leading-relaxed">
                             {isTa ? name.meaningTa : name.meaningEn}
