@@ -105,11 +105,42 @@ const getNakshatraAndPada = (longitude: number): { nakshatra: string; pada: numb
   };
 };
 
+const RASI_NAME_MAP: Record<string, string> = {
+  aries: 'Mesha',
+  taurus: 'Vrishabha',
+  gemini: 'Mithuna',
+  cancer: 'Kataka',
+  leo: 'Simha',
+  virgo: 'Kanya',
+  libra: 'Thula',
+  scorpio: 'Vrischika',
+  sagittarius: 'Dhanus',
+  capricorn: 'Makara',
+  aquarius: 'Kumbha',
+  pisces: 'Meena',
+  
+  mesha: 'Mesha',
+  vrishabha: 'Vrishabha',
+  mithuna: 'Mithuna',
+  kataka: 'Kataka',
+  simha: 'Simha',
+  kanya: 'Kanya',
+  thula: 'Thula',
+  vrischika: 'Vrischika',
+  dhanus: 'Dhanus',
+  makara: 'Makara',
+  kumbha: 'Kumbha',
+  meena: 'Meena'
+};
+
 const getSignName = (p: any): string => {
   if (p.rasi && typeof p.rasi === 'object' && p.rasi.id !== undefined) {
     return ZODIAC_SIGNS[p.rasi.id];
   }
   if (typeof p.rasi === 'string') {
+    const clean = p.rasi.trim().toLowerCase();
+    const mapped = RASI_NAME_MAP[clean];
+    if (mapped) return mapped;
     return p.rasi;
   }
   return ZODIAC_SIGNS[Math.floor(p.longitude / 30)] || 'Mesha';
@@ -484,6 +515,8 @@ export interface TransitData {
 export const calculateTransit = (rasi: string): TransitData => {
   const todayStr = new Date().toISOString().split('T')[0];
   
+  const cleanRasi = rasi ? (RASI_NAME_MAP[rasi.trim().toLowerCase()] || rasi) : rasi;
+  
   // Transiting planet positions in 2026
   const transitingPlanets = {
     Saturn: { sign: 'Meena', degree: 14.5 },
@@ -492,7 +525,7 @@ export const calculateTransit = (rasi: string): TransitData => {
     Ketu: { sign: 'Simha', degree: 21.4 }
   };
 
-  const rasiIdx = ZODIAC_SIGNS.indexOf(rasi);
+  const rasiIdx = ZODIAC_SIGNS.indexOf(cleanRasi);
   if (rasiIdx === -1) {
     throw new Error('Invalid rasi moon sign provided');
   }
@@ -727,7 +760,7 @@ export const calculateTransit = (rasi: string): TransitData => {
   }
 
   return {
-    natal_moon_sign: rasi,
+    natal_moon_sign: cleanRasi,
     transit_date: todayStr,
     transits,
     special_transits: {

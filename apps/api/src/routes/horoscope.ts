@@ -53,7 +53,10 @@ router.post('/dasha', authenticate, requireSubscription, async (req: Request, re
 
     const data = calculateVimshottariDasha(birth_date, moon_longitude);
 
-    res.json(data);
+    res.json({
+      success: true,
+      data,
+    });
   } catch (error: any) {
     console.error('[Dasha Error]:', error);
     res.status(error.statusCode || 500).json({
@@ -79,7 +82,10 @@ router.get('/transit', authenticate, requireSubscription, async (req: Request, r
 
     const data = calculateTransit(rasi);
 
-    res.json(data);
+    res.json({
+      success: true,
+      data,
+    });
   } catch (error: any) {
     console.error('[Transit Error]:', error);
     res.status(error.statusCode || 500).json({

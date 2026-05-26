@@ -34,16 +34,19 @@ router.post('/register', authLimiter, async (req: Request, res: Response): Promi
 
     const cleanEmail = email.trim().toLowerCase();
     const cleanPhone = phone.trim().replace(/\s+/g, '');
+    const isSyntheticEmail = cleanEmail.endsWith('@jothisoft.phone');
 
-    // 1. Email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(cleanEmail)) {
-      res.status(400).json({
-        success: false,
-        error: 'VALIDATION_ERROR',
-        message: 'செல்லுபடியாகும் மின்னஞ்சல் தேவை · Valid email is required',
-      });
-      return;
+    // 1. Email format validation — skip for synthetic phone-derived emails
+    if (!isSyntheticEmail) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(cleanEmail)) {
+        res.status(400).json({
+          success: false,
+          error: 'VALIDATION_ERROR',
+          message: 'செல்லுபடியாகும் மின்னஞ்சல் தேவை · Valid email is required',
+        });
+        return;
+      }
     }
 
     // 2. Password length validation
@@ -68,20 +71,22 @@ router.post('/register', authLimiter, async (req: Request, res: Response): Promi
       return;
     }
 
-    // Check if email already exists in public.users to avoid duplicating
-    const { data: existingUser } = await supabaseAdmin
-      .from('users')
-      .select('id')
-      .eq('email', cleanEmail)
-      .maybeSingle();
+    // Check if email already exists (skip for synthetic emails — phone is the identity)
+    if (!isSyntheticEmail) {
+      const { data: existingUser } = await supabaseAdmin
+        .from('users')
+        .select('id')
+        .eq('email', cleanEmail)
+        .maybeSingle();
 
-    if (existingUser) {
-      res.status(400).json({
-        success: false,
-        error: 'USER_EXISTS',
-        message: 'மின்னஞ்சல் ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது · Email already registered',
-      });
-      return;
+      if (existingUser) {
+        res.status(400).json({
+          success: false,
+          error: 'USER_EXISTS',
+          message: 'மின்னஞ்சல் ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது · Email already registered',
+        });
+        return;
+      }
     }
 
     // Check if phone already exists in public.users to avoid duplicating
@@ -99,6 +104,7 @@ router.post('/register', authLimiter, async (req: Request, res: Response): Promi
       });
       return;
     }
+
 
     const trialExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
@@ -179,11 +185,21 @@ router.post('/login', authLimiter, async (req: Request, res: Response): Promise<
     // Check if input is a phone number (e.g. only digits with optional leading +)
     if (/^\+?[0-9]{7,15}$/.test(inputVal.replace(/\s+/g, ''))) {
       const cleanPhone = inputVal.replace(/\s+/g, '');
-      const { data: userProfile } = await supabaseAdmin
+      const cleanDigits = cleanPhone.replace(/[^0-9]/g, '');
+      
+      // Match by the last 8-10 digits as a suffix search
+      const minLen = Math.min(cleanDigits.length, 10);
+      const suffix = cleanDigits.substring(cleanDigits.length - minLen);
+
+      const { data: matchedUsers } = await supabaseAdmin
         .from('users')
-        .select('email')
-        .eq('phone', cleanPhone)
-        .maybeSingle();
+        .select('email, phone')
+        .like('phone', `%${suffix}`);
+
+      const userProfile = matchedUsers?.find(u => {
+        const dbDigits = u.phone.replace(/[^0-9]/g, '');
+        return dbDigits.endsWith(cleanDigits) || cleanDigits.endsWith(dbDigits);
+      });
 
       if (userProfile && userProfile.email) {
         emailToAuth = userProfile.email;
@@ -227,13 +243,19 @@ router.post('/login', authLimiter, async (req: Request, res: Response): Promise<
     const isAdmin = (session.user.email && adminEmails.includes(session.user.email.toLowerCase())) || !!dbUser?.is_admin;
 
     // Sync is_admin metadata in auth.users if it differs
-    if (session.user.user_metadata?.is_admin !== isAdmin) {
+    const currentIsAdmin = !!session.user.user_metadata?.is_admin;
+    if (currentIsAdmin !== isAdmin) {
+      const updatedMetadata = {
+        ...session.user.user_metadata,
+        is_admin: isAdmin,
+      };
+
       await supabaseAdmin.auth.admin.updateUserById(session.user.id, {
-        user_metadata: {
-          ...session.user.user_metadata,
-          is_admin: isAdmin,
-        },
+        user_metadata: updatedMetadata,
       });
+
+      // Update in-memory reference to return updated fields to frontend
+      session.user.user_metadata = updatedMetadata;
     }
 
     res.json({

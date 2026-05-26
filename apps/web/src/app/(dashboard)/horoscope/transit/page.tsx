@@ -11,7 +11,7 @@ import api from '@/lib/api'
 
 const RASI_LIST = [
   { id: 'Mesha', en: 'Aries', ta: 'மேஷம்' },
-  { id: 'Rishabha', en: 'Taurus', ta: 'ரிஷபம்' },
+  { id: 'Vrishabha', en: 'Taurus', ta: 'ரிஷபம்' },
   { id: 'Mithuna', en: 'Gemini', ta: 'மிதுனம்' },
   { id: 'Kataka', en: 'Cancer', ta: 'கடகம்' },
   { id: 'Simha', en: 'Leo', ta: 'சிம்மம்' },
@@ -209,10 +209,10 @@ export default function TransitPalanPage() {
               <select
                 value={selectedRasi}
                 onChange={(e) => setSelectedRasi(e.target.value)}
-                className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all font-bold cursor-pointer"
+                className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all font-bold cursor-pointer"
               >
                 {RASI_LIST.map((rasi) => (
-                  <option key={rasi.id} value={rasi.id} className="bg-bg-page text-white font-bold">
+                  <option key={rasi.id} value={rasi.id} className="bg-bg-page text-text-primary font-bold">
                     {isTa ? rasi.ta : rasi.en} ({isTa ? rasi.en : rasi.ta})
                   </option>
                 ))}
@@ -234,9 +234,9 @@ export default function TransitPalanPage() {
             )}
 
             {transitData && (
-              <div className="border-t border-white/5 pt-3 flex justify-between items-center text-xs text-text-muted">
+              <div className="border-t border-bg-border/40 pt-3 flex justify-between items-center text-xs text-text-muted">
                 <span>{t.currentDate}:</span>
-                <span className="font-mono font-bold text-white flex items-center gap-1.5">
+                <span className="font-mono font-bold text-text-primary flex items-center gap-1.5">
                   <Calendar size={13} className="text-gold-mid" />
                   {transitData.transit_date}
                 </span>
@@ -285,7 +285,7 @@ export default function TransitPalanPage() {
                     }}
                   >
                     <div className="flex justify-between items-start gap-2">
-                      <h3 className="font-bold text-white text-sm">{t.ezharaiTitle}</h3>
+                      <h3 className="font-bold text-text-primary text-sm">{t.ezharaiTitle}</h3>
                       <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold tracking-wide uppercase 
                         ${transitData.special_transits.ezharai_sani.active 
                           ? 'bg-red-500/10 text-red-400 border border-red-500/20' 
@@ -315,7 +315,7 @@ export default function TransitPalanPage() {
                     }}
                   >
                     <div className="flex justify-between items-start gap-2">
-                      <h3 className="font-bold text-white text-sm">{t.guruTitle}</h3>
+                      <h3 className="font-bold text-text-primary text-sm">{t.guruTitle}</h3>
                       <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold tracking-wide uppercase 
                         ${transitData.special_transits.guru_transit.auspicious 
                           ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
@@ -377,10 +377,10 @@ export default function TransitPalanPage() {
                         }}
                       >
                         {/* Title Bar */}
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-bg-border/40 pb-3">
                           <div className="flex items-center gap-2.5">
                             <div className="w-2.5 h-2.5 rounded-full bg-gold-mid shrink-0" />
-                            <h3 className="font-bold text-white text-base">
+                            <h3 className="font-bold text-text-primary text-base">
                               {isTa 
                                 ? (planet === 'Saturn' ? 'சனி பகவான்' : planet === 'Jupiter' ? 'குரு பகவான்' : planet === 'Rahu' ? 'ராகு பகவான்' : 'கேது பகவான்') 
                                 : planet}
@@ -393,11 +393,11 @@ export default function TransitPalanPage() {
                               {rasiLabel ? (isTa ? rasiLabel.ta : rasiLabel.en) : details.sign}
                             </span>
                             <span className="text-text-disabled">|</span>
-                            <span className="font-mono text-white bg-white/5 px-2 py-0.5 rounded border border-white/5">
+                            <span className="font-mono text-text-primary bg-bg-page px-2 py-0.5 rounded border border-bg-border">
                               {details.sign_degree}°
                             </span>
                             <span className="text-text-disabled">|</span>
-                            <span className="font-bold text-white bg-gold-deep/20 px-2 py-0.5 rounded border border-gold-mid/20">
+                            <span className="font-bold text-gold-deep dark:text-gold-bright bg-[var(--gold-tint)] px-2 py-0.5 rounded border border-gold-mid/30">
                               {details.house} {t.houseSuffix}
                             </span>
                           </div>

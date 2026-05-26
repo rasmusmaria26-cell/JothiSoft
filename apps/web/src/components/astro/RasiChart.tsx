@@ -92,7 +92,7 @@ export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, l
   return (
     <div className="flex flex-col items-center w-full max-w-[440px] mx-auto p-1">
       {/* Chart Title */}
-      <h3 className={`text-sm font-semibold mb-3 tracking-wider uppercase ${isPrint ? 'text-gray-900' : 'text-gold-bright'}`}>
+      <h3 className={`text-sm font-semibold mb-3 tracking-wider uppercase ${isPrint ? 'text-gray-900' : 'text-gold-deep dark:text-gold-bright'}`}>
         {title}
       </h3>
 
@@ -105,8 +105,8 @@ export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, l
           gridTemplateRows: '25% 25% 25% 25%',
           aspectRatio: '1 / 1',
           ...(!isPrint ? {
-            background: 'rgba(8, 8, 24, 0.65)',
-            borderColor: 'rgba(42, 42, 74, 0.7)',
+            background: 'var(--bg-elevated)',
+            borderColor: 'var(--bg-border)',
           } : {})
         }}
       >
@@ -114,14 +114,14 @@ export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, l
         <div 
           className={`col-start-2 col-span-2 row-start-2 row-span-2 flex flex-col justify-center items-center text-center z-10 border border-dashed ${isPrint ? 'bg-transparent border-gray-400 p-1' : 'p-2'}`}
           style={!isPrint ? {
-            background: 'rgba(15, 15, 36, 0.90)',
-            borderColor: 'rgba(201, 146, 42, 0.25)',
+            background: 'var(--bg-card)',
+            borderColor: 'var(--bg-border)',
           } : {}}
         >
           <span className={`text-[10px] tracking-widest uppercase ${isPrint ? 'text-gray-600' : 'text-text-muted'}`}>
             {language === 'ta' ? 'லக்னம்' : 'Ascendant'}
           </span>
-          <span className={`text-xs font-bold mt-0.5 ${isPrint ? 'text-black' : 'text-gold-bright'}`}>
+          <span className={`text-xs font-bold mt-0.5 ${isPrint ? 'text-black' : 'text-gold-deep dark:text-gold-bright'}`}>
             {language === 'ta' ? SIGN_MAP_TA[lagnaSign] : lagnaSign}
           </span>
           <span className={`text-[9px] mt-1 leading-tight ${isPrint ? 'text-gray-600' : 'text-text-muted'}`}>
@@ -146,10 +146,10 @@ export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, l
                 ${cell.gridClass} flex flex-col relative group cursor-default select-none
                 ${isTopLeft ? 'rounded-tl-lg' : ''} ${isTopRight ? 'rounded-tr-lg' : ''}
                 ${isBottomLeft ? 'rounded-bl-lg' : ''} ${isBottomRight ? 'rounded-br-lg' : ''}
-                ${isPrint ? 'border border-gray-400 bg-transparent p-0.5' : 'border border-bg-border/60 p-1 transition-colors duration-150 hover:bg-gold-deep/5'}
+                ${isPrint ? 'border border-gray-400 bg-transparent p-0.5' : 'border border-bg-border/60 p-1 transition-colors duration-150 hover:bg-[var(--gold-tint)]'}
               `}
               style={!isPrint ? {
-                borderColor: 'rgba(42, 42, 74, 0.45)',
+                borderColor: 'var(--bg-border)',
               } : {}}
               whileHover={!isPrint ? { scale: 1.01 } : {}}
             >
@@ -175,8 +175,14 @@ export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, l
                           : 'text-[10px] sm:text-[11px] px-1.5 py-0.5'
                         }
                         ${planet.isLagna 
-                          ? (isPrint ? 'border border-gray-600 text-black font-extrabold' : 'bg-gold-deep/20 border border-gold-mid/40 text-gold-bright shadow-sm shadow-gold-deep/10')
-                          : (isPrint ? 'text-gray-900' : 'bg-white/5 border border-white/15 text-text-primary')
+                          ? (isPrint 
+                              ? 'border border-gray-600 text-black font-extrabold' 
+                              : 'bg-[var(--gold-tint)] border border-[var(--gold-mid)] text-gold-deep dark:text-gold-bright shadow-sm shadow-gold-deep/10'
+                            )
+                          : (isPrint 
+                              ? 'text-gray-900' 
+                              : 'bg-bg-page border border-bg-border text-text-primary shadow-sm'
+                            )
                         }
                       `}
                     >
@@ -194,12 +200,12 @@ export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, l
                     p-2 rounded border shadow-xl w-48 text-[10px] leading-relaxed pointer-events-none
                   "
                   style={{
-                    background: 'rgba(15, 15, 36, 0.98)',
-                    borderColor: 'rgba(201, 146, 42, 0.4)',
-                    boxShadow: '0 10px 25px -5px rgba(0,0,0,0.5)',
+                    background: 'var(--bg-card)',
+                    borderColor: 'var(--bg-border)',
+                    boxShadow: '0 10px 25px -5px rgba(0,0,0,0.15)',
                   }}
                 >
-                  <p className="font-semibold text-gold-bright border-b border-white/10 pb-1 mb-1">
+                  <p className="font-semibold text-gold-deep dark:text-gold-bright border-b border-bg-border/40 pb-1 mb-1">
                     {signName} ({language === 'ta' ? 'கோள்கள்' : 'Planets'})
                   </p>
                   {signPlanets.map((p) => (

@@ -164,10 +164,14 @@ router.get('/customers/search', async (req: Request, res: Response): Promise<voi
       return;
     }
 
-    const foundUser = users.find(u => 
-      u.email?.toLowerCase() === trimmed || 
-      u.phone?.replace(/[^0-9+]/g, '') === trimmed.replace(/[^0-9+]/g, '')
-    );
+    const foundUser = users.find(u => {
+      if (u.email?.toLowerCase() === trimmed) return true;
+      if (!u.phone) return false;
+      const cleanDbPhone = u.phone.replace(/[^0-9]/g, '');
+      const cleanQueryPhone = trimmed.replace(/[^0-9]/g, '');
+      if (!cleanQueryPhone) return false;
+      return cleanDbPhone.endsWith(cleanQueryPhone) || cleanQueryPhone.endsWith(cleanDbPhone);
+    });
 
     if (!foundUser) {
       res.status(404).json({ success: false, error: 'USER_NOT_FOUND', message: 'No registered customer account found with that email or phone number.' });
