@@ -171,7 +171,7 @@ export default function HoroscopePdfPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder={t.namePlaceholder}
-                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
+                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
                     />
                   </div>
 
@@ -193,7 +193,7 @@ export default function HoroscopePdfPage() {
                       value={fatherName}
                       onChange={(e) => setFatherName(e.target.value)}
                       placeholder={t.fatherPlaceholder}
-                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
+                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
                     />
                   </div>
 
@@ -206,7 +206,7 @@ export default function HoroscopePdfPage() {
                       value={motherName}
                       onChange={(e) => setMotherName(e.target.value)}
                       placeholder={t.motherPlaceholder}
-                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
+                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
                     />
                   </div>
                 </div>
@@ -244,7 +244,7 @@ export default function HoroscopePdfPage() {
                       required
                       value={dob}
                       onChange={(e) => setDob(e.target.value)}
-                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
+                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
                     />
                   </div>
 
@@ -257,7 +257,7 @@ export default function HoroscopePdfPage() {
                       required
                       value={tob}
                       onChange={(e) => setTob(e.target.value)}
-                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
+                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
                     />
                   </div>
                 </div>

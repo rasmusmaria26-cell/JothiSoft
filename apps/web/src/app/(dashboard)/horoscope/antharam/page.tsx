@@ -88,27 +88,44 @@ export default function AntharamExplorerPage() {
         }
 
         const horoData = horoRes.data
-        const moonPlanet = horoData.planets.find((p: any) => p.planet.toLowerCase() === 'moon' || p.planet === 'சந்திரன்')
+        // The API always returns planet names in English ('Moon', not 'சந்திரன்')
+        const moonPlanet = horoData.planets.find((p: any) => 
+          p.planet === 'Moon' || p.planet?.toLowerCase() === 'moon'
+        )
         let finalDasaData = null
 
-        if (moonPlanet) {
-          const moonSignIndex = [
+        if (moonPlanet && moonPlanet.sign) {
+          // Backend ZODIAC_SIGNS order — must match horoscope.service.ts exactly
+          const ZODIAC_SIGNS = [
             'Mesha', 'Vrishabha', 'Mithuna', 'Kataka',
             'Simha', 'Kanya', 'Thula', 'Vrischika',
             'Dhanus', 'Makara', 'Kumbha', 'Meena'
-          ].indexOf(moonPlanet.sign)
+          ]
+          const moonSignIndex = ZODIAC_SIGNS.indexOf(moonPlanet.sign)
           
           if (moonSignIndex !== -1) {
-            const moonLongitude = (moonSignIndex * 30) + moonPlanet.sign_degree
+            const moonLongitude = (moonSignIndex * 30) + (moonPlanet.sign_degree || 0)
             
             const dasaRes = await api.post('/horoscope/dasha', {
               birth_date: profile.dob,
               moon_longitude: moonLongitude
             })
             
-            if (dasaRes.success) {
+            if (dasaRes.success && dasaRes.data) {
               finalDasaData = dasaRes.data
-            } else if (dasaRes && dasaRes.major_dashas) {
+            } else if (dasaRes?.timeline) {
+              finalDasaData = dasaRes
+            }
+          } else {
+            // Fallback: use moon_longitude directly from the raw horoscope if sign lookup fails
+            console.warn('[Antharam]: Unknown moon sign:', moonPlanet.sign, '— attempting raw longitude fallback')
+            const dasaRes = await api.post('/horoscope/dasha', {
+              birth_date: profile.dob,
+              moon_longitude: moonPlanet.sign_degree ?? 0
+            })
+            if (dasaRes.success && dasaRes.data) {
+              finalDasaData = dasaRes.data
+            } else if (dasaRes?.timeline) {
               finalDasaData = dasaRes
             }
           }

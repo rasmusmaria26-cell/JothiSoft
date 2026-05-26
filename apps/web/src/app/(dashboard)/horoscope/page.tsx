@@ -203,8 +203,8 @@ export default function HoroscopePage() {
           moon_longitude: moonLongitude
         })
 
-        if (dasaRes && dasaRes.timeline) {
-          dasaData = dasaRes as any
+        if (dasaRes) {
+          dasaData = dasaRes.success ? dasaRes.data : (dasaRes.timeline ? dasaRes : null)
         }
       }
 

@@ -153,12 +153,12 @@ export default function PalanPage() {
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-text-primary ml-1">{t.dob}</label>
                   <input type="date" required value={dob} onChange={e => setDob(e.target.value)}
-                    className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-gold-mid" />
+                    className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid" />
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-text-primary ml-1">{t.tob}</label>
                   <input type="time" required value={tob} onChange={e => setTob(e.target.value)}
-                    className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-gold-mid" />
+                    className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid" />
                 </div>
               </div>
               <div className="flex flex-col gap-1.5">

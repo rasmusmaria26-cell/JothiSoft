@@ -270,16 +270,19 @@ export default function RetailerDashboard() {
 
             <form onSubmit={handleSearchCustomer} className="space-y-4 text-xs">
               <div className="space-y-1.5">
-                <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Email or Mobile Number</label>
+                <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">தொலைபேசி எண் · Phone Number</label>
                 <input
-                  type="text"
+                  type="tel"
                   required
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="e.g. client@domain.com or +91..."
+                  placeholder="+91 9876543210"
+                  inputMode="tel"
                   className="w-full bg-[var(--bg-elevated)] px-3 py-2 rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-[var(--gold-mid)] focus:ring-1 focus:ring-[var(--gold-mid)]/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
                 />
+                <p className="text-[10px] text-[var(--text-muted)]/60">மின்னஞ்சல் முகவரியாலும் தேட முடியும் · Email also accepted</p>
               </div>
+
 
               <button
                 type="submit"
