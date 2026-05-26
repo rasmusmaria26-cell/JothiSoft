@@ -4,6 +4,8 @@ import { motion } from 'framer-motion'
 import { Bell, LogOut } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { supabase } from '@/lib/supabase'
+import LanguageToggle from '@/components/LanguageToggle'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export function Header() {
   const { user, clearAuth } = useAuthStore()
@@ -21,8 +23,8 @@ export function Header() {
     <motion.header
       className="fixed top-0 left-0 right-0 z-50 h-[52px] flex items-center justify-between px-5 md:px-8 backdrop-blur-md border-b"
       style={{
-        background: 'rgba(8, 8, 24, 0.90)',
-        borderColor: 'rgba(42, 42, 74, 0.7)',
+        background: 'var(--bg-overlay)',
+        borderColor: 'var(--bg-border)',
       }}
       initial={{ y: -52, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -42,6 +44,11 @@ export function Header() {
       </motion.div>
 
       <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 mr-1">
+          <LanguageToggle />
+          <ThemeToggle />
+        </div>
+
         <motion.button
           className="w-8 h-8 rounded-full flex items-center justify-center text-text-muted hover:text-text-secondary"
           whileHover={{ scale: 1.12, rotate: 15 }}

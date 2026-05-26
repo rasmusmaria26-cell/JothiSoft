@@ -247,9 +247,8 @@ export default function PanchangamPage() {
       <div 
         className="rounded-xl border p-4 mb-6 flex flex-col md:flex-row items-center gap-4 justify-between"
         style={{
-          background: 'rgba(15, 15, 36, 0.45)',
-          borderColor: 'rgba(201, 146, 42, 0.15)',
-          backdropFilter: 'blur(20px)'
+          background: 'var(--bg-card)',
+          borderColor: 'var(--bg-border)'
         }}
       >
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
@@ -261,7 +260,7 @@ export default function PanchangamPage() {
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
               className="w-full sm:w-56 bg-bg-elevated/45 border border-bg-border rounded-md pl-10 pr-3 py-2 text-sm text-text-primary focus:outline-none focus:border-gold-mid transition-colors"
-              style={{ background: 'rgba(26, 18, 9, 0.45)' }}
+              style={{ background: 'var(--bg-elevated)' }}
             />
           </div>
 
@@ -321,8 +320,8 @@ export default function PanchangamPage() {
               <div 
                 className="rounded-xl border p-5 relative overflow-hidden transition-all duration-200 hover:translate-y-[-2px]"
                 style={{
-                  background: 'rgba(26, 18, 9, 0.45)',
-                  borderColor: 'rgba(74, 56, 40, 0.6)'
+                  background: 'var(--bg-card)',
+                  borderColor: 'var(--bg-border)'
                 }}
               >
                 <div className="absolute top-0 right-0 h-16 w-16 bg-gradient-to-br from-gold-deep/5 to-transparent rounded-bl-full pointer-events-none" />
@@ -343,8 +342,8 @@ export default function PanchangamPage() {
               <div 
                 className="rounded-xl border p-5 relative overflow-hidden transition-all duration-200 hover:translate-y-[-2px]"
                 style={{
-                  background: 'rgba(26, 18, 9, 0.45)',
-                  borderColor: 'rgba(74, 56, 40, 0.6)'
+                  background: 'var(--bg-card)',
+                  borderColor: 'var(--bg-border)'
                 }}
               >
                 <div className="absolute top-0 right-0 h-16 w-16 bg-gradient-to-br from-gold-deep/5 to-transparent rounded-bl-full pointer-events-none" />
@@ -365,8 +364,8 @@ export default function PanchangamPage() {
               <div 
                 className="rounded-xl border p-5 relative overflow-hidden transition-all duration-200 hover:translate-y-[-2px]"
                 style={{
-                  background: 'rgba(26, 18, 9, 0.45)',
-                  borderColor: 'rgba(74, 56, 40, 0.6)'
+                  background: 'var(--bg-card)',
+                  borderColor: 'var(--bg-border)'
                 }}
               >
                 <div className="absolute top-0 right-0 h-16 w-16 bg-gradient-to-br from-gold-deep/5 to-transparent rounded-bl-full pointer-events-none" />
@@ -387,8 +386,8 @@ export default function PanchangamPage() {
               <div 
                 className="rounded-xl border p-5 relative overflow-hidden transition-all duration-200 hover:translate-y-[-2px]"
                 style={{
-                  background: 'rgba(26, 18, 9, 0.45)',
-                  borderColor: 'rgba(74, 56, 40, 0.6)'
+                  background: 'var(--bg-card)',
+                  borderColor: 'var(--bg-border)'
                 }}
               >
                 <div className="absolute top-0 right-0 h-16 w-16 bg-gradient-to-br from-gold-deep/5 to-transparent rounded-bl-full pointer-events-none" />
@@ -414,15 +413,15 @@ export default function PanchangamPage() {
               <div 
                 className="lg:col-span-6 rounded-xl border p-5"
                 style={{
-                  background: 'rgba(15, 15, 36, 0.45)',
-                  borderColor: 'rgba(201, 146, 42, 0.2)'
+                  background: 'var(--bg-card)',
+                  borderColor: 'var(--bg-border)'
                 }}
               >
                 <h3 className="text-sm sm:text-base font-bold text-gold-bright mb-4 flex items-center gap-2 border-b border-white/5 pb-2">
                   <span className="h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--danger)' }} />
                   {labels.rahuKalam} (Rahu Kalam)
                 </h3>
-                <div className="flex items-center justify-between p-4 bg-black/30 rounded-lg border border-white/5">
+                <div className="flex items-center justify-between p-4 bg-[var(--bg-elevated)] rounded-lg border border-[var(--bg-border)]">
                   <div>
                     <span className="text-[10px] uppercase font-bold text-text-muted block">
                       {labels.rahuKalam}
@@ -441,8 +440,8 @@ export default function PanchangamPage() {
               <div 
                 className="lg:col-span-6 rounded-xl border p-5"
                 style={{
-                  background: 'rgba(15, 15, 36, 0.45)',
-                  borderColor: 'rgba(201, 146, 42, 0.2)'
+                  background: 'var(--bg-card)',
+                  borderColor: 'var(--bg-border)'
                 }}
               >
                 <h3 className="text-sm sm:text-base font-bold text-gold-bright mb-4 flex items-center gap-2 border-b border-white/5 pb-2">
@@ -451,7 +450,7 @@ export default function PanchangamPage() {
                 </h3>
                 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-black/30 rounded-lg border border-white/5 flex items-center justify-between">
+                  <div className="p-4 bg-[var(--bg-elevated)] rounded-lg border border-[var(--bg-border)] flex items-center justify-between">
                     <div>
                       <span className="text-[10px] uppercase font-bold text-text-muted block">
                         {labels.sunLong}
@@ -465,7 +464,7 @@ export default function PanchangamPage() {
                     </div>
                   </div>
 
-                  <div className="p-4 bg-black/30 rounded-lg border border-white/5 flex items-center justify-between">
+                  <div className="p-4 bg-[var(--bg-elevated)] rounded-lg border border-[var(--bg-border)] flex items-center justify-between">
                     <div>
                       <span className="text-[10px] uppercase font-bold text-text-muted block">
                         {labels.moonLong}

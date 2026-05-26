@@ -174,7 +174,7 @@ export default function ManaiyadiPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 className="flex flex-col gap-5 p-6 rounded-2xl"
-                style={{ background: '#2e2115', border: '1px solid rgba(42, 172, 138, 0.35)' }}
+                style={{ background: 'var(--bg-card)', border: '1px solid var(--bg-border)' }}
               >
                 {/* Dimension Type Toggle */}
                 <div className="flex flex-col gap-2">
@@ -190,7 +190,7 @@ export default function ManaiyadiPage() {
                         style={
                           dimension === d
                             ? { background: 'rgba(42, 172, 138, 0.2)', color: '#2aac8a', border: '1px solid rgba(42, 172, 138, 0.4)' }
-                            : { background: 'rgba(255,255,255,0.04)', color: '#666', border: '1px solid rgba(255,255,255,0.08)' }
+                            : { background: 'var(--bg-page)', color: 'var(--text-muted)', border: '1px solid var(--bg-border)' }
                         }
                       >
                         {d === 'length' ? labels.length : labels.width}
@@ -281,7 +281,7 @@ export default function ManaiyadiPage() {
                 exit={{ opacity: 0, scale: 0.97 }}
                 className="flex flex-col gap-5 p-6 rounded-2xl"
                 style={{
-                  background: '#2e2115',
+                  background: 'var(--bg-card)',
                   border: `1px solid ${qualityDetail?.color}40`,
                   boxShadow: `0 0 40px ${qualityDetail?.glow}`
                 }}
@@ -333,7 +333,7 @@ export default function ManaiyadiPage() {
                     <div
                       key={i}
                       className="flex flex-col items-center gap-1 p-3 rounded-xl"
-                      style={{ background: 'rgba(255,255,255,0.04)' }}
+                      style={{ background: 'var(--bg-active)', border: '1px solid var(--bg-border)' }}
                     >
                       <span className="text-[11px] text-text-muted">{stat.label}</span>
                       <span className="text-[18px] font-black text-text-primary">{stat.value}</span>
@@ -355,8 +355,7 @@ export default function ManaiyadiPage() {
 
                 <button
                   onClick={handleReset}
-                  className="w-full py-2.5 rounded-xl font-bold text-[14px] flex items-center justify-center gap-2 transition-all cursor-pointer"
-                  style={{ background: 'rgba(255,255,255,0.06)', color: '#aaa', border: '1px solid rgba(255,255,255,0.1)' }}
+                  className="w-full py-2.5 rounded-xl font-bold text-[14px] flex items-center justify-center gap-2 transition-all cursor-pointer bg-[var(--bg-active)] text-text-primary border border-[var(--bg-border)] hover:bg-[var(--bg-page)]"
                 >
                   <RefreshCw size={15} />
                   {labels.reset}
@@ -383,11 +382,11 @@ export default function ManaiyadiPage() {
           {/* 8-Remainder Cycle Table */}
           <div
             className="rounded-2xl overflow-hidden"
-            style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+            style={{ border: '1px solid var(--bg-border)' }}
           >
             <div
               className="px-4 py-3"
-              style={{ background: 'rgba(201, 146, 42, 0.1)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}
+              style={{ background: 'var(--gold-tint)', borderBottom: '1px solid var(--bg-border)' }}
             >
               <p className="text-[13px] font-bold text-gold-bright">
                 {language === 'ta' ? '8-அங்குல சக்கர அட்டவணை' : '8-Angulam Cycle Reference Chart'}
@@ -402,8 +401,8 @@ export default function ManaiyadiPage() {
                     key={rem}
                     className="flex items-center justify-between px-4 py-3"
                     style={{
-                      background: result?.quality === quality ? detail.bg : (rem % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent'),
-                      borderBottom: rem < 7 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                      background: result?.quality === quality ? detail.bg : (rem % 2 === 0 ? 'var(--bg-page)' : 'transparent'),
+                      borderBottom: rem < 7 ? '1px solid var(--bg-border)' : 'none',
                       borderLeft: result?.quality === quality ? `3px solid ${detail.color}` : '3px solid transparent',
                     }}
                   >

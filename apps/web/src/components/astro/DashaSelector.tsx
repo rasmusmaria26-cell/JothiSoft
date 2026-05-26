@@ -68,8 +68,8 @@ export function DashaSelector({
               onClick={() => onSelectLord(dasa.dasha_lord)}
               className="flex-shrink-0 flex flex-col items-start text-left p-4 rounded-xl border transition-all duration-300 w-44 hover:scale-[1.01]"
               style={{
-                background: isSelected ? '#3a2b1c' : '#2e2115',
-                borderColor: isSelected ? '#c9922a' : '#57412e',
+                background: isSelected ? 'var(--bg-active)' : 'var(--bg-card)',
+                borderColor: isSelected ? 'var(--gold-mid)' : 'var(--bg-border)',
                 boxShadow: isSelected 
                   ? '0 0 15px rgba(201, 146, 42, 0.15)' 
                   : '0 0 10px rgba(0, 0, 0, 0.1)',

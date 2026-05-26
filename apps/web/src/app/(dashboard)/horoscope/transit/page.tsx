@@ -198,10 +198,10 @@ export default function TransitPalanPage() {
         {/* Left Column: Selector Box */}
         <div className="lg:col-span-4 flex flex-col gap-6">
           <div 
-            className="p-5 rounded-2xl border backdrop-blur-sm flex flex-col gap-4"
+            className="p-5 rounded-2xl border flex flex-col gap-4"
             style={{
-              background: 'rgba(15, 15, 36, 0.65)',
-              borderColor: 'rgba(42, 42, 74, 0.5)',
+              background: 'var(--bg-card)',
+              borderColor: 'var(--bg-border)',
             }}
           >
             <div className="flex flex-col gap-1.5">
@@ -280,8 +280,8 @@ export default function TransitPalanPage() {
                     variants={cardVariants}
                     className="p-5 rounded-2xl border relative overflow-hidden flex flex-col gap-3"
                     style={{
-                      background: 'rgba(15, 15, 36, 0.45)',
-                      borderColor: 'rgba(201, 146, 42, 0.2)',
+                      background: 'var(--bg-card)',
+                      borderColor: 'var(--bg-border)',
                     }}
                   >
                     <div className="flex justify-between items-start gap-2">
@@ -310,8 +310,8 @@ export default function TransitPalanPage() {
                     variants={cardVariants}
                     className="p-5 rounded-2xl border relative overflow-hidden flex flex-col gap-3"
                     style={{
-                      background: 'rgba(15, 15, 36, 0.45)',
-                      borderColor: 'rgba(201, 146, 42, 0.2)',
+                      background: 'var(--bg-card)',
+                      borderColor: 'var(--bg-border)',
                     }}
                   >
                     <div className="flex justify-between items-start gap-2">
@@ -372,8 +372,8 @@ export default function TransitPalanPage() {
                         variants={cardVariants}
                         className="p-5 sm:p-6 rounded-2xl border flex flex-col gap-3 relative overflow-hidden"
                         style={{
-                          background: 'rgba(15, 15, 36, 0.35)',
-                          borderColor: 'rgba(255,255,255,0.05)',
+                          background: 'var(--bg-card)',
+                          borderColor: 'var(--bg-border)',
                         }}
                       >
                         {/* Title Bar */}

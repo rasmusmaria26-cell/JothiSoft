@@ -28,6 +28,17 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Kavivanar&family=Mukta+Malar:wght@200;300;400;500;600;700;800&family=Outfit:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var t = localStorage.getItem('jothisoft-theme');
+                var p = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', t || p);
+              })();
+            `,
+          }}
+        />
       </head>
       <body className="font-sans antialiased selection:bg-gold-deep selection:text-text-inverse">
         {children}

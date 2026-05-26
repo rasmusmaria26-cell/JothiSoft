@@ -164,8 +164,8 @@ export default function NumerologyPage() {
 
       {/* Main Intro */}
       <div className="flex flex-col gap-1.5 border-b border-bg-border pb-4">
-        <h1 className="text-[24px] font-semibold text-[#1e6fa8] tracking-tight font-playfair flex items-center gap-2.5">
-          <Hash className="text-[#1e6fa8]" size={24} />
+        <h1 className="text-[24px] font-semibold text-[#1e6fa8] dark:text-[#80c8ff] tracking-tight font-playfair flex items-center gap-2.5">
+          <Hash className="text-[#1e6fa8] dark:text-[#80c8ff]" size={24} />
           {labels.title}
         </h1>
         <p className="text-[14px] text-text-secondary leading-relaxed max-w-[800px]">
@@ -217,7 +217,7 @@ export default function NumerologyPage() {
               <button
                 type="submit"
                 disabled={isCalculating}
-                className="w-full h-12 bg-[#1e6fa8] hover:bg-[#155b8a] text-text-inverse font-semibold rounded-lg flex items-center justify-center gap-2.5 transition-all active:scale-[0.99] disabled:opacity-50 text-[15px] mt-2"
+                className="w-full h-12 bg-gold-mid hover:bg-gold-deep text-text-inverse font-semibold rounded-lg flex items-center justify-center gap-2.5 transition-all active:scale-[0.99] disabled:opacity-50 text-[15px] mt-2"
               >
                 {isCalculating ? (
                   <>
@@ -249,7 +249,7 @@ export default function NumerologyPage() {
               </div>
               <button
                 onClick={() => setResult(null)}
-                className="bg-bg-page border border-[#1e6fa8] rounded-full px-5 py-2 text-[13px] text-[#80c8ff] hover:bg-[#1e6fa8]/20 font-semibold flex items-center gap-1.5 transition-all"
+                className="bg-bg-page border border-gold-mid rounded-full px-5 py-2 text-[13px] text-text-primary hover:bg-[var(--bg-active)] font-semibold flex items-center gap-1.5 transition-all"
               >
                 <RefreshCw size={15} />
                 {labels.buttonReset}
@@ -276,10 +276,10 @@ export default function NumerologyPage() {
               {/* Life Path Number */}
               <div className="bg-bg-card border border-[#1e6fa8]/40 rounded-xl p-5 shadow-xl flex items-start gap-4 hover:-translate-y-1 transition-transform">
                 <div className="w-16 h-16 rounded-full bg-[#1e6fa8]/20 border border-[#1e6fa8] flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(30,111,168,0.2)]">
-                  <span className="text-[28px] font-bold text-[#80c8ff] font-mono">{result.life_path.number}</span>
+                  <span className="text-[28px] font-bold text-blue-600 dark:text-[#80c8ff] font-mono">{result.life_path.number}</span>
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <h3 className="text-[16px] font-semibold text-[#80c8ff]">{labels.lifePathTitle}</h3>
+                  <h3 className="text-[16px] font-semibold text-blue-600 dark:text-[#80c8ff]">{labels.lifePathTitle}</h3>
                   <span className="text-[12px] text-text-muted font-mono uppercase">Raw sum: {result.life_path.raw}</span>
                   <p className="text-[13px] text-text-secondary leading-relaxed mt-1">
                     {labels.lifePathDesc}
@@ -290,10 +290,10 @@ export default function NumerologyPage() {
               {/* Soul Urge Number */}
               <div className="bg-bg-card border border-[#b0415e]/40 rounded-xl p-5 shadow-xl flex items-start gap-4 hover:-translate-y-1 transition-transform">
                 <div className="w-16 h-16 rounded-full bg-[#b0415e]/20 border border-[#b0415e] flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(176,65,94,0.2)]">
-                  <span className="text-[28px] font-bold text-[#ff90aa] font-mono">{result.soul_urge.number}</span>
+                  <span className="text-[28px] font-bold text-rose-600 dark:text-[#ff90aa] font-mono">{result.soul_urge.number}</span>
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <h3 className="text-[16px] font-semibold text-[#ff90aa]">{labels.soulUrgeTitle}</h3>
+                  <h3 className="text-[16px] font-semibold text-rose-600 dark:text-[#ff90aa]">{labels.soulUrgeTitle}</h3>
                   <span className="text-[12px] text-text-muted font-mono uppercase">Raw sum: {result.soul_urge.raw}</span>
                   <p className="text-[13px] text-text-secondary leading-relaxed mt-1">
                     {labels.soulUrgeDesc}
@@ -304,10 +304,10 @@ export default function NumerologyPage() {
               {/* Destiny Number */}
               <div className="bg-bg-card border border-[#4a7c59]/40 rounded-xl p-5 shadow-xl flex items-start gap-4 hover:-translate-y-1 transition-transform">
                 <div className="w-16 h-16 rounded-full bg-[#4a7c59]/20 border border-[#4a7c59] flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(74,124,89,0.2)]">
-                  <span className="text-[28px] font-bold text-[#6ee7a0] font-mono">{result.destiny.number}</span>
+                  <span className="text-[28px] font-bold text-emerald-600 dark:text-[#6ee7a0] font-mono">{result.destiny.number}</span>
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <h3 className="text-[16px] font-semibold text-[#6ee7a0]">{labels.destinyTitle}</h3>
+                  <h3 className="text-[16px] font-semibold text-emerald-600 dark:text-[#6ee7a0]">{labels.destinyTitle}</h3>
                   <span className="text-[12px] text-text-muted font-mono uppercase">Raw sum: {result.destiny.raw}</span>
                   <p className="text-[13px] text-text-secondary leading-relaxed mt-1">
                     {labels.destinyDesc}
@@ -329,7 +329,7 @@ export default function NumerologyPage() {
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            <div className="bg-[#241a0f] border border-bg-border rounded-xl mt-2 flex flex-col">
+            <div className="bg-[var(--bg-card)] border border-[var(--bg-border)] rounded-xl mt-2 flex flex-col">
               <button 
                 type="button"
                 onClick={() => setShowAgeCalc(!showAgeCalc)}
@@ -368,11 +368,11 @@ export default function NumerologyPage() {
                       </div>
 
                       <div className="flex flex-col md:flex-row gap-4">
-                        <div className="flex-1 flex items-center gap-3 bg-[#1e6fa8]/10 border border-[#1e6fa8]/30 rounded-lg p-3">
-                          <Calendar size={20} className="text-[#80c8ff]" />
+                        <div className="flex-1 flex items-center gap-3 bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 rounded-lg p-3">
+                          <Calendar size={20} className="text-blue-600 dark:text-[#80c8ff]" />
                           <div className="flex flex-col">
-                            <span className="text-[11px] uppercase tracking-wider text-[#80c8ff]/70 font-semibold">{labels.totalDays}</span>
-                            <span className="text-[16px] font-bold text-[#80c8ff] font-mono">{ageDetails.totalDays.toLocaleString()}</span>
+                            <span className="text-[11px] uppercase tracking-wider text-blue-600 dark:text-[#80c8ff]/70 font-semibold">{labels.totalDays}</span>
+                            <span className="text-[16px] font-bold text-blue-600 dark:text-[#80c8ff] font-mono">{ageDetails.totalDays.toLocaleString()}</span>
                           </div>
                         </div>
 

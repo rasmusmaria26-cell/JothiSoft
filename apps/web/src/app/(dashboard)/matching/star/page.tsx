@@ -189,13 +189,13 @@ export default function StarMatchingPage() {
 
   // Verdict translation dictionary
   const VERDICT_TRANSLATION: Record<string, { ta: string; en: string; color: string }> = {
-    'Excellent': { ta: 'உத்தமம் (Excellent)', en: 'Excellent', color: 'text-[#6ee7a0] bg-[#2d7a4f]/20 border-[#2d7a4f]' },
-    'Good': { ta: 'நன்று (Good)', en: 'Good', color: 'text-[#80c8ff] bg-[#1e6fa8]/20 border-[#1e6fa8]' },
-    'Average': { ta: 'மத்திமம் (Average)', en: 'Average', color: 'text-[#f2c96a] bg-[#c9922a]/20 border-[#c9922a]' },
-    'Not Recommended': { ta: 'பொருந்தாது (Not Recommended)', en: 'Not Recommended', color: 'text-[#ff9090] bg-[#c0392b]/20 border-[#c0392b]' }
+    'Excellent': { ta: 'உத்தமம் (Excellent)', en: 'Excellent', color: 'text-[var(--cat-panchangam)] bg-[var(--cat-panchangam)]/10 border-[var(--cat-panchangam)]' },
+    'Good': { ta: 'நன்று (Good)', en: 'Good', color: 'text-[var(--cat-numerology)] bg-[var(--cat-numerology)]/10 border-[var(--cat-numerology)]' },
+    'Average': { ta: 'மத்திமம் (Average)', en: 'Average', color: 'text-[var(--gold-deep)] bg-[var(--gold-tint)] border-[var(--gold-mid)]' },
+    'Not Recommended': { ta: 'பொருந்தாது (Not Recommended)', en: 'Not Recommended', color: 'text-[var(--cat-marriage)] bg-[var(--cat-marriage)]/10 border-[var(--cat-marriage)]' }
   }
 
-  const currentVerdict = result ? (VERDICT_TRANSLATION[result.verdict] || { ta: result.verdict, en: result.verdict, color: 'text-[#d4b896] border-[#4a3828] bg-[#2e2115]' }) : null
+  const currentVerdict = result ? (VERDICT_TRANSLATION[result.verdict] || { ta: result.verdict, en: result.verdict, color: 'text-[var(--text-secondary)] border-[var(--bg-border)] bg-[var(--bg-elevated)]' }) : null
 
   return (
     <div className="max-w-[1000px] mx-auto flex flex-col gap-6">
@@ -203,7 +203,7 @@ export default function StarMatchingPage() {
       <div className="flex items-center justify-between">
         <Link 
           href="/"
-          className="flex items-center gap-2 text-text-secondary hover:text-gold-bright transition-colors text-[14px]"
+          className="flex items-center gap-2 text-[var(--text-secondary)] hover:text-[var(--gold-bright)] transition-colors text-[14px]"
         >
           <ArrowLeft size={16} />
           {language === 'ta' ? 'முகப்புப்பக்கம்' : 'Back to Dashboard'}
@@ -300,17 +300,17 @@ export default function StarMatchingPage() {
             </div>
 
             {/* Cultural / Information sidebar card */}
-            <div className="bg-[#241a0f] border border-bg-border rounded-xl p-5 flex flex-col gap-4">
-              <h3 className="text-[16px] font-semibold text-gold-bright font-playfair italic flex items-center gap-1.5">
-                <HelpCircle size={18} className="text-gold-bright" />
+            <div className="bg-[var(--bg-card)] border border-bg-border rounded-xl p-5 flex flex-col gap-4">
+              <h3 className="text-[16px] font-semibold text-[var(--gold-bright)] font-playfair italic flex items-center gap-1.5">
+                <HelpCircle size={18} className="text-[var(--gold-bright)]" />
                 {language === 'ta' ? 'அறிந்து கொள்க!' : 'Did You Know?'}
               </h3>
-              <p className="text-[13px] text-text-secondary leading-relaxed">
+              <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed">
                 {language === 'ta' 
-                  ? "நட்சத்திர பொருத்தம் என்பது திருமணம் செய்யும் தம்பதிகளின் மன மற்றும் உடல் ரீதியான பொருத்தம், ஆயுள், சந்ததிவிருத்தி ஆகியவற்றை ஆராயும் எளிய பாரம்பரிய வழிமுறையாகும். இதில் ரஜ்ஜு பொருத்தம் கணவனின் ஆயுளுக்கும், வேதை பொருத்தம் தடையில்லா வாழ்க்கைகும் முக்கியமானது."
+                  ? "நاصمة பொருத்தம் என்பது திருமணம் செய்யும் தம்பதிகளின் மன மற்றும் உடல் ரீதியான பொருத்தம், ஆயுள், சந்ததிவிருத்தி ஆகியவற்றை ஆராயும் எளிய பாரம்பரிய வழிமுறையாகும். இதில் ரஜ்ஜு பொருத்தம் கணவனின் ஆயுளுக்கும், வேதை பொருத்தம் தடையில்லா வாழ்க்கைகும் முக்கியமானது."
                   : "Nakshatra Porutham is the traditional analysis of 10 aspects of compatibility including emotional connection, health, and family longevity. Among them, Rajju represents the groom's longevity, and Vedha ensures a life free of obstacles."}
               </p>
-              <div className="p-3 bg-gold-subtle rounded-lg border border-gold-deep/20 text-[12px] text-gold-bright flex flex-col gap-1.5">
+              <div className="p-3 bg-[var(--gold-tint)] rounded-lg border border-[var(--gold-mid)]/20 text-[12px] text-[var(--gold-deep)] flex flex-col gap-1.5">
                 <span className="font-semibold">{language === 'ta' ? 'குறிப்பு:' : 'Note:'}</span>
                 <span>
                   {language === 'ta' 
@@ -413,7 +413,7 @@ export default function StarMatchingPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-[14px]">
                   <thead>
-                    <tr className="bg-[#2e2115] border-b border-bg-border text-text-muted text-[11px] uppercase tracking-wider font-semibold">
+                    <tr className="bg-[var(--bg-elevated)] border-b border-bg-border text-text-muted text-[11px] uppercase tracking-wider font-semibold">
                       <th className="py-2.5 px-3 rounded-l-lg">{labels.colName}</th>
                       <th className="py-2.5 px-3 text-center">{labels.colStatus}</th>
                       <th className="py-2.5 px-3 text-center">{labels.colScore}</th>

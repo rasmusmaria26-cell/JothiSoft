@@ -3,41 +3,78 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* Backgrounds */
-  --bg-page: #080818;
-  --bg-card: #0f0f24;
-  --bg-elevated: #161630;
-  --bg-active: #1e1e40;
-  --bg-border: #2a2a4a;
+/* LIGHT MODE — Warm Parchment */
+:root[data-theme="light"] {
+  --bg-page:     #fdf6e3;
+  --bg-card:     #fef9f0;
+  --bg-elevated: #fff8e7;
+  --bg-active:   #fdefc8;
+  --bg-border:   #e8d5a3;
+  --bg-overlay:  rgba(253, 246, 227, 0.85);
 
-  /* Gold Accent (Primary) */
-  --gold-deep: #c9922a;
-  --gold-mid: #e0a83a;
-  --gold-bright: #f2c96a;
-  --gold-tint: rgba(201,146,42,0.15);
+  --gold-deep:    #a06e10;
+  --gold-mid:     #b87e1a;
+  --gold-bright:  #c9922a;
+  --gold-tint:    rgba(160, 110, 16, 0.12);
+  --gold-subtle:  rgba(160, 110, 16, 0.10);
 
-  /* Text */
-  --text-primary: #f5e6c8;
-  --text-secondary: #d4b896;
-  --text-muted: #8a7060;
-  --text-disabled: #5a4838;
-  --text-inverse: #1a1209;
+  --text-primary:   #1a0a00;
+  --text-secondary: #3d1f00;
+  --text-muted:     #7a5530;
+  --text-disabled:  #b89060;
+  --text-inverse:   #fdf6e3;
 
-  /* Category Accents */
-  --cat-horoscope: #7b5ea7;
-  --cat-panchangam: #2e7d6b;
-  --cat-marriage: #b0415e;
-  --cat-numerology: #1e6fa8;
-  --cat-prasnam: #a05c1a;
-  --cat-special: #4a7c59;
+  --cat-horoscope:  #5a3d8a;
+  --cat-panchangam: #1a6b5a;
+  --cat-marriage:   #9a2040;
+  --cat-numerology: #0d5a9a;
+  --cat-prasnam:    #8a4400;
+  --cat-special:    #2d6b40;
 
-  /* Status */
-  --success: #2d7a4f;
-  --danger: #c0392b;
-  --warning: #c9922a;
-  --info: #1e6fa8;
+  --success: #1a6b40;
+  --danger:  #b02020;
+  --warning: #a06e10;
+  --info:    #0d5a9a;
 }
+
+/* DARK MODE — Deep Navy (current) */
+:root[data-theme="dark"] {
+  --bg-page:     #080818;
+  --bg-card:     #0f0f24;
+  --bg-elevated: #161630;
+  --bg-active:   #1e1e40;
+  --bg-border:   #2a2a4a;
+  --bg-overlay:  rgba(8, 8, 24, 0.85);
+
+  --gold-deep:    #c9922a;
+  --gold-mid:     #e0a83a;
+  --gold-bright:  #f2c96a;
+  --gold-tint:    rgba(201, 146, 42, 0.15);
+  --gold-subtle:  rgba(201, 146, 42, 0.10);
+
+  --text-primary:   #f5e6c8;
+  --text-secondary: #d4b896;
+  --text-muted:     #8a7060;
+  --text-disabled:  #5a4838;
+  --text-inverse:   #1a1209;
+
+  --cat-horoscope:  #7b5ea7;
+  --cat-panchangam: #2e7d6b;
+  --cat-marriage:   #b0415e;
+  --cat-numerology: #1e6fa8;
+  --cat-prasnam:    #a05c1a;
+  --cat-special:    #4a7c59;
+
+  --success: #2d7a4f;
+  --danger:  #c0392b;
+  --warning: #c9922a;
+  --info:    #1e6fa8;
+}
+
+/* Default to dark */
+:root { color-scheme: dark; }
+:root:not([data-theme]) { }
+body { background: var(--bg-page); color: var(--text-primary); }
 
 @layer base {
   body {

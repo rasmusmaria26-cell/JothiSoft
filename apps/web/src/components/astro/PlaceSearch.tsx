@@ -106,7 +106,7 @@ export function PlaceSearch({ onSelect, selectedCity, error }: PlaceSearchProps)
             ${error ? 'border-red-500/50 focus:border-red-500' : 'border-bg-border focus:border-gold-mid'}
           `}
           style={{
-            background: 'rgba(26, 18, 9, 0.45)',
+            background: 'var(--bg-elevated)',
           }}
         />
         <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-text-muted">
@@ -119,7 +119,7 @@ export function PlaceSearch({ onSelect, selectedCity, error }: PlaceSearchProps)
         <div 
           className="absolute z-[100] mt-1 w-full max-h-60 overflow-y-auto rounded-md border border-bg-border shadow-lg"
           style={{
-            background: 'rgba(15, 15, 36, 0.95)',
+            background: 'var(--bg-elevated)',
             backdropFilter: 'blur(20px)',
           }}
         >

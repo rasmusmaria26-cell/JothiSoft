@@ -104,8 +104,8 @@ export function TodayHero() {
       <div
         className="relative overflow-hidden rounded-[var(--radius-lg)] border p-4 animate-pulse flex flex-col gap-4"
         style={{
-          backgroundColor: 'rgba(15, 15, 36, 0.80)',
-          borderColor: 'rgba(123,94,167,0.40)',
+          backgroundColor: 'var(--bg-card)',
+          borderColor: 'var(--bg-border)',
         }}
       >
         <div className="h-6 w-1/3 bg-white/10 rounded" />
@@ -144,10 +144,10 @@ export function TodayHero() {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ type: 'spring', stiffness: 200, damping: 24, delay: 0.05 }}
       style={{
-        background: 'linear-gradient(135deg, rgba(123,94,167,0.18), rgba(201,146,42,0.10))',
-        backgroundColor: 'rgba(15, 15, 36, 0.80)',
+        background: 'linear-gradient(135deg, var(--gold-tint), var(--gold-subtle))',
+        backgroundColor: 'var(--bg-card)',
         backdropFilter: 'blur(20px)',
-        borderColor: 'rgba(123,94,167,0.40)',
+        borderColor: 'var(--bg-border)',
       }}
     >
       {/* Ambient glow top-right — floating */}
@@ -228,8 +228,8 @@ export function TodayHero() {
               transition={{ delay: 0.25 + index * 0.06, type: 'spring', stiffness: 300 }}
               className="rounded-[8px] px-[10px] py-[7px]"
               style={{
-                background: 'rgba(0,0,0,0.22)',
-                border: '1px solid rgba(255,255,255,0.05)',
+                background: 'var(--bg-elevated)',
+                border: '1px solid var(--bg-border)',
               }}
             >
               <p className="text-[9px] sm:text-[10px] mb-[2px]" style={{ color: 'var(--text-muted)' }}>{key}</p>
@@ -246,8 +246,8 @@ export function TodayHero() {
         transition={{ delay: 0.4, type: 'spring', stiffness: 280 }}
         className="flex items-center gap-[6px] rounded-[8px] px-[10px] py-[7px] mb-3 relative z-10"
         style={{
-          background: 'rgba(0,0,0,0.18)',
-          border: '1px solid rgba(255,255,255,0.05)',
+          background: 'var(--bg-elevated)',
+          border: '1px solid var(--bg-border)',
         }}
       >
         <span className="text-[9px] font-semibold tracking-wider uppercase" style={{ color: 'var(--text-muted)' }}>

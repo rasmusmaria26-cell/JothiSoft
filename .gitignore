@@ -16,10 +16,17 @@ apps/api/venv
 # Turbo
 .turbo
 
-# Env files
+# Env files — cover all variants, never commit secrets
 .env
-.env.local
-.env.production
+.env.*
+!.env.example
+apps/**/.env
+apps/**/.env.*
+!apps/**/.env.example
+
+# Scratch / debug files — keep out of production builds
+apps/api/src/scratch_*.ts
+scripts/scratch_*.ts
 
 # Build outputs
 dist

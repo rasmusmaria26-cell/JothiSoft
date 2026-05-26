@@ -122,14 +122,20 @@ export function QuickAccessStrip() {
     <div
       className="rounded-[var(--radius-md)] py-[10px] relative overflow-hidden"
       style={{
-        background: 'rgba(15, 15, 36, 0.75)',
+        background: 'var(--bg-card)',
         backdropFilter: 'blur(12px)',
-        border: '1px solid rgba(42, 42, 74, 0.6)',
+        border: '1px solid var(--bg-border)',
       }}
     >
       {/* Left/Right Fade Masks for the Marquee */}
-      <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#0f0f24] to-transparent pointer-events-none z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#0f0f24] to-transparent pointer-events-none z-10" />
+      <div 
+        className="absolute left-0 top-0 bottom-0 w-8 pointer-events-none z-10" 
+        style={{ background: 'linear-gradient(to right, var(--bg-card), transparent)' }}
+      />
+      <div 
+        className="absolute right-0 top-0 bottom-0 w-8 pointer-events-none z-10" 
+        style={{ background: 'linear-gradient(to left, var(--bg-card), transparent)' }}
+      />
 
       {/* Standard non-motion div for the CSS marquee scrolling animation to prevent conflicts with Framer Motion transforms */}
       <div className="flex gap-[10px] w-max animate-marquee pl-[10px]">

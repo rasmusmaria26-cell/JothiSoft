@@ -13,20 +13,18 @@ const allowedOrigins = [
   'https://www.jothisoft.com',
   'https://jothisoft.in',
   'https://www.jothisoft.in',
-  'http://localhost:3000',
+  // Development only — never active in production
+  ...(process.env.NODE_ENV !== 'production' ? [
+    'http://localhost:3000',
+    'http://localhost:4000',
+  ] : []),
 ];
 
 const corsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    // Allow server-to-server requests (no origin header)
     if (!origin) return callback(null, true);
-    
-    const isAllowed = allowedOrigins.includes(origin) || 
-      origin.includes('jothisoft') || 
-      origin.endsWith('.vercel.app') || 
-      origin.endsWith('.onrender.com') ||
-      /^http:\/\/localhost:\d+$/.test(origin);
-      
-    if (isAllowed) {
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(null, false);
@@ -75,6 +73,7 @@ import profileRouter from './routes/profile';
 import prasnamRouter from './routes/prasnam';
 import citiesRouter from './routes/cities';
 import adminRouter from './routes/admin';
+import retailerRouter from './routes/retailer';
 import { computeSpecialDaysForYear } from './services/specialdays.service';
 
 // Register Routes
@@ -91,6 +90,7 @@ app.use('/api/special-days', specialDaysRouter);
 app.use('/api/prasnam', prasnamRouter);
 app.use('/api/cities', citiesRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/retailer', retailerRouter);
 
 // Global Error Handler (must be the last middleware)
 app.use(errorHandler);

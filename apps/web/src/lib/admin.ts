@@ -33,10 +33,18 @@ export interface AdminUserDetail {
   phone: string;
   language: 'ta' | 'en';
   is_admin: boolean;
+  role?: 'admin' | 'retailer' | 'customer';
   created_at: string;
   subscription: UserSubscription | null;
   calculatedStatus: 'TRIAL' | 'PRO' | 'EXPIRED' | 'ADMIN';
   history: UserHistoryLog[];
+  upgradedBy?: {
+    retailerId: string;
+    name: string;
+    email: string;
+    phone: string;
+    activated_at: string;
+  } | null;
 }
 
 export interface AdminUsersListResponse {
@@ -110,12 +118,36 @@ export const adminApi = {
   },
 
   /**
+   * Set user's role (admin, retailer, customer)
+   */
+  updateUserRole: async (
+    userId: string,
+    role: 'admin' | 'retailer' | 'customer'
+  ): Promise<{ success: boolean; user: { id: string; role: string } }> => {
+    const res = await api.put(`/admin/users/${userId}/role`, { role });
+    return res.data;
+  },
+
+  /**
    * Retrieve list of users whose subscriptions are expiring in the next 7 days
    */
   getExpiringUsers: async (): Promise<
     (AdminUserDetail & { daysLeft: number })[]
   > => {
     const res = await api.get('/admin/expiring');
+    return res.data;
+  },
+
+  /**
+   * Create a new Retailer account
+   */
+  createRetailer: async (data: {
+    name: string;
+    email: string;
+    phone: string;
+    password?: string;
+  }): Promise<{ success: boolean; user: any }> => {
+    const res = await api.post('/admin/retailers/create', data);
     return res.data;
   },
 };

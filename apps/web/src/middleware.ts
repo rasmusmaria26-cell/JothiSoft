@@ -36,6 +36,26 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
+  // 1b. Authenticated + root consumer routes → redirect to appropriate dashboards
+  if (user && (pathname === '/' || pathname === '/upgrade')) {
+    const meta = user.user_metadata ?? {}
+    const adminEmailsEnv = process.env.ADMIN_EMAILS || ''
+    const adminEmails = adminEmailsEnv
+      .split(',')
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean)
+    const isBootstrapAdmin = user.email && adminEmails.includes(user.email.toLowerCase())
+    const isAdmin = meta.role === 'admin' || meta.is_admin === true || isBootstrapAdmin
+    const isRetailer = meta.role === 'retailer'
+
+    if (isAdmin) {
+      return NextResponse.redirect(new URL('/admin', request.url))
+    }
+    if (isRetailer) {
+      return NextResponse.redirect(new URL('/retailer', request.url))
+    }
+  }
+
   // 1. Unauthenticated → redirect to login (except auth routes, upgrade, and static assets)
   const isAuthRoute = AUTH_ROUTES.some((r) => pathname.startsWith(r))
   const isUpgradeRoute = pathname.startsWith('/upgrade')
@@ -52,10 +72,14 @@ export async function middleware(request: NextRequest) {
       .map((e) => e.trim().toLowerCase())
       .filter(Boolean)
     const isBootstrapAdmin = user.email && adminEmails.includes(user.email.toLowerCase())
-    const isAdmin = meta.is_admin === true || isBootstrapAdmin
+    const isAdmin = meta.role === 'admin' || meta.is_admin === true || isBootstrapAdmin
+    const isRetailer = meta.role === 'retailer'
 
     if (isAdmin) {
       return NextResponse.redirect(new URL('/admin', request.url))
+    }
+    if (isRetailer) {
+      return NextResponse.redirect(new URL('/retailer', request.url))
     }
     return NextResponse.redirect(new URL('/panchangam', request.url))
   }
@@ -72,9 +96,22 @@ export async function middleware(request: NextRequest) {
       .map((e) => e.trim().toLowerCase())
       .filter(Boolean)
     const isBootstrapAdmin = user.email && adminEmails.includes(user.email.toLowerCase())
-    const isAdmin = meta.is_admin === true || isBootstrapAdmin
+    const isAdmin = meta.role === 'admin' || meta.is_admin === true || isBootstrapAdmin
 
     if (!isAdmin) {
+      return NextResponse.redirect(new URL('/panchangam', request.url))
+    }
+  }
+
+  // 3b. Retailer space security: Only retailers can access /retailer
+  if (pathname.startsWith('/retailer')) {
+    if (!user) {
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
+    const meta = user.user_metadata ?? {}
+    const isRetailer = meta.role === 'retailer'
+
+    if (!isRetailer) {
       return NextResponse.redirect(new URL('/panchangam', request.url))
     }
   }
@@ -85,6 +122,12 @@ export async function middleware(request: NextRequest) {
     const meta = user.user_metadata ?? {}
     const plan = meta.plan as string | undefined
     const expiresAt = meta.plan_expires_at ? new Date(meta.plan_expires_at) : null
+    const role = meta.role as string | undefined
+    
+    // Admins and Retailers bypass the PRO subscription gate completely
+    if (role === 'admin' || role === 'retailer') {
+      return response
+    }
     
     // Fallback: If trial_expires_at is missing in metadata, calculate from account creation
     const createdAt = user.created_at ? new Date(user.created_at) : new Date()

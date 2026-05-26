@@ -41,7 +41,7 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen text-white relative overflow-hidden" style={{ background: 'var(--bg-page)' }}>
+    <div className="flex min-h-screen text-[var(--text-primary)] relative overflow-hidden" style={{ background: 'var(--bg-page)' }}>
       {/* Mobile Sidebar Backdrop Overlay */}
       {sidebarOpen && (
         <div 
@@ -64,7 +64,7 @@ export default function AdminLayout({
               <span className="font-extrabold text-lg tracking-wider" style={{ color: 'var(--gold-bright)', fontFamily: "'Anek Tamil', sans-serif" }}>
                 ஜோதிசாஃப்ட் Admin
               </span>
-              <span className="text-[10px] uppercase font-semibold text-white/50 tracking-widest mt-0.5">
+              <span className="text-[10px] uppercase font-semibold text-[var(--text-muted)] tracking-widest mt-0.5">
                 Control Panel
               </span>
             </Link>
@@ -72,7 +72,7 @@ export default function AdminLayout({
             {/* Mobile Close Button */}
             <button
               onClick={() => setSidebarOpen(false)}
-              className="p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-[var(--bg-active)] md:hidden cursor-pointer"
+              className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-active)] md:hidden cursor-pointer"
             >
               ✕
             </button>
@@ -86,7 +86,7 @@ export default function AdminLayout({
               className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-150 ${
                 isActive('/admin')
                   ? 'text-[#1a1209]'
-                  : 'text-white/70 hover:text-white hover:bg-[var(--bg-active)]'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-active)]'
               }`}
               style={{
                 background: isActive('/admin') ? 'var(--gold-bright)' : 'transparent',
@@ -101,7 +101,7 @@ export default function AdminLayout({
               className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-150 ${
                 isActive('/admin/users')
                   ? 'text-[#1a1209]'
-                  : 'text-white/70 hover:text-white hover:bg-[var(--bg-active)]'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-active)]'
               }`}
               style={{
                 background: isActive('/admin/users') ? 'var(--gold-bright)' : 'transparent',
@@ -115,21 +115,21 @@ export default function AdminLayout({
         {/* User profile / Logout */}
         <div className="p-4 border-t border-[var(--bg-border)] space-y-3" style={{ background: 'var(--bg-elevated)' }}>
           <div className="px-2">
-            <p className="text-xs font-semibold text-white/40 uppercase tracking-wider">Logged in as</p>
+            <p className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Logged in as</p>
             <p className="text-sm font-bold truncate text-[var(--gold-bright)] mt-0.5">{user?.email || user?.phone || 'Administrator'}</p>
           </div>
 
           <div className="flex flex-col gap-2">
             <Link
               href="/panchangam"
-              className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-bold border border-[var(--bg-border)] hover:bg-[var(--bg-active)] transition-colors text-white/80 hover:text-white"
+              className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-bold border border-[var(--bg-border)] hover:bg-[var(--bg-active)] transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             >
               🔮 Go to Main App
             </Link>
 
             <button
               onClick={handleLogout}
-              className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all text-red-400 hover:text-red-300 hover:bg-red-950/20 cursor-pointer"
+              className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all text-red-500 hover:text-red-400 hover:bg-red-950/20 cursor-pointer"
             >
               🚪 Sign Out
             </button>
@@ -147,19 +147,19 @@ export default function AdminLayout({
             {/* Hamburger Button for Mobile */}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-2 -ml-2 rounded-lg text-white/70 hover:text-white hover:bg-[var(--bg-active)] md:hidden cursor-pointer"
+              className="p-2 -ml-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-active)] md:hidden cursor-pointer"
               aria-label="Open sidebar"
             >
               ☰
             </button>
-            <h2 className="text-sm font-semibold text-white/60 truncate max-w-[180px] sm:max-w-none">
+            <h2 className="text-sm font-semibold text-[var(--text-secondary)] truncate max-w-[180px] sm:max-w-none">
               {pathname === '/admin' && 'System Analytics & Overview'}
               {pathname.startsWith('/admin/users') && 'Registered Astrology Users'}
             </h2>
           </div>
-          <div className="flex items-center gap-4 text-xs font-bold text-white/40">
-            <span className="hidden sm:inline">Server status: <span className="text-green-400">● Online</span></span>
-            <span className="sm:hidden text-green-400">● Online</span>
+          <div className="flex items-center gap-4 text-xs font-bold text-[var(--text-muted)]">
+            <span className="hidden sm:inline">Server status: <span className="text-green-500">● Online</span></span>
+            <span className="sm:hidden text-green-500">● Online</span>
           </div>
         </header>
 

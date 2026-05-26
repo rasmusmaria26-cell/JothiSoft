@@ -172,8 +172,8 @@ export default function AntharamExplorerPage() {
 
         {!loadingProfile && !calculatingDasha && error && (
           <div 
-            className="p-5 rounded-2xl border text-center text-red-400 max-w-md mx-auto"
-            style={{ background: '#2e2115', borderColor: '#ef4444' }}
+            className="p-5 rounded-2xl border text-center text-red-500 max-w-md mx-auto"
+            style={{ background: 'var(--bg-card)', borderColor: '#ef4444' }}
           >
             <p className="text-sm font-medium">{error}</p>
           </div>

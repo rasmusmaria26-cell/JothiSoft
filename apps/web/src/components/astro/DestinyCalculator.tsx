@@ -129,8 +129,8 @@ export function DestinyCalculator({ timeline, birthDateStr }: DestinyCalculatorP
     <div 
       className="p-6 rounded-2xl border transition-all duration-300 flex flex-col gap-6"
       style={{
-        background: '#2e2115',
-        borderColor: '#c9922a',
+        background: 'var(--bg-card)',
+        borderColor: 'var(--bg-border)',
         boxShadow: '0 0 25px rgba(201, 146, 42, 0.08)'
       }}
     >
@@ -156,7 +156,7 @@ export function DestinyCalculator({ timeline, birthDateStr }: DestinyCalculatorP
                 type="date"
                 value={selectedDate}
                 onChange={e => setSelectedDate(e.target.value)}
-                className="flex-1 bg-bg-page border border-bg-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
+                className="flex-1 bg-bg-page border border-bg-border rounded-xl px-4 py-2.5 text-text-primary text-sm focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
               />
               <button
                 onClick={() => calculateDestinyForDate(selectedDate)}

@@ -462,13 +462,13 @@ export default function HoroscopeMatchingPage() {
               className={`
                 border rounded-xl p-5 md:p-6 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4
                 ${matchResult.overall_compatible 
-                  ? 'bg-[#2d7a4f]/20 border-[#2d7a4f] text-[#6ee7a0]' 
-                  : 'bg-[#c0392b]/20 border-[#c0392b] text-[#ff9090]'
+                  ? 'bg-[var(--cat-panchangam)]/10 border-[var(--cat-panchangam)] text-[var(--cat-panchangam)]' 
+                  : 'bg-[var(--cat-marriage)]/10 border-[var(--cat-marriage)] text-[var(--cat-marriage)]'
                 }
               `}
             >
               <div className="flex items-center gap-3.5 text-center md:text-left flex-col md:flex-row">
-                <div className="p-3 rounded-full bg-white/10">
+                <div className="p-3 rounded-full bg-black/5 dark:bg-white/10">
                   {matchResult.overall_compatible ? (
                     <CheckCircle2 size={32} />
                   ) : (
@@ -534,7 +534,7 @@ export default function HoroscopeMatchingPage() {
                   </p>
                 </div>
 
-                <div className="bg-[#1a1209] rounded-xl border border-bg-border/60 overflow-hidden divide-y divide-bg-border/50 text-[14px]">
+                <div className="bg-[var(--bg-elevated)] rounded-xl border border-bg-border/60 overflow-hidden divide-y divide-bg-border/50 text-[14px]">
                   <div className="flex justify-between items-center p-3.5">
                     <span className="text-text-secondary">{labels.boyScore}</span>
                     <span className="font-bold text-gold-bright font-mono text-[16px]">{matchResult.papasamyam.boy_score}</span>
@@ -549,7 +549,7 @@ export default function HoroscopeMatchingPage() {
                   </div>
                   <div className="flex justify-between items-center p-3.5">
                     <span className="text-text-secondary font-semibold">{labels.compatibleStatus}</span>
-                    <span className={`font-bold flex items-center gap-1.5 ${matchResult.papasamyam.compatible ? 'text-[#6ee7a0]' : 'text-[#ff9090]'}`}>
+                    <span className={`font-bold flex items-center gap-1.5 ${matchResult.papasamyam.compatible ? 'text-[var(--cat-panchangam)]' : 'text-[var(--cat-marriage)]'}`}>
                       {matchResult.papasamyam.compatible ? (
                         <>
                           <CheckCircle2 size={16} />
@@ -577,7 +577,7 @@ export default function HoroscopeMatchingPage() {
                   </p>
                 </div>
 
-                <div className="bg-[#1a1209] rounded-xl border border-bg-border/60 overflow-hidden divide-y divide-bg-border/50 text-[14px]">
+                <div className="bg-[var(--bg-elevated)] rounded-xl border border-bg-border/60 overflow-hidden divide-y divide-bg-border/50 text-[14px]">
                   <div className="flex justify-between items-center p-3.5">
                     <span className="text-text-secondary">{language === 'ta' ? 'மணமகன் செவ்வாய் தோஷம்' : 'Groom Mangal Dosha'}</span>
                     <span className={`font-semibold ${matchResult.mangal_dosha.boy_has_dosha ? 'text-gold-bright' : 'text-text-muted'}`}>
@@ -592,7 +592,7 @@ export default function HoroscopeMatchingPage() {
                   </div>
                   <div className="flex justify-between items-center p-3.5">
                     <span className="text-text-secondary font-semibold">{labels.incompatibleStatus}</span>
-                    <span className={`font-bold flex items-center gap-1.5 ${matchResult.mangal_dosha.compatible ? 'text-[#6ee7a0]' : 'text-[#ff9090]'}`}>
+                    <span className={`font-bold flex items-center gap-1.5 ${matchResult.mangal_dosha.compatible ? 'text-[var(--cat-panchangam)]' : 'text-[var(--cat-marriage)]'}`}>
                       {matchResult.mangal_dosha.compatible ? (
                         <>
                           <CheckCircle2 size={16} />

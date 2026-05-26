@@ -116,20 +116,19 @@ export default function PanchangamInfoPage() {
     <div 
       className="w-full max-w-7xl mx-auto py-6 px-4 sm:px-6"
       style={{
-        background: '#1a1209', // Strict Design System Rule
         fontFamily: isTa ? "'Anek Tamil', sans-serif" : 'inherit'
       }}
     >
       {/* Page Title Header */}
       <div className="mb-8">
         <h1 
-          className="text-2xl sm:text-4xl font-bold tracking-tight text-[#f2c96a] flex items-center gap-2"
+          className="text-2xl sm:text-4xl font-bold tracking-tight text-[var(--gold-bright)] flex items-center gap-2"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
-          <BookOpen className="h-6 w-6 sm:h-8 sm:w-8 text-[#e0a83a]" />
+          <BookOpen className="h-6 w-6 sm:h-8 sm:w-8 text-[var(--gold-mid)]" />
           {labels.title}
         </h1>
-        <p className="text-xs sm:text-sm text-[#d4b896] mt-2 max-w-3xl leading-relaxed">
+        <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-2 max-w-3xl leading-relaxed">
           {labels.subtitle}
         </p>
       </div>
@@ -145,8 +144,8 @@ export default function PanchangamInfoPage() {
                   key={`skeleton-${i}`}
                   className="w-full h-[140px] animate-pulse rounded-[14px]"
                   style={{
-                    background: '#241a0f',
-                    border: '1px solid rgba(74, 56, 40, 0.4)'
+                    background: 'var(--bg-card)',
+                    border: '1px solid var(--bg-border)'
                   }}
                 />
               ))}
@@ -162,12 +161,12 @@ export default function PanchangamInfoPage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     onClick={() => setActiveAngam(limb.type)}
-                    className="cursor-pointer transition-all duration-200"
+                    className="cursor-pointer transition-all duration-200 border"
                     style={{
-                      background: isActive ? '#3d2d1c' : '#2e2115', // Design system token rule
-                      border: '1px solid rgba(201, 146, 42, 0.4)',
+                      background: isActive ? 'var(--bg-active)' : 'var(--bg-card)', // Design system token rule
+                      borderColor: 'var(--bg-border)',
                       borderRadius: '14px',
-                      boxShadow: '0 0 24px rgba(201, 146, 42, 0.06)',
+                      boxShadow: '0 0 24px rgba(201, 146, 42, 0.04)',
                       padding: '20px',
                       minHeight: '140px',
                       display: 'flex',
@@ -177,17 +176,17 @@ export default function PanchangamInfoPage() {
                     }}
                   >
                     <div>
-                      <h3 className="text-sm font-bold text-[#f5e6c8] mb-1.5 flex items-center justify-between">
+                      <h3 className="text-sm font-bold text-[var(--text-primary)] mb-1.5 flex items-center justify-between">
                         {limb.label}
-                        <ArrowRight size={14} className={isActive ? 'text-[#f2c96a]' : 'text-[#8a7060]'} />
+                        <ArrowRight size={14} className={isActive ? 'text-[var(--gold-mid)]' : 'text-[var(--text-muted)]'} />
                       </h3>
-                      <p className="text-[11px] text-[#d4b896] leading-relaxed">
+                      <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed">
                         {isTa ? limb.descTa : limb.descEn}
                       </p>
                     </div>
 
                     <div className="mt-3 flex items-center gap-1.5">
-                      <span className="text-[9px] uppercase tracking-wider text-[#8a7060] font-bold">
+                      <span className="text-[9px] uppercase tracking-wider text-[var(--text-muted)] font-bold">
                         Limb {limb.type === 'vara' ? '1' : limb.type === 'tithi' ? '2' : limb.type === 'nakshatra' ? '3' : limb.type === 'yogam' ? '4' : '5'}
                       </span>
                     </div>
@@ -210,53 +209,53 @@ export default function PanchangamInfoPage() {
         >
           {/* Left Column: Astronomy Scientific Formula (Rule 2 - HTML styled formulas) */}
           <div
-            className="lg:col-span-1"
+            className="lg:col-span-1 border"
             style={{
-              background: '#2e2115',
-              border: '1px solid rgba(201, 146, 42, 0.4)',
+              background: 'var(--bg-card)',
+              borderColor: 'var(--bg-border)',
               borderRadius: '14px',
-              boxShadow: '0 0 24px rgba(201, 146, 42, 0.06)',
+              boxShadow: '0 0 24px rgba(201, 146, 42, 0.04)',
               padding: '20px'
             }}
           >
-            <h2 className="text-sm font-bold text-[#f2c96a] mb-4 flex items-center gap-2">
+            <h2 className="text-sm font-bold text-[var(--gold-bright)] mb-4 flex items-center gap-2">
               <Compass size={16} />
               {labels.scienceTitle}
             </h2>
-            <p className="text-xs text-[#d4b896] mb-6 leading-relaxed">
+            <p className="text-xs text-[var(--text-secondary)] mb-6 leading-relaxed">
               {labels.scienceDesc}
             </p>
 
             {/* Formula Block display (Rule 2 style) */}
             <div className="space-y-4">
-              <span className="text-xs font-bold text-[#8a7060] uppercase tracking-wider block">
+              <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider block">
                 {labels.formulaLabel}
               </span>
               
               <div 
                 className="formula-block"
                 style={{
-                  background: '#1a1209',
-                  border: '0.5px solid #4a3828',
+                  background: 'var(--bg-elevated)',
+                  border: '0.5px solid var(--bg-border)',
                   borderRadius: '8px',
                   padding: '12px 16px',
                   fontFamily: 'monospace',
-                  color: '#f2c96a',
+                  color: 'var(--gold-bright)',
                   fontSize: '14px',
                   overflowX: 'auto'
                 }}
               >
                 <span 
-                  className="formula-label font-bold block mb-1 text-[#8a7060]"
+                  className="formula-label font-bold block mb-1 text-[var(--text-muted)]"
                   style={{ fontSize: '12px' }}
                 >
                   {activeAngam.toUpperCase()}
                 </span>
-                <span className="formula-text font-mono leading-relaxed block">
+                <span className="formula-text font-mono leading-relaxed block text-[var(--text-primary)]">
                   {FORMULAS[activeAngam].formula}
                 </span>
               </div>
-              <p className="text-[10px] text-[#8a7060] leading-relaxed">
+              <p className="text-[10px] text-[var(--text-muted)] leading-relaxed">
                 {FORMULAS[activeAngam].label}
               </p>
             </div>
@@ -264,16 +263,16 @@ export default function PanchangamInfoPage() {
 
           {/* Right Column: Full limb details listing from static content library (Rule 4) */}
           <div
-            className="lg:col-span-2 overflow-hidden"
+            className="lg:col-span-2 overflow-hidden border"
             style={{
-              background: '#2e2115',
-              border: '1px solid rgba(201, 146, 42, 0.4)',
+              background: 'var(--bg-card)',
+              borderColor: 'var(--bg-border)',
               borderRadius: '14px',
-              boxShadow: '0 0 24px rgba(201, 146, 42, 0.06)',
+              boxShadow: '0 0 24px rgba(201, 146, 42, 0.04)',
               padding: '20px'
             }}
           >
-            <h2 className="text-sm font-bold text-[#f2c96a] mb-4 flex items-center gap-2">
+            <h2 className="text-sm font-bold text-[var(--gold-bright)] mb-4 flex items-center gap-2">
               <AlignCenter size={16} />
               {labels.detailsTitle} ({activeAngam.toUpperCase()})
             </h2>
@@ -289,25 +288,25 @@ export default function PanchangamInfoPage() {
                       key={key} 
                       className="p-3.5 rounded-lg border transition-all"
                       style={{
-                        background: '#241a0f',
-                        borderColor: '#4a3828'
+                        background: 'var(--bg-elevated)',
+                        borderColor: 'var(--bg-border)'
                       }}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
-                        <span className="text-sm font-bold text-[#f5e6c8]">
+                        <span className="text-sm font-bold text-[var(--text-primary)]">
                           {isTa ? item.nameTa : item.nameEn}
                         </span>
                         <div className="flex items-center gap-2 flex-wrap text-[10px] sm:text-xs">
-                          <span className="bg-[#1a1209] text-[#f2c96a] px-2 py-0.5 rounded border border-[#4a3828]">
+                          <span className="bg-[var(--bg-page)] text-[var(--gold-deep)] px-2 py-0.5 rounded border border-[var(--bg-border)] font-bold">
                             {labels.ruler}: {isTa ? item.rulerTa : item.ruler}
                           </span>
-                          <span className="bg-[#1a1209] text-[#d4b896] px-2 py-0.5 rounded border border-[#4a3828]">
+                          <span className="bg-[var(--bg-page)] text-[var(--text-secondary)] px-2 py-0.5 rounded border border-[var(--bg-border)]">
                             {labels.element}: {isTa ? item.elementTa : item.element}
                           </span>
                         </div>
                       </div>
-                      <p className="text-xs text-[#d4b896] leading-relaxed mt-1">
-                        <strong className="text-[#e0a83a] mr-1">{labels.advice}:</strong>
+                      <p className="text-xs text-[var(--text-secondary)] leading-relaxed mt-1">
+                        <strong className="text-[var(--gold-mid)] mr-1">{labels.advice}:</strong>
                         {isTa ? item.adviceTa : item.adviceEn}
                       </p>
                     </div>
@@ -323,25 +322,25 @@ export default function PanchangamInfoPage() {
                       key={key} 
                       className="p-3.5 rounded-lg border transition-all"
                       style={{
-                        background: '#241a0f',
-                        borderColor: '#4a3828'
+                        background: 'var(--bg-elevated)',
+                        borderColor: 'var(--bg-border)'
                       }}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
-                        <span className="text-sm font-bold text-[#f5e6c8]">
+                        <span className="text-sm font-bold text-[var(--text-primary)]">
                           {item.index}. {isTa ? item.nameTa : item.nameEn}
                         </span>
                         <div className="flex items-center gap-2 flex-wrap text-[10px] sm:text-xs">
-                          <span className="bg-[#1a1209] text-[#f2c96a] px-2 py-0.5 rounded border border-[#4a3828]">
+                          <span className="bg-[var(--bg-page)] text-[var(--gold-deep)] px-2 py-0.5 rounded border border-[var(--bg-border)] font-bold">
                             {labels.ruler}: {isTa ? item.rulerTa : item.ruler}
                           </span>
-                          <span className="bg-[#1a1209] text-[#d4b896] px-2 py-0.5 rounded border border-[#4a3828]">
+                          <span className="bg-[var(--bg-page)] text-[var(--text-secondary)] px-2 py-0.5 rounded border border-[var(--bg-border)]">
                             {labels.element}: {isTa ? item.elementTa : item.element}
                           </span>
                         </div>
                       </div>
-                      <p className="text-xs text-[#d4b896] leading-relaxed mt-1">
-                        <strong className="text-[#e0a83a] mr-1">{labels.meaning}:</strong>
+                      <p className="text-xs text-[var(--text-secondary)] leading-relaxed mt-1">
+                        <strong className="text-[var(--gold-mid)] mr-1">{labels.meaning}:</strong>
                         {isTa ? item.meaningTa : item.meaningEn}
                       </p>
                     </div>
@@ -357,25 +356,25 @@ export default function PanchangamInfoPage() {
                       key={key} 
                       className="p-3.5 rounded-lg border transition-all"
                       style={{
-                        background: '#241a0f',
-                        borderColor: '#4a3828'
+                        background: 'var(--bg-elevated)',
+                        borderColor: 'var(--bg-border)'
                       }}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
-                        <span className="text-sm font-bold text-[#f5e6c8]">
+                        <span className="text-sm font-bold text-[var(--text-primary)]">
                           {item.index}. {isTa ? item.nameTa : item.nameEn}
                         </span>
                         <div className="flex items-center gap-2 flex-wrap text-[10px] sm:text-xs">
-                          <span className="bg-[#1a1209] text-[#f2c96a] px-2 py-0.5 rounded border border-[#4a3828]">
+                          <span className="bg-[var(--bg-page)] text-[var(--gold-deep)] px-2 py-0.5 rounded border border-[var(--bg-border)] font-bold">
                             {labels.ruler}: {isTa ? item.rulerTa : item.ruler}
                           </span>
-                          <span className="bg-[#1a1209] text-[#d4b896] px-2 py-0.5 rounded border border-[#4a3828]">
+                          <span className="bg-[var(--bg-page)] text-[var(--text-secondary)] px-2 py-0.5 rounded border border-[var(--bg-border)]">
                             {labels.element}: {isTa ? item.elementTa : item.element}
                           </span>
                         </div>
                       </div>
-                      <p className="text-xs text-[#d4b896] leading-relaxed mt-1">
-                        <strong className="text-[#e0a83a] mr-1">{labels.meaning}:</strong>
+                      <p className="text-xs text-[var(--text-secondary)] leading-relaxed mt-1">
+                        <strong className="text-[var(--gold-mid)] mr-1">{labels.meaning}:</strong>
                         {isTa ? item.summaryTa : item.summaryEn}
                       </p>
                     </div>
@@ -391,25 +390,25 @@ export default function PanchangamInfoPage() {
                       key={key} 
                       className="p-3.5 rounded-lg border transition-all"
                       style={{
-                        background: '#241a0f',
-                        borderColor: '#4a3828'
+                        background: 'var(--bg-elevated)',
+                        borderColor: 'var(--bg-border)'
                       }}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
-                        <span className="text-sm font-bold text-[#f5e6c8]">
+                        <span className="text-sm font-bold text-[var(--text-primary)]">
                           {item.index}. {isTa ? item.nameTa : item.nameEn}
                         </span>
                         <div className="flex items-center gap-2 flex-wrap text-[10px] sm:text-xs">
-                          <span className="bg-[#1a1209] text-[#f2c96a] px-2 py-0.5 rounded border border-[#4a3828]">
+                          <span className="bg-[var(--bg-page)] text-[var(--gold-deep)] px-2 py-0.5 rounded border border-[var(--bg-border)] font-bold">
                             {labels.ruler}: {isTa ? item.rulerTa : item.ruler}
                           </span>
-                          <span className="bg-[#1a1209] text-[#d4b896] px-2 py-0.5 rounded border border-[#4a3828]">
+                          <span className="bg-[var(--bg-page)] text-[var(--text-secondary)] px-2 py-0.5 rounded border border-[var(--bg-border)]">
                             {labels.element}: {isTa ? item.elementTa : item.element}
                           </span>
                         </div>
                       </div>
-                      <p className="text-xs text-[#d4b896] leading-relaxed mt-1">
-                        <strong className="text-[#e0a83a] mr-1">{labels.meaning}:</strong>
+                      <p className="text-xs text-[var(--text-secondary)] leading-relaxed mt-1">
+                        <strong className="text-[var(--gold-mid)] mr-1">{labels.meaning}:</strong>
                         {isTa ? item.meaningTa : item.meaningEn}
                       </p>
                     </div>
@@ -425,28 +424,28 @@ export default function PanchangamInfoPage() {
                       key={key} 
                       className="p-3.5 rounded-lg border transition-all"
                       style={{
-                        background: '#241a0f',
-                        borderColor: '#4a3828'
+                        background: 'var(--bg-elevated)',
+                        borderColor: 'var(--bg-border)'
                       }}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
-                        <span className="text-sm font-bold text-[#f5e6c8]">
+                        <span className="text-sm font-bold text-[var(--text-primary)]">
                           {item.index}. {isTa ? item.nameTa : item.nameEn}
                         </span>
                         <div className="flex items-center gap-2 flex-wrap text-[10px] sm:text-xs">
-                          <span className="bg-[#1a1209] text-[#e0a83a] px-2 py-0.5 rounded border border-[#4a3828] uppercase font-bold text-[9px]">
+                          <span className="bg-[var(--bg-page)] text-[var(--gold-mid)] px-2 py-0.5 rounded border border-[var(--bg-border)] uppercase font-bold text-[9px]">
                             {item.type}
                           </span>
-                          <span className="bg-[#1a1209] text-[#f2c96a] px-2 py-0.5 rounded border border-[#4a3828]">
+                          <span className="bg-[var(--bg-page)] text-[var(--gold-deep)] px-2 py-0.5 rounded border border-[var(--bg-border)] font-bold">
                             {labels.ruler}: {isTa ? item.rulerTa : item.ruler}
                           </span>
-                          <span className="bg-[#1a1209] text-[#d4b896] px-2 py-0.5 rounded border border-[#4a3828]">
+                          <span className="bg-[var(--bg-page)] text-[var(--text-secondary)] px-2 py-0.5 rounded border border-[var(--bg-border)]">
                             {labels.element}: {isTa ? item.elementTa : item.element}
                           </span>
                         </div>
                       </div>
-                      <p className="text-xs text-[#d4b896] leading-relaxed mt-1">
-                        <strong className="text-[#e0a83a] mr-1">{labels.meaning}:</strong>
+                      <p className="text-xs text-[var(--text-secondary)] leading-relaxed mt-1">
+                        <strong className="text-[var(--gold-mid)] mr-1">{labels.meaning}:</strong>
                         {isTa ? item.meaningTa : item.meaningEn}
                       </p>
                     </div>
@@ -465,15 +464,15 @@ export default function PanchangamInfoPage() {
           width: 5px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-          background: #1a1209;
+          background: var(--bg-page);
           border-radius: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #4a3828;
+          background: var(--bg-border);
           border-radius: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #e0a83a;
+          background: var(--gold-mid);
         }
       `}</style>
     </div>

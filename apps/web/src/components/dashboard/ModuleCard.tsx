@@ -18,11 +18,11 @@ interface ModuleCardProps {
 }
 
 const BADGE_STYLES: Record<string, string> = {
-  NEW:     'bg-[rgba(46,125,107,0.2)] text-[#5dcaa5]',
-  TOP:     'bg-[rgba(46,125,107,0.2)] text-[#5dcaa5]',
-  PRO:     'bg-[rgba(123,94,167,0.2)] text-[#afa9ec]',
-  PREMIUM: 'bg-[rgba(201,146,42,0.2)] text-[#f2c96a]',
-  FREE:    'bg-[rgba(74,56,40,0.4)] text-[#8a7060]',
+  NEW:     'bg-[var(--success)]/10 text-[var(--success)] border border-[var(--success)]/20',
+  TOP:     'bg-[var(--success)]/10 text-[var(--success)] border border-[var(--success)]/20',
+  PRO:     'bg-[var(--cat-horoscope)]/10 text-[var(--cat-horoscope)] border border-[var(--cat-horoscope)]/20',
+  PREMIUM: 'bg-[var(--gold-tint)] text-[var(--gold-deep)] border border-[var(--gold-deep)]/20',
+  FREE:    'bg-[var(--text-muted)]/10 text-[var(--text-muted)] border border-[var(--text-muted)]/20',
 }
 
 export function ModuleCard({
@@ -54,9 +54,9 @@ export function ModuleCard({
         href={href}
         className="relative z-10 flex flex-col items-center gap-[8px] rounded-[var(--radius-md)] py-[16px] px-[8px] overflow-hidden min-h-[100px] sm:min-h-0 h-full"
         style={{
-          background: 'rgba(15, 15, 36, 0.75)',
+          background: 'var(--bg-card)',
           backdropFilter: 'blur(12px)',
-          border: `1px solid rgba(255,255,255,0.07)`,
+          border: '1px solid var(--bg-border)',
         }}
       >
         {/* Bottom color glow on hover (desktop only) */}

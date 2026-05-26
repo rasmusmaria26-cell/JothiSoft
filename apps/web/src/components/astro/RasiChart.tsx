@@ -92,21 +92,27 @@ export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, l
   return (
     <div className="flex flex-col items-center w-full max-w-[440px] mx-auto p-1">
       {/* Chart Title */}
-      <h3 className="text-sm font-semibold text-gold-bright mb-3 tracking-wider uppercase">
+      <h3 className={`text-sm font-semibold mb-3 tracking-wider uppercase ${isPrint ? 'text-gray-900' : 'text-gold-bright'}`}>
         {title}
       </h3>
 
       {/* Grid Container */}
       <div 
-        className={`grid grid-cols-4 grid-rows-4 w-full aspect-square border rounded-lg relative ${isPrint ? 'bg-transparent border-gray-400' : ''}`}
-        style={!isPrint ? {
-          background: 'rgba(8, 8, 24, 0.65)',
-          borderColor: 'rgba(42, 42, 74, 0.7)',
-        } : {}}
+        className={`grid w-full aspect-square border rounded-lg relative ${isPrint ? 'bg-transparent border-gray-400' : ''}`}
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '25% 25% 25% 25%',
+          gridTemplateRows: '25% 25% 25% 25%',
+          aspectRatio: '1 / 1',
+          ...(!isPrint ? {
+            background: 'rgba(8, 8, 24, 0.65)',
+            borderColor: 'rgba(42, 42, 74, 0.7)',
+          } : {})
+        }}
       >
         {/* Merged Center Area (Row 2-3, Col 2-3) */}
         <div 
-          className={`col-start-2 col-span-2 row-start-2 row-span-2 flex flex-col justify-center items-center text-center p-2 z-10 border border-dashed ${isPrint ? 'bg-transparent border-gray-400' : ''}`}
+          className={`col-start-2 col-span-2 row-start-2 row-span-2 flex flex-col justify-center items-center text-center z-10 border border-dashed ${isPrint ? 'bg-transparent border-gray-400 p-1' : 'p-2'}`}
           style={!isPrint ? {
             background: 'rgba(15, 15, 36, 0.90)',
             borderColor: 'rgba(201, 146, 42, 0.25)',
@@ -137,10 +143,10 @@ export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, l
             <motion.div
               key={cell.sign}
               className={`
-                ${cell.gridClass} p-1 flex flex-col relative group cursor-default select-none
+                ${cell.gridClass} flex flex-col relative group cursor-default select-none
                 ${isTopLeft ? 'rounded-tl-lg' : ''} ${isTopRight ? 'rounded-tr-lg' : ''}
                 ${isBottomLeft ? 'rounded-bl-lg' : ''} ${isBottomRight ? 'rounded-br-lg' : ''}
-                ${isPrint ? 'border border-gray-400 bg-transparent' : 'border border-bg-border/60 transition-colors duration-150 hover:bg-gold-deep/5'}
+                ${isPrint ? 'border border-gray-400 bg-transparent p-0.5' : 'border border-bg-border/60 p-1 transition-colors duration-150 hover:bg-gold-deep/5'}
               `}
               style={!isPrint ? {
                 borderColor: 'rgba(42, 42, 74, 0.45)',
@@ -153,7 +159,7 @@ export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, l
               </span>
 
               {/* Planets Content */}
-              <div className="flex-1 flex flex-wrap items-center justify-center gap-1.5 p-1">
+              <div className={`flex-1 flex flex-wrap items-center justify-center ${isPrint ? 'gap-0.5 p-0' : 'gap-1.5 p-1'}`}>
                 {signPlanets.map((planet) => {
                   const abbr = language === 'ta' 
                     ? (PLANET_MAP_TA[planet.name] || planet.name)
@@ -163,7 +169,11 @@ export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, l
                     <span
                       key={planet.name}
                       className={`
-                        inline-flex items-center justify-center text-[10px] sm:text-[11px] font-bold px-1.5 py-0.5 rounded
+                        inline-flex items-center justify-center font-bold rounded
+                        ${isPrint 
+                          ? 'text-[8.5px] px-1 py-0' 
+                          : 'text-[10px] sm:text-[11px] px-1.5 py-0.5'
+                        }
                         ${planet.isLagna 
                           ? (isPrint ? 'border border-gray-600 text-black font-extrabold' : 'bg-gold-deep/20 border border-gold-mid/40 text-gold-bright shadow-sm shadow-gold-deep/10')
                           : (isPrint ? 'text-gray-900' : 'bg-white/5 border border-white/15 text-text-primary')

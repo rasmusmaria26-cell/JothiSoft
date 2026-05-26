@@ -59,8 +59,8 @@ export function BhuktiTimeline({
               onClick={() => onSelectBhukti(bhukti.dasha_lord)}
               className="flex items-center justify-between p-3.5 rounded-xl border text-left transition-all duration-200 hover:scale-[1.01]"
               style={{
-                background: isSelected ? '#3a2b1c' : '#2e2115',
-                borderColor: isSelected ? '#c9922a' : '#4f3a28',
+                background: isSelected ? 'var(--bg-active)' : 'var(--bg-card)',
+                borderColor: isSelected ? 'var(--gold-mid)' : 'var(--bg-border)',
                 boxShadow: isSelected 
                   ? '0 0 15px rgba(201, 146, 42, 0.12)' 
                   : '0 0 10px rgba(0, 0, 0, 0.05)'

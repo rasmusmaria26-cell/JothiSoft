@@ -283,7 +283,7 @@ export default function PrasnamChartPage() {
 
         {/* Intro */}
         <div className="flex flex-col gap-1.5 border-b border-bg-border pb-4">
-          <h1 className="text-[24px] font-semibold text-[#80c8ff] tracking-tight font-playfair flex items-center gap-2.5">
+          <h1 className="text-[24px] font-semibold text-[#1e6fa8] dark:text-[#80c8ff] tracking-tight font-playfair flex items-center gap-2.5">
             <Sparkles className="text-gold-bright animate-pulse" size={24} />
             {labels.title}
           </h1>
@@ -332,7 +332,7 @@ export default function PrasnamChartPage() {
               {/* Left Side: Category and Location */}
               <div className="lg:col-span-7 flex flex-col gap-5">
                 <div className="bg-bg-card border border-bg-border rounded-xl p-5 shadow-xl flex flex-col gap-4">
-                  <h2 className="text-[15px] font-semibold text-[#80c8ff] tracking-wide flex items-center gap-2">
+                  <h2 className="text-[15px] font-semibold text-[#1e6fa8] dark:text-[#80c8ff] tracking-wide flex items-center gap-2">
                     <Compass size={18} />
                     {labels.category}
                   </h2>
@@ -354,7 +354,7 @@ export default function PrasnamChartPage() {
                         >
                           <CatIcon 
                             size={20} 
-                            style={{ color: isSelected ? cat.color : 'rgba(255,255,255,0.40)' }}
+                            style={{ color: isSelected ? cat.color : 'var(--text-muted)' }}
                           />
                           <span className={`text-[12px] font-medium leading-tight ${isSelected ? 'text-text-primary' : 'text-text-secondary'}`}>
                             {language === 'ta' ? cat.labelTa : cat.labelEn}
@@ -369,7 +369,7 @@ export default function PrasnamChartPage() {
                 </div>
 
                 <div className="bg-bg-card border border-bg-border rounded-xl p-5 shadow-xl flex flex-col gap-4">
-                  <h2 className="text-[15px] font-semibold text-[#80c8ff] tracking-wide flex items-center gap-2">
+                  <h2 className="text-[15px] font-semibold text-[#1e6fa8] dark:text-[#80c8ff] tracking-wide flex items-center gap-2">
                     <Navigation size={18} />
                     {labels.place}
                   </h2>
@@ -426,7 +426,7 @@ export default function PrasnamChartPage() {
                     >
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center justify-between">
-                          <h2 className="text-[15px] font-semibold text-[#80c8ff] tracking-wide flex items-center gap-2">
+                          <h2 className="text-[15px] font-semibold text-[#1e6fa8] dark:text-[#80c8ff] tracking-wide flex items-center gap-2">
                             <Clock size={18} className="text-gold-bright" />
                             {labels.clockTitle}
                           </h2>
@@ -445,9 +445,9 @@ export default function PrasnamChartPage() {
 
                       {/* Interactive SVG Analog Clock mapping zodiac boundaries */}
                       <div className="flex justify-center items-center py-4 relative">
-                        <div className="w-[200px] h-[200px] rounded-full border-4 border-gold-mid/40 relative shadow-inner bg-[#0a0a1a] flex items-center justify-center">
+                        <div className="w-[200px] h-[200px] rounded-full border-4 border-gold-mid/40 relative shadow-inner bg-[var(--bg-card)] flex items-center justify-center">
                           {/* Inner gold circular ring */}
-                          <div className="w-[185px] h-[185px] rounded-full border border-dashed border-gold-deep/20 absolute" />
+                          <div className="w-[185px] h-[185px] rounded-full border border-dashed border-gold-deep/40 absolute" />
                           
                           {/* Pivot point */}
                           <div className="w-3.5 h-3.5 rounded-full bg-gold-bright z-30 absolute shadow-md shadow-black" />
@@ -509,7 +509,7 @@ export default function PrasnamChartPage() {
                         <div className="flex flex-col gap-1">
                           <div className="flex justify-between text-[12px]">
                             <span className="text-text-secondary">{language === 'ta' ? 'நிமிட முள் (உதயம்)' : 'Minute Hand (Udhaya)'}</span>
-                            <span className="font-bold text-[#80c8ff]">{clockMinute} mins ({language === 'ta' ? SIGN_MAP_TA[ZODIAC_SIGNS[Math.floor(clockMinute / 5) % 12]] : ZODIAC_SIGNS[Math.floor(clockMinute / 5) % 12]})</span>
+                            <span className="font-bold text-blue-600 dark:text-[#80c8ff]">{clockMinute} mins ({language === 'ta' ? SIGN_MAP_TA[ZODIAC_SIGNS[Math.floor(clockMinute / 5) % 12]] : ZODIAC_SIGNS[Math.floor(clockMinute / 5) % 12]})</span>
                           </div>
                           <input
                             type="range"
@@ -539,7 +539,7 @@ export default function PrasnamChartPage() {
                         <button
                           onClick={handleCalculate}
                           disabled={isCalculating || !city}
-                          className="w-full h-12 bg-[#1e6fa8] hover:bg-[#155b8a] disabled:opacity-50 text-text-inverse font-bold rounded-lg flex items-center justify-center gap-2 transition-all text-[15px]"
+                          className="w-full h-12 bg-gold-mid hover:bg-gold-deep disabled:opacity-50 text-text-inverse font-bold rounded-lg flex items-center justify-center gap-2 transition-all text-[15px]"
                         >
                           {isCalculating ? (
                             <>
@@ -567,7 +567,7 @@ export default function PrasnamChartPage() {
                     >
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center justify-between">
-                          <h2 className="text-[15px] font-semibold text-[#80c8ff] tracking-wide flex items-center gap-2">
+                          <h2 className="text-[15px] font-semibold text-[#1e6fa8] dark:text-[#80c8ff] tracking-wide flex items-center gap-2">
                             <Sparkles size={18} className="text-gold-bright" />
                             {labels.aroodha}
                           </h2>
@@ -598,7 +598,7 @@ export default function PrasnamChartPage() {
                                   : 'bg-bg-card/80 border-bg-border/60 hover:border-gold-deep text-text-secondary hover:text-gold-bright'
                               }`}
                             >
-                              {num}
+                               {num}
                             </button>
                           )
                         })}
@@ -625,7 +625,7 @@ export default function PrasnamChartPage() {
                         <button
                           onClick={handleCalculate}
                           disabled={isCalculating || isSpinning || !aroodhaNumber || !city}
-                          className="w-full h-12 bg-[#1e6fa8] hover:bg-[#155b8a] disabled:opacity-50 text-text-inverse font-bold rounded-lg flex items-center justify-center gap-2 transition-all text-[15px]"
+                          className="w-full h-12 bg-gold-mid hover:bg-gold-deep disabled:opacity-50 text-text-inverse font-bold rounded-lg flex items-center justify-center gap-2 transition-all text-[15px]"
                         >
                           {isCalculating ? (
                             <>
@@ -672,7 +672,7 @@ export default function PrasnamChartPage() {
                 </div>
                 <button
                   onClick={() => setResult(null)}
-                  className="bg-bg-page border border-[#1e6fa8] rounded-full px-5 py-2 text-[13px] text-[#80c8ff] hover:bg-[#1e6fa8]/20 font-semibold flex items-center gap-1.5 transition-all"
+                  className="bg-bg-page border border-gold-mid rounded-full px-5 py-2 text-[13px] text-text-primary hover:bg-[var(--bg-active)] font-semibold flex items-center gap-1.5 transition-all"
                 >
                   <RefreshCw size={15} />
                   {labels.btnReset}
@@ -690,16 +690,16 @@ export default function PrasnamChartPage() {
                     {language === 'ta' ? 'பிரஸ்னம் சக்கரம்' : 'Prasnam Rasi Chart'}
                   </h3>
 
-                  <div className="grid grid-cols-4 grid-rows-4 w-full aspect-square border border-bg-border rounded-lg relative bg-[#080818]/65">
+                  <div className="grid grid-cols-4 grid-rows-4 w-full aspect-square border border-[var(--bg-border)] rounded-lg relative bg-[var(--bg-card)]">
                     {/* Merged Center Area */}
-                    <div className="col-start-2 col-span-2 row-start-2 row-span-2 flex flex-col justify-center items-center text-center p-2 z-10 border border-dashed border-gold-deep/20 bg-[#0f0f24]/90">
+                    <div className="col-start-2 col-span-2 row-start-2 row-span-2 flex flex-col justify-center items-center text-center p-2 z-10 border border-dashed border-gold-deep/20 bg-[var(--bg-active)]">
                       <span className="text-[9px] tracking-wider uppercase text-text-muted">
                         {language === 'ta' ? 'உதய ராசி' : 'Udhaya Rasi'}
                       </span>
                       <span className="text-xs font-bold text-gold-bright mt-0.5">
                         {result.udhaya_lagna.sign_ta}
                       </span>
-                      <span className="text-[9px] text-[#80c8ff] font-mono mt-0.5">
+                      <span className="text-[9px] text-blue-600 dark:text-[#80c8ff] font-mono mt-0.5">
                         {result.udhaya_lagna.degree.toFixed(2)}°
                       </span>
                     </div>
@@ -830,7 +830,7 @@ export default function PrasnamChartPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* Remedies */}
                   <div className="bg-bg-card border border-bg-border rounded-xl p-5 shadow-xl flex flex-col gap-3">
-                    <h3 className="text-[14px] font-semibold text-[#80c8ff] tracking-wider uppercase border-b border-bg-border pb-2 flex items-center gap-1.5">
+                    <h3 className="text-[14px] font-semibold text-[#1e6fa8] dark:text-[#80c8ff] tracking-wider uppercase border-b border-bg-border pb-2 flex items-center gap-1.5">
                       <Sparkles size={15} className="text-gold-bright" />
                       {labels.remediesLabel}
                     </h3>
@@ -846,7 +846,7 @@ export default function PrasnamChartPage() {
 
                   {/* Calculations breakdown details */}
                   <div className="bg-bg-card border border-bg-border rounded-xl p-5 shadow-xl flex flex-col gap-3">
-                    <h3 className="text-[14px] font-semibold text-[#80c8ff] tracking-wider uppercase border-b border-bg-border pb-2 flex items-center gap-1.5">
+                    <h3 className="text-[14px] font-semibold text-[#1e6fa8] dark:text-[#80c8ff] tracking-wider uppercase border-b border-bg-border pb-2 flex items-center gap-1.5">
                       <Info size={15} />
                       {labels.detailsLabel}
                     </h3>

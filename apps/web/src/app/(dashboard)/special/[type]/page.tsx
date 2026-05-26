@@ -315,14 +315,14 @@ export default function SpecialDayDetailPage() {
         </button>
 
         {/* Year Toggle Option */}
-        <div className="flex items-center bg-stone-900/60 border border-stone-850 rounded-lg p-0.5 z-10">
+        <div className="flex items-center bg-[var(--bg-elevated)] border border-[var(--bg-border)] rounded-lg p-0.5 z-10">
           {[2025, 2026, 2027].map((y) => (
             <button
               key={y}
               onClick={() => setYear(y)}
               className={`px-3 py-1 text-[13px] font-medium rounded-md transition-all ${year === y
                   ? 'bg-amber-600 text-white shadow-md'
-                  : 'text-stone-400 hover:text-stone-200'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
             >
               {y}
@@ -334,14 +334,14 @@ export default function SpecialDayDetailPage() {
       {loading ? (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-7 space-y-4">
-            <div className="h-64 bg-stone-900/30 animate-pulse rounded-lg border border-stone-850" />
-            <div className="h-40 bg-stone-900/30 animate-pulse rounded-lg border border-stone-850" />
+            <div className="h-64 bg-[var(--bg-card)] animate-pulse rounded-lg border border-[var(--bg-border)]" />
+            <div className="h-40 bg-[var(--bg-card)] animate-pulse rounded-lg border border-[var(--bg-border)]" />
           </div>
           <div className="lg:col-span-5 space-y-3">
             {[1, 2, 3, 4].map((n) => (
               <div
                 key={n}
-                className="h-20 bg-stone-900/30 animate-pulse rounded-lg border border-stone-850"
+                className="h-20 bg-[var(--bg-card)] animate-pulse rounded-lg border border-[var(--bg-border)]"
               />
             ))}
           </div>
@@ -376,9 +376,9 @@ export default function SpecialDayDetailPage() {
           </button>
         </div>
       ) : days.length === 0 ? (
-        <div className="text-center py-16 border border-dashed border-stone-850 rounded-lg bg-stone-900/10">
+        <div className="text-center py-16 border border-dashed border-[var(--bg-border)] rounded-lg bg-[var(--bg-card)]">
           <Calendar className="w-10 h-10 text-stone-600 mx-auto mb-2" />
-          <p className="text-stone-400 text-[14px]">
+          <p className="text-[var(--text-secondary)] text-[14px]">
             {isTa ? 'இந்த ஆண்டிற்குள் நிகழ்வுகள் எதுவும் இல்லை' : 'No records found for this year'}
           </p>
         </div>
@@ -416,12 +416,12 @@ export default function SpecialDayDetailPage() {
 
                   {/* Deity Display */}
                   {selectedDay.deity_en && (
-                    <div className="flex items-center gap-1.5 text-stone-300 text-[13px]">
+                    <div className="flex items-center gap-1.5 text-[var(--text-secondary)] text-[13px]">
                       <Sparkles className="w-3.5 h-3.5" style={{ color: dynamicColor }} />
-                      <span className="font-semibold text-stone-400">
+                      <span className="font-semibold text-[var(--text-muted)]">
                         {isTa ? 'வழிபடும் தெய்வம்:' : 'Deity:'}
                       </span>
-                      <span className="text-white font-medium">
+                      <span className="text-[var(--text-primary)] font-medium">
                         {isTa ? selectedDay.deity_ta : selectedDay.deity_en}
                       </span>
                     </div>
@@ -455,11 +455,11 @@ export default function SpecialDayDetailPage() {
               </div>
 
               {/* Significance Box */}
-              <div className="mt-5 pt-4 border-t border-stone-850/60">
-                <h4 className="text-[11px] uppercase tracking-wider font-bold text-stone-500 mb-1.5">
+              <div className="mt-5 pt-4 border-t border-[var(--bg-border)]">
+                <h4 className="text-[11px] uppercase tracking-wider font-bold text-[var(--text-disabled)] mb-1.5">
                   {isTa ? 'முக்கியத்துவம் & தத்துவம்' : 'Significance & Mythology'}
                 </h4>
-                <p className="text-stone-300 text-[13.5px] leading-relaxed italic">
+                <p className="text-[var(--text-secondary)] text-[13.5px] leading-relaxed italic">
                   &quot;{isTa ? selectedDay.significance_ta : selectedDay.significance_en}&quot;
                 </p>
               </div>
@@ -469,16 +469,16 @@ export default function SpecialDayDetailPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
               {/* Fasting Card */}
-              <div className="bg-stone-900/30 p-5 rounded-lg border border-stone-850 space-y-3">
+              <div className="bg-[var(--bg-card)] p-5 rounded-lg border border-[var(--bg-border)] space-y-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-white text-[14.5px] flex items-center gap-1.5">
+                  <h3 className="font-semibold text-[var(--text-primary)] text-[14.5px] flex items-center gap-1.5">
                     <Heart className="w-4 h-4 text-rose-400" />
                     {isTa ? 'விரதம் & உணவு' : 'Fasting Status'}
                   </h3>
 
                   <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded ${selectedDay.fasting
                       ? 'bg-rose-500/10 border border-rose-500/20 text-rose-400'
-                      : 'bg-stone-800 text-stone-400'
+                      : 'bg-[var(--bg-elevated)] border border-[var(--bg-border)] text-[var(--text-muted)]'
                     }`}>
                     {selectedDay.fasting
                       ? (isTa ? 'உபவாசம் உண்டு' : 'Fasting Required')
@@ -488,11 +488,11 @@ export default function SpecialDayDetailPage() {
                 </div>
 
                 {selectedDay.fasting_rules_en ? (
-                  <p className="text-stone-400 text-[12.5px] leading-relaxed">
+                  <p className="text-[var(--text-secondary)] text-[12.5px] leading-relaxed">
                     {isTa ? selectedDay.fasting_rules_ta : selectedDay.fasting_rules_en}
                   </p>
                 ) : (
-                  <p className="text-stone-500 text-[12.5px]">
+                  <p className="text-[var(--text-muted)] text-[12.5px]">
                     {isTa
                       ? 'இந்த நாளில் சிறப்பு விரதக் கட்டுப்பாடுகள் எதுவும் குறிக்கப்படவில்லை.'
                       : 'No specific dietary restrictions listed for this day.'
@@ -502,18 +502,18 @@ export default function SpecialDayDetailPage() {
               </div>
 
               {/* Auspicious Time Card */}
-              <div className="bg-stone-900/30 p-5 rounded-lg border border-stone-850 space-y-3">
-                <h3 className="font-semibold text-white text-[14.5px] flex items-center gap-1.5">
+              <div className="bg-[var(--bg-card)] p-5 rounded-lg border border-[var(--bg-border)] space-y-3">
+                <h3 className="font-semibold text-[var(--text-primary)] text-[14.5px] flex items-center gap-1.5">
                   <Clock className="w-4 h-4 text-amber-400" />
                   {isTa ? 'சுப முகூர்த்த நேரம்' : 'Auspicious Time'}
                 </h3>
 
                 {selectedDay.auspicious_time_en ? (
-                  <p className="text-stone-400 text-[12.5px] leading-relaxed">
+                  <p className="text-[var(--text-secondary)] text-[12.5px] leading-relaxed">
                     {isTa ? selectedDay.auspicious_time_ta : selectedDay.auspicious_time_en}
                   </p>
                 ) : (
-                  <p className="text-stone-500 text-[12.5px]">
+                  <p className="text-[var(--text-muted)] text-[12.5px]">
                     {isTa
                       ? 'பஞ்சாங்கத்தின்படி நாள் முழுவதும் பூஜைகளுக்கு உகந்தது.'
                       : 'All hours generally auspicious for worship ceremonies.'
@@ -526,8 +526,8 @@ export default function SpecialDayDetailPage() {
 
             {/* Prasadam & Offerings */}
             {selectedDay.offerings && selectedDay.offerings.length > 0 && (
-              <div className="bg-stone-900/30 p-5 rounded-lg border border-stone-850 space-y-3">
-                <h3 className="font-semibold text-white text-[14.5px] flex items-center gap-1.5">
+              <div className="bg-[var(--bg-card)] p-5 rounded-lg border border-[var(--bg-border)] space-y-3">
+                <h3 className="font-semibold text-[var(--text-primary)] text-[14.5px] flex items-center gap-1.5">
                   <Gift className="w-4 h-4 text-emerald-400" />
                   {isTa ? 'நிவேதனப் பொருட்கள் (படையல்)' : 'Prasadam & Offerings'}
                 </h3>
@@ -536,7 +536,7 @@ export default function SpecialDayDetailPage() {
                   {selectedDay.offerings.map((item, idx) => (
                     <span
                       key={idx}
-                      className="bg-stone-950/80 border border-stone-800/80 text-stone-300 text-[12px] px-3 py-1 rounded-md flex items-center gap-1.5 hover:border-stone-750 transition-colors"
+                      className="bg-[var(--bg-elevated)] border border-[var(--bg-border)] text-[var(--text-secondary)] text-[12px] px-3 py-1 rounded-md flex items-center gap-1.5 hover:border-[var(--bg-border)] transition-colors"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
                       {isTa ? item.ta : item.en}
@@ -549,36 +549,36 @@ export default function SpecialDayDetailPage() {
             {/* Mantra Card */}
             {selectedDay.mantra && selectedDay.mantra.text_ta && (
               <div
-                className="bg-stone-950/40 p-5 rounded-lg border relative overflow-hidden transition-all duration-300 group hover:bg-stone-950/60"
+                className="bg-[var(--bg-elevated)] p-5 rounded-lg border relative overflow-hidden transition-all duration-300 group hover:bg-[var(--bg-active)]"
                 style={{ borderColor: `${dynamicColor}20`, borderLeftWidth: '4px', borderLeftColor: dynamicColor }}
               >
                 <div className="flex justify-between items-start gap-4">
                   <div>
-                    <h3 className="font-semibold text-[14px] flex items-center gap-1.5 text-stone-200 uppercase tracking-wider">
+                    <h3 className="font-semibold text-[14px] flex items-center gap-1.5 text-[var(--text-secondary)] uppercase tracking-wider">
                       <Flame className="w-4 h-4 text-amber-500" />
                       {isTa ? 'மூல மந்திரம் / பாராயணம்' : 'Sacred Chant / Mantra'}
                     </h3>
 
-                    <p className="text-xl font-bold text-white mt-3 select-all leading-normal tracking-wide">
+                    <p className="text-xl font-bold text-[var(--text-primary)] mt-3 select-all leading-normal tracking-wide">
                       {selectedDay.mantra.text_ta}
                     </p>
 
                     {selectedDay.mantra.transliteration && (
-                      <p className="text-stone-400 text-[13px] mt-2 italic font-mono">
+                      <p className="text-[var(--text-secondary)] text-[13px] mt-2 italic font-mono">
                         {selectedDay.mantra.transliteration}
                       </p>
                     )}
 
                     {selectedDay.mantra.meaning_en && !isTa && (
-                      <p className="text-stone-500 text-[12px] mt-2 border-t border-stone-900 pt-2 leading-relaxed">
-                        <span className="font-medium text-stone-400">Meaning:</span> {selectedDay.mantra.meaning_en}
+                      <p className="text-[var(--text-muted)] text-[12px] mt-2 border-t border-[var(--bg-border)] pt-2 leading-relaxed">
+                        <span className="font-medium text-[var(--text-muted)]">Meaning:</span> {selectedDay.mantra.meaning_en}
                       </p>
                     )}
                   </div>
 
                   <button
                     onClick={() => handleCopyMantra(selectedDay.mantra?.text_ta || '')}
-                    className="p-2 rounded bg-stone-900 border border-stone-800 text-stone-400 hover:text-white transition-colors active:scale-90"
+                    className="p-2 rounded bg-[var(--bg-elevated)] border border-[var(--bg-border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors active:scale-90"
                     title={isTa ? 'மந்திரத்தை பிரதி செய்' : 'Copy Mantra'}
                   >
                     {copiedMantra ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
@@ -592,12 +592,12 @@ export default function SpecialDayDetailPage() {
 
               {/* Recommended Rituals */}
               {selectedDay.ritual_en && (
-                <div className="bg-stone-900/30 p-5 rounded-lg border border-stone-850 space-y-3">
-                  <h3 className="font-semibold text-[14.5px] text-white flex items-center gap-2">
+                <div className="bg-[var(--bg-card)] p-5 rounded-lg border border-[var(--bg-border)] space-y-3">
+                  <h3 className="font-semibold text-[14.5px] text-[var(--text-primary)] flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                     {isTa ? 'பரிந்துரைக்கப்பட்ட வழிபாடுகள்' : 'Key Rituals & Practices'}
                   </h3>
-                  <p className="text-stone-400 text-[12.5px] leading-relaxed">
+                  <p className="text-[var(--text-secondary)] text-[12.5px] leading-relaxed">
                     {isTa ? selectedDay.ritual_ta : selectedDay.ritual_en}
                   </p>
                 </div>
@@ -605,12 +605,12 @@ export default function SpecialDayDetailPage() {
 
               {/* Avoid Instructions */}
               {selectedDay.avoid_en && (
-                <div className="bg-stone-900/30 p-5 rounded-lg border border-stone-850 space-y-3">
-                  <h3 className="font-semibold text-[14.5px] text-white flex items-center gap-2">
+                <div className="bg-[var(--bg-card)] p-5 rounded-lg border border-[var(--bg-border)] space-y-3">
+                  <h3 className="font-semibold text-[14.5px] text-[var(--text-primary)] flex items-center gap-2">
                     <Ban className="w-4 h-4 text-rose-400" />
                     {isTa ? 'தவிர்க்க வேண்டியவை' : 'Refrain From'}
                   </h3>
-                  <p className="text-stone-400 text-[12.5px] leading-relaxed">
+                  <p className="text-[var(--text-secondary)] text-[12.5px] leading-relaxed">
                     {isTa ? selectedDay.avoid_ta : selectedDay.avoid_en}
                   </p>
                 </div>
@@ -620,8 +620,8 @@ export default function SpecialDayDetailPage() {
 
             {/* Key Pilgrimage Temples */}
             {selectedDay.key_temples && selectedDay.key_temples.length > 0 && (
-              <div className="bg-stone-900/30 p-5 rounded-lg border border-stone-850 space-y-4">
-                <h3 className="font-semibold text-white text-[14.5px] flex items-center gap-1.5">
+              <div className="bg-[var(--bg-card)] p-5 rounded-lg border border-[var(--bg-border)] space-y-4">
+                <h3 className="font-semibold text-[var(--text-primary)] text-[14.5px] flex items-center gap-1.5">
                   <MapPin className="w-4 h-4 text-rose-400 animate-pulse" />
                   {isTa ? 'வழிபாட்டுக்கு உகந்த முக்கிய ஸ்தலங்கள்' : 'Key Pilgrimage Temples'}
                 </h3>
@@ -630,20 +630,20 @@ export default function SpecialDayDetailPage() {
                   {selectedDay.key_temples.map((temple, idx) => (
                     <div
                       key={idx}
-                      className="bg-stone-950/80 p-4 rounded-lg border border-stone-850/80 hover:border-stone-800 transition-colors space-y-1.5"
+                      className="bg-[var(--bg-elevated)] p-4 rounded-lg border border-[var(--bg-border)] hover:border-[var(--bg-border)] transition-colors space-y-1.5"
                     >
                       <div className="flex items-center justify-between">
-                        <h4 className="font-semibold text-white text-[13.5px]">
+                        <h4 className="font-semibold text-[var(--text-primary)] text-[13.5px]">
                           {temple.name}
                         </h4>
-                        <span className="text-[11px] text-stone-500 flex items-center gap-1 font-medium">
+                        <span className="text-[11px] text-[var(--text-muted)] flex items-center gap-1 font-medium">
                           <MapPin className="w-3 h-3 text-stone-600" />
                           {temple.location}
                         </span>
                       </div>
 
                       {temple.reason_en && (
-                        <p className="text-stone-400 text-[12px] leading-relaxed">
+                        <p className="text-[var(--text-secondary)] text-[12px] leading-relaxed">
                           {temple.reason_en}
                         </p>
                       )}
@@ -658,11 +658,11 @@ export default function SpecialDayDetailPage() {
           {/* RIGHT COLUMN: Chronological Timeline Occurrence Calendar */}
           <div className="lg:col-span-5 space-y-4">
 
-            <div className="bg-stone-900/20 p-4 rounded-lg border border-stone-850">
-              <h2 className="font-semibold text-white text-[14px] flex items-center gap-2 mb-4">
-                <Calendar className="w-4 h-4 text-stone-400" />
+            <div className="bg-[var(--bg-card)] p-4 rounded-lg border border-[var(--bg-border)]">
+              <h2 className="font-semibold text-[var(--text-primary)] text-[14px] flex items-center gap-2 mb-4">
+                <Calendar className="w-4 h-4 text-[var(--text-secondary)]" />
                 {isTa ? `${year} ஆம் ஆண்டின் நாட்காட்டி` : `${year} Occurrence Calendar`}
-                <span className="ml-auto text-[11px] bg-stone-800 text-stone-400 px-2 py-0.5 rounded-full font-mono">
+                <span className="ml-auto text-[11px] bg-[var(--bg-elevated)] text-[var(--text-muted)] px-2 py-0.5 rounded-full font-mono">
                   {days.length}
                 </span>
               </h2>
@@ -680,21 +680,21 @@ export default function SpecialDayDetailPage() {
                     <div
                       key={item.date + index}
                       onClick={() => setSelectedIndex(index)}
-                      className={`transition-all duration-200 border rounded-lg p-3.5 flex items-center justify-between gap-4 cursor-pointer hover:bg-stone-900/40 active:scale-95 animate-fade-up ${isSelected
-                          ? 'bg-stone-900/60 shadow-md scale-[1.01]'
-                          : 'bg-stone-900/10 border-stone-850/60'
+                      className={`transition-all duration-200 border rounded-lg p-3.5 flex items-center justify-between gap-4 cursor-pointer hover:bg-[var(--bg-active)] active:scale-95 animate-fade-up ${isSelected
+                          ? 'bg-[var(--bg-active)] shadow-md scale-[1.01]'
+                          : 'bg-[var(--bg-card)] border-[var(--bg-border)]'
                         }`}
                       style={{
                         animationDelay: `${index * 20}ms`,
                         animationFillMode: 'backwards',
-                        borderColor: isSelected ? dynamicColor : 'rgba(44, 40, 36, 0.4)',
+                        borderColor: isSelected ? dynamicColor : 'var(--bg-border)',
                         boxShadow: isSelected ? `0 0 12px ${dynamicColor}20` : 'none'
                       }}
                     >
                       <div className="flex items-center gap-3.5">
                         {/* Unique Category Shapes applied strictly to the Date Box */}
                         <div
-                          className="bg-stone-950 border text-center flex flex-col items-center justify-center p-2 h-14 w-16 select-none shrink-0 transition-all duration-300"
+                          className="bg-[var(--bg-elevated)] border border-[var(--bg-border)] text-center flex flex-col items-center justify-center p-2 h-14 w-16 select-none shrink-0 transition-all duration-300"
                           style={{
                             borderRadius: resolvedShape,
                             borderColor: isSelected ? dynamicColor : `${dynamicColor}22`,
@@ -707,17 +707,17 @@ export default function SpecialDayDetailPage() {
                           >
                             {month}
                           </span>
-                          <span className="block text-lg font-bold text-white leading-none mt-0.5">
+                          <span className="block text-lg font-bold text-[var(--text-primary)] leading-none mt-0.5">
                             {day}
                           </span>
                         </div>
 
                         <div>
-                          <h3 className="font-semibold text-white text-[14px]">
+                          <h3 className="font-semibold text-[var(--text-primary)] text-[14px]">
                             {isTa ? item.name_ta : item.name_en}
                           </h3>
-                          <p className="text-stone-400 text-[12px] mt-0.5 flex items-center gap-1.5">
-                            <Clock className="w-3.5 h-3.5 text-stone-500" />
+                          <p className="text-[var(--text-secondary)] text-[12px] mt-0.5 flex items-center gap-1.5">
+                            <Clock className="w-3.5 h-3.5 text-[var(--text-disabled)]" />
                             {formattedWeekday}
                           </p>
                         </div>
