@@ -19,6 +19,13 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const response = NextResponse.next()
 
+  // Helper to prevent browser caching redirects
+  const redirect = (targetPath: string) => {
+    const res = NextResponse.redirect(new URL(targetPath, request.url))
+    res.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+    return res
+  }
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -49,10 +56,10 @@ export async function middleware(request: NextRequest) {
     const isRetailer = meta.role === 'retailer'
 
     if (isAdmin) {
-      return NextResponse.redirect(new URL('/admin', request.url))
+      return redirect('/admin')
     }
     if (isRetailer) {
-      return NextResponse.redirect(new URL('/retailer', request.url))
+      return redirect('/retailer')
     }
   }
 
@@ -60,7 +67,7 @@ export async function middleware(request: NextRequest) {
   const isAuthRoute = AUTH_ROUTES.some((r) => pathname.startsWith(r))
   const isUpgradeRoute = pathname.startsWith('/upgrade')
   if (!user && !isAuthRoute && !isUpgradeRoute) {
-    return NextResponse.redirect(new URL('/login', request.url))
+    return redirect('/login')
   }
 
   // 2. Authenticated + auth route → redirect to dashboard home (panchangam)
@@ -76,18 +83,18 @@ export async function middleware(request: NextRequest) {
     const isRetailer = meta.role === 'retailer'
 
     if (isAdmin) {
-      return NextResponse.redirect(new URL('/admin', request.url))
+      return redirect('/admin')
     }
     if (isRetailer) {
-      return NextResponse.redirect(new URL('/retailer', request.url))
+      return redirect('/retailer')
     }
-    return NextResponse.redirect(new URL('/', request.url))
+    return redirect('/')
   }
 
   // 3. Admin space security: Only admins can access /admin
   if (pathname.startsWith('/admin')) {
     if (!user) {
-      return NextResponse.redirect(new URL('/login', request.url))
+      return redirect('/login')
     }
     const meta = user.user_metadata ?? {}
     const adminEmailsEnv = process.env.ADMIN_EMAILS || ''
@@ -99,20 +106,20 @@ export async function middleware(request: NextRequest) {
     const isAdmin = meta.role === 'admin' || meta.is_admin === true || isBootstrapAdmin
 
     if (!isAdmin) {
-      return NextResponse.redirect(new URL('/', request.url))
+      return redirect('/')
     }
   }
 
   // 3b. Retailer space security: Only retailers can access /retailer
   if (pathname.startsWith('/retailer')) {
     if (!user) {
-      return NextResponse.redirect(new URL('/login', request.url))
+      return redirect('/login')
     }
     const meta = user.user_metadata ?? {}
     const isRetailer = meta.role === 'retailer'
 
     if (!isRetailer) {
-      return NextResponse.redirect(new URL('/', request.url))
+      return redirect('/')
     }
   }
 
@@ -142,14 +149,14 @@ export async function middleware(request: NextRequest) {
       .filter(Boolean)
     const isBootstrapAdmin = user.email && adminEmails.includes(user.email.toLowerCase())
     const isAdmin = meta.is_admin === true || isBootstrapAdmin
-
+ 
     const now = new Date()
     const isProActive =
       isAdmin ||
       (plan === 'PRO' && (!expiresAt || expiresAt > now)) ||
       (plan === 'FREE' && trialExpiresAt && trialExpiresAt > now) ||
       (!plan && trialExpiresAt && trialExpiresAt > now)
-
+ 
     if (!isProActive) {
       // Database Fallback: Check subscriptions directly from the database to bypass stale browser JWT cookies
       const { data: dbSub } = await supabase
@@ -157,7 +164,7 @@ export async function middleware(request: NextRequest) {
         .select('plan, expires_at, created_at')
         .eq('user_id', user.id)
         .maybeSingle()
-
+ 
       if (dbSub) {
         if (dbSub.plan === 'PRO') {
           const dbExpires = dbSub.expires_at ? new Date(dbSub.expires_at) : null
@@ -178,11 +185,11 @@ export async function middleware(request: NextRequest) {
           return response
         }
       }
-
-      return NextResponse.redirect(new URL('/upgrade', request.url))
+ 
+      return redirect('/upgrade')
     }
   }
-
+ 
   return response
 }
 
