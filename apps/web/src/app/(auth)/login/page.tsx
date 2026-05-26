@@ -85,7 +85,7 @@ export default function LoginPage() {
         } else if (role === 'retailer') {
           window.location.href = '/retailer'
         } else {
-          window.location.href = '/panchangam'
+          window.location.href = '/'
         }
       }
     } catch (err: any) {

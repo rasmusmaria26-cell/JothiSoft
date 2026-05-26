@@ -180,7 +180,8 @@ router.post('/login', authLimiter, async (req: Request, res: Response): Promise<
       return;
     }
 
-    let emailToAuth = inputVal.toLowerCase();
+    let session: any = null;
+    let authError: any = null;
 
     // Check if input is a phone number (e.g. only digits with optional leading +)
     if (/^\+?[0-9]{7,15}$/.test(inputVal.replace(/\s+/g, ''))) {
@@ -201,28 +202,65 @@ router.post('/login', authLimiter, async (req: Request, res: Response): Promise<
         return dbDigits.endsWith(cleanDigits) || cleanDigits.endsWith(dbDigits);
       });
 
-      if (userProfile && userProfile.email) {
-        emailToAuth = userProfile.email;
+      if (userProfile) {
+        if (userProfile.email && userProfile.email.trim() !== '') {
+          const { data, error } = await supabaseAdmin.auth.signInWithPassword({
+            email: userProfile.email,
+            password,
+          });
+          session = data;
+          authError = error;
+        } else if (userProfile.phone) {
+          const { data, error } = await supabaseAdmin.auth.signInWithPassword({
+            phone: userProfile.phone,
+            password,
+          });
+          session = data;
+          authError = error;
+        } else {
+          res.status(404).json({
+            success: false,
+            error: 'PHONE_NOT_REGISTERED',
+            message: 'இந்த தொலைபேசி எண் இன்னும் பதிவு செய்யப்படவில்லை · This phone number is not registered yet',
+          });
+          return;
+        }
       } else {
-        res.status(404).json({
-          success: false,
-          error: 'PHONE_NOT_REGISTERED',
-          message: 'இந்த தொலைபேசி எண் இன்னும் பதிவு செய்யப்படவில்லை · This phone number is not registered yet',
+        // Fallback: Attempt direct login with input phone number
+        const { data, error } = await supabaseAdmin.auth.signInWithPassword({
+          phone: cleanPhone,
+          password,
         });
-        return;
+        session = data;
+        authError = error;
+
+        // Try pre-pending +91 as fallback if standard login failed
+        if (authError && !cleanPhone.startsWith('+')) {
+          const { data: prefixedData, error: prefixedError } = await supabaseAdmin.auth.signInWithPassword({
+            phone: `+91${cleanPhone}`,
+            password,
+          });
+          if (!prefixedError) {
+            session = prefixedData;
+            authError = null;
+          }
+        }
       }
+    } else {
+      // Standard email sign in
+      const { data, error } = await supabaseAdmin.auth.signInWithPassword({
+        email: inputVal.toLowerCase(),
+        password,
+      });
+      session = data;
+      authError = error;
     }
 
-    const { data: session, error } = await supabaseAdmin.auth.signInWithPassword({
-      email: emailToAuth,
-      password,
-    });
-
-    if (error || !session.session) {
+    if (authError || !session?.session) {
       res.status(401).json({
         success: false,
         error: 'INVALID_CREDENTIALS',
-        message: error?.message || 'உள்நுழைவு விவரங்கள் தவறானவை · Invalid login credentials',
+        message: authError?.message || 'உள்நுழைவு விவரங்கள் தவறானவை · Invalid login credentials',
       });
       return;
     }

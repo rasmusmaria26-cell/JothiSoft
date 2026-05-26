@@ -81,7 +81,7 @@ export async function middleware(request: NextRequest) {
     if (isRetailer) {
       return NextResponse.redirect(new URL('/retailer', request.url))
     }
-    return NextResponse.redirect(new URL('/panchangam', request.url))
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   // 3. Admin space security: Only admins can access /admin
@@ -99,7 +99,7 @@ export async function middleware(request: NextRequest) {
     const isAdmin = meta.role === 'admin' || meta.is_admin === true || isBootstrapAdmin
 
     if (!isAdmin) {
-      return NextResponse.redirect(new URL('/panchangam', request.url))
+      return NextResponse.redirect(new URL('/', request.url))
     }
   }
 
@@ -112,7 +112,7 @@ export async function middleware(request: NextRequest) {
     const isRetailer = meta.role === 'retailer'
 
     if (!isRetailer) {
-      return NextResponse.redirect(new URL('/panchangam', request.url))
+      return NextResponse.redirect(new URL('/', request.url))
     }
   }
 
