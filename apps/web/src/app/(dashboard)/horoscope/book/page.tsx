@@ -61,7 +61,10 @@ export default function BookChartPage() {
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!selectedCity) return
+    if (!selectedCity) {
+      setError(language === 'ta' ? 'பிறந்த இடத்தைத் தேடி பட்டியலிலிருந்து தேர்ந்தெடுக்கவும்.' : 'Please search and select a birth place from the suggestions.')
+      return
+    }
     setLoading(true)
     setError(null)
 
@@ -166,7 +169,7 @@ export default function BookChartPage() {
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-sm font-medium text-text-primary ml-1">{t.place}</label>
-                    <PlaceSearch onSelect={setSelectedCity} />
+                    <PlaceSearch onSelect={setSelectedCity} selectedCity={selectedCity} />
                   </div>
                 </div>
 
@@ -202,9 +205,9 @@ export default function BookChartPage() {
                   </div>
                 )}
 
-                <button type="submit" disabled={!selectedCity || loading}
+                <button type="submit" disabled={loading}
                   className={`w-full py-4 mt-2 rounded-xl font-bold tracking-wide text-bg-page transition-all duration-300 flex items-center justify-center gap-2
-                    ${(!selectedCity || loading) ? 'bg-gold-muted/50 cursor-not-allowed text-white/50' : 'bg-gradient-to-r from-gold-bright to-gold-deep hover:shadow-lg hover:shadow-gold-mid/20 hover:scale-[1.01]'}`}
+                    ${loading ? 'bg-gold-muted/50 cursor-not-allowed text-white/50 opacity-60' : 'bg-gradient-to-r from-gold-bright to-gold-deep hover:shadow-lg hover:shadow-gold-mid/20 hover:scale-[1.01]'}`}
                 >
                   {loading ? (
                     <><Loader2 className="w-5 h-5 animate-spin" />{t.generating}</>

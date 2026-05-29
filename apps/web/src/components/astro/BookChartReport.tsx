@@ -216,7 +216,7 @@ export function BookChartReport({ data, dasa, profile, language }: BookChartRepo
                 chart={data.navamsam_chart}
                 planets={data.planets}
                 title={isTa ? 'நவாம்சம் கட்டம் (D9)' : 'Navamsam Chart (D9)'}
-                lagnaSign={data.lagna.sign}
+                lagnaSign={data.lagna.navamsa_sign || data.lagna.sign}
                 isPrint={true}
                 language={language}
               />

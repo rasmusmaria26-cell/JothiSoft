@@ -7,6 +7,7 @@ interface SanjeeviReportProps {
   data: HoroscopeResponse
   profile: {
     name: string
+    gender?: 'Male' | 'Female'
     fatherName?: string
     motherName?: string
     dob: string
@@ -17,6 +18,11 @@ interface SanjeeviReportProps {
     karana?: string
   }
   language: 'ta' | 'en'
+  astrologer?: {
+    name?: string
+    address?: string
+    phone?: string
+  }
 }
 
 const PLANET_MAP_TA: Record<string, string> = {
@@ -52,7 +58,7 @@ const NAKSHATRA_MAP_TA: Record<string, string> = {
   'Purva Bhadrapada': 'பூரட்டாதி', 'Uttara Bhadrapada': 'உத்திரட்டாதி', 'Revati': 'ரேவதி'
 }
 
-export function SanjeeviReport({ data, profile, language }: SanjeeviReportProps) {
+export function SanjeeviReport({ data, profile, language, astrologer }: SanjeeviReportProps) {
   const moonNakshatra = data.planets.find(p => p.planet === 'Moon')?.nakshatra || 'Unknown'
   const moonPada = data.planets.find(p => p.planet === 'Moon')?.pada || 1
   const moonSign = data.planets.find(p => p.planet === 'Moon')?.sign || 'Unknown'
@@ -106,12 +112,31 @@ export function SanjeeviReport({ data, profile, language }: SanjeeviReportProps)
         {/* Header */}
         <div className="flex items-center justify-between border-b-2 border-gray-900 pb-1.5 mb-2">
           <div className="flex flex-col">
-            <h1 className="text-2xl font-bold tracking-tight uppercase text-gray-900">{isTa ? 'சஞ்சீவி ஜாதகம்' : 'Sanjeevi Report'}</h1>
-            <p className="text-xs text-gray-600 mt-1 uppercase tracking-widest font-mono">{isTa ? 'துல்லியமான வேத ஜாதகம்' : 'Detailed Vedic Horoscope'}</p>
+            {astrologer?.name ? (
+              <>
+                <h1 className="text-[16px] font-extrabold tracking-tight text-gray-900 leading-tight">
+                  {isTa ? 'ஜோதிடர்:' : 'Astrologer:'} {astrologer.name}
+                </h1>
+                {astrologer.address && (
+                  <p className="text-[10px] text-gray-600 mt-0.5 leading-tight font-medium font-sans">
+                    {astrologer.address}
+                  </p>
+                )}
+                {astrologer.phone && (
+                  <p className="text-[10px] text-gray-600 leading-tight font-medium font-sans">
+                    {isTa ? 'தொலைபேசி:' : 'Phone:'} {astrologer.phone}
+                  </p>
+                )}
+              </>
+            ) : (
+              <>
+                <h1 className="text-2xl font-bold tracking-tight uppercase text-gray-900">{isTa ? 'ஜாதக அறிக்கை' : 'Horoscope Report'}</h1>
+                <p className="text-xs text-gray-600 mt-1 uppercase tracking-widest font-mono">{isTa ? 'துல்லியமான வேத ஜாதகம்' : 'Detailed Vedic Horoscope'}</p>
+              </>
+            )}
           </div>
-          <div className="text-right flex flex-col items-end">
-            <h2 className="text-xl font-extrabold text-gold-deep">JOTHI<span className="text-gray-900">SOFT</span></h2>
-            <p className="text-[10px] text-gray-500 font-mono mt-0.5">{isTa ? 'டிஜிட்டல் அறிக்கை' : 'Generated digitally'}</p>
+          <div className="text-right flex flex-col items-end justify-center">
+            <p className="text-[10px] text-gray-500 font-mono">{isTa ? 'டிஜிட்டல் அறிக்கை' : 'Generated digitally'}</p>
           </div>
         </div>
 
@@ -120,7 +145,7 @@ export function SanjeeviReport({ data, profile, language }: SanjeeviReportProps)
           <tbody>
             <tr>
               <td className="border border-gray-300 py-0.5 px-2.5 w-1/2 align-top">
-                <span className="font-bold text-gray-900">{isTa ? 'பெயர்' : 'Name'}:</span> {profile.name}
+                <span className="font-bold text-gray-900">{isTa ? 'பெயர்' : 'Name'}:</span> {profile.name} {profile.gender && `(${profile.gender === 'Male' ? (isTa ? 'ஆண்' : 'Male') : (isTa ? 'பெண்' : 'Female')})`}
               </td>
               <td className="border border-gray-300 py-0.5 px-2.5 w-1/2 align-top">
                 <span className="font-bold text-gray-900">{isTa ? 'ராசி' : 'Rasi'}:</span> {S_MAP[moonSign] || moonSign}
@@ -232,7 +257,7 @@ export function SanjeeviReport({ data, profile, language }: SanjeeviReportProps)
                 chart={data.navamsam_chart}
                 planets={data.planets}
                 title={isTa ? "நவாம்சம் (D9)" : "Navamsam (D9)"}
-                lagnaSign={data.lagna.sign}
+                lagnaSign={data.lagna.navamsa_sign || data.lagna.sign}
                 isPrint={true}
                 language={language}
               />
@@ -277,6 +302,17 @@ export function SanjeeviReport({ data, profile, language }: SanjeeviReportProps)
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Footer with JothiSoft Logo */}
+        <div className="mt-3 border-t border-gray-300 pt-1.5 flex items-center justify-between text-[10px] text-gray-500 font-sans print:mt-1">
+          <div>
+            {isTa ? '© ஜோதிசாஃப்ட் டிஜிட்டல் ஜாதக சேவை' : '© JothiSoft Digital Horoscope Services'}
+          </div>
+          <div className="flex items-center gap-1 font-sans">
+            <span className="text-[8px] uppercase tracking-wider text-gray-400">{isTa ? 'வழங்குபவர்' : 'Powered by'}</span>
+            <span className="font-extrabold text-[11px] tracking-tight text-gold-deep">JOTHI<span className="text-gray-950">SOFT</span></span>
+          </div>
         </div>
         
       </div>

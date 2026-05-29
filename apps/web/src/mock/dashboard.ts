@@ -17,12 +17,12 @@ export const categoryData: CategorySectionProps[] = [
     colorHex: '#7b5ea7',
     modules: [
       { icon: Star,       labelTa: 'ஜாதகம்',         labelEn: 'Horoscope',      sublabelTa: 'Full Horoscope',  sublabelEn: 'Full Horoscope',  href: '/horoscope',           badge: 'TOP' },
-      { icon: FileText,   labelTa: 'ஜாதகம் PDF',      labelEn: 'Horoscope PDF',  sublabelTa: 'Sanjeevi',        sublabelEn: 'Sanjeevi',        href: '/horoscope/pdf' },
+      { icon: FileText,   labelTa: 'ஜாதகம் PDF',      labelEn: 'Horoscope PDF',  sublabelTa: 'ஒற்றை பக்கம்',        sublabelEn: 'Single Page',      href: '/horoscope/pdf' },
       { icon: Eye,        labelTa: 'ஜாதக பலன்',      labelEn: 'Predictions',    sublabelTa: 'Prediction',      sublabelEn: 'Prediction',      href: '/horoscope/palan' },
       { icon: BookOpen,   labelTa: 'புத்தக ஜாதகம்',  labelEn: 'Book Chart',     sublabelTa: 'Book PDF',        sublabelEn: 'Book PDF',        href: '/horoscope/book' },
       { icon: Moon,       labelTa: 'நட்சத்திர பலன்', labelEn: 'Star Readings',  sublabelTa: 'Star',            sublabelEn: 'Star',            href: '/horoscope/star' },
       { icon: Navigation, labelTa: 'கோச்சார பலன்',   labelEn: 'Transit Palan',  sublabelTa: 'Transit',         sublabelEn: 'Transit',         href: '/horoscope/transit' },
-      { icon: Baby,       labelTa: 'குழந்தை பெயர்',  labelEn: 'Baby Names',     sublabelTa: 'Names',           sublabelEn: 'Names',           href: '/baby-names',          badge: 'PREMIUM' },
+      { icon: Baby,       labelTa: 'குழந்தை பெயர்',  labelEn: 'Baby Names',     sublabelTa: 'Names',           sublabelEn: 'Names',           href: '/baby-names' },
       { icon: Layers,     labelTa: 'ஜாதகம் 4.0',     labelEn: 'Horoscope 4.0',  sublabelTa: 'Antharam',        sublabelEn: 'Antharam',        href: '/horoscope/antharam',  badge: 'NEW' },
     ],
   },
@@ -31,8 +31,8 @@ export const categoryData: CategorySectionProps[] = [
     titleEn: 'Panchangam & Muhurtham',
     colorHex: '#2e7d6b',
     modules: [
-      { icon: Clock,       labelTa: 'கல் முகூர்த்தம்',  labelEn: 'Muhurtham',      sublabelTa: 'Auspicious', sublabelEn: 'Auspicious', href: '/panchangam/muhurtham' },
-      { icon: CalendarDays,labelTa: 'மாத பஞ்சாங்கம்',   labelEn: 'Monthly Panch',  sublabelTa: 'Monthly',    sublabelEn: 'Monthly',    href: '/panchangam/monthly',   badge: 'PRO' },
+      { icon: Clock,       labelTa: 'சுப முகூர்த்தம்',  labelEn: 'Muhurtham',      sublabelTa: 'Auspicious', sublabelEn: 'Auspicious', href: '/panchangam/muhurtham' },
+      { icon: CalendarDays,labelTa: 'மாத பஞ்சாங்கம்',   labelEn: 'Monthly Panch',  sublabelTa: 'Monthly',    sublabelEn: 'Monthly',    href: '/panchangam/monthly' },
       { icon: Calendar,    labelTa: 'நாள் பஞ்சாங்கம்',  labelEn: 'Daily Panch',    sublabelTa: 'Daily',      sublabelEn: 'Daily',      href: '/panchangam',     badge: 'NEW' },
       { icon: Info,        labelTa: 'பஞ்சாங்கம் தகவல்', labelEn: 'Panch Info',     sublabelTa: 'Info',       sublabelEn: 'Info',       href: '/panchangam/info',      badge: 'NEW' },
     ],
@@ -44,7 +44,7 @@ export const categoryData: CategorySectionProps[] = [
     modules: [
       { icon: Heart,       labelTa: 'நட்சத்திர பொருத்தம்', labelEn: 'Star Matching',  sublabelTa: 'Star Match',   sublabelEn: 'Star Match',   href: '/matching/star' },
       { icon: GitMerge,    labelTa: 'ஜாதக பொருத்தம்',      labelEn: 'Chart Matching', sublabelTa: 'Horoscope',    sublabelEn: 'Horoscope',    href: '/matching' },
-      { icon: Search,      labelTa: 'விரிவான பொருத்தம்',   labelEn: 'Deep Match',     sublabelTa: 'Detailed',     sublabelEn: 'Detailed',     href: '/matching/detailed', badge: 'PRO' },
+      { icon: Search,      labelTa: 'விரிவான பொருத்தம்',   labelEn: 'Deep Match',     sublabelTa: 'Detailed',     sublabelEn: 'Detailed',     href: '/matching/detailed' },
     ],
   },
   {
@@ -65,7 +65,7 @@ export const categoryData: CategorySectionProps[] = [
     colorHex: '#a05c1a',
     modules: [
       { icon: HelpCircle, labelTa: 'பிரஸ்னம் ஜாதகம்', labelEn: 'Prasnam Chart',  sublabelTa: 'Chart',       sublabelEn: 'Chart',       href: '/prasnam' },
-      { icon: Zap,        labelTa: 'கடாரா பிரஸ்னம்',  labelEn: 'Katara Prasnam', sublabelTa: 'Katara',      sublabelEn: 'Katara',      href: '/prasnam/katara' },
+      { icon: Zap,        labelTa: 'கடிகார பிரஸ்னம்',  labelEn: 'Kadigara Prasnam', sublabelTa: 'Kadigara',    sublabelEn: 'Kadigara',    href: '/prasnam/katara' },
       { icon: Bird,       labelTa: 'பஞ்சபட்சி',        labelEn: 'Pancha Pakshi',  sublabelTa: 'Pancha',      sublabelEn: 'Pancha',      href: '/prasnam/panchapakshi' },
     ],
   },

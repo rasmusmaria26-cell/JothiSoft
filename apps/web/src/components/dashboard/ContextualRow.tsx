@@ -13,13 +13,6 @@ const CONTEXTUAL_ITEMS = [
     href: '/panchangam/monthly',
     colorHex: '#2e7d6b',
   },
-  {
-    icon: Star,
-    label: 'ஜாதகம்',
-    reason: 'அதிகம் பயன்படுத்தப்படுகிறது',
-    href: '/horoscope',
-    colorHex: '#7b5ea7',
-  },
 ]
 
 const cardVariants = {
@@ -53,7 +46,7 @@ export function ContextualRow() {
       </motion.div>
 
       <motion.div
-        className="grid grid-cols-1 xs:grid-cols-2 gap-[6px]"
+        className={`grid grid-cols-1 ${CONTEXTUAL_ITEMS.length > 1 ? 'xs:grid-cols-2' : ''} gap-[6px]`}
         initial="hidden"
         animate="show"
         variants={cardVariants}

@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { TodayHero }        from '@/components/dashboard/TodayHero'
 import { QuickAccessStrip } from '@/components/dashboard/QuickAccessStrip'
-import { ContextualRow }    from '@/components/dashboard/ContextualRow'
 import { CategorySection }  from '@/components/dashboard/CategorySection'
 import { categoryData }     from '@/mock/dashboard'
 import { UserInfoCard }     from '@/components/dashboard/UserInfoCard'
@@ -54,10 +53,6 @@ export default function DashboardPage() {
 
         <motion.div variants={item}>
           <QuickAccessStrip />
-        </motion.div>
-
-        <motion.div variants={item}>
-          <ContextualRow />
         </motion.div>
 
         <motion.div className="flex flex-col gap-[14px]" variants={item}>

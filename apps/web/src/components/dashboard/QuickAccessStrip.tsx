@@ -33,7 +33,6 @@ interface TodayPanchang {
 const QUICK_LINKS = [
   { labelTa: 'விரதங்கள்',       labelEn: 'Fasts',          href: '/special',            colorHex: '#4a7c59' },
   { labelTa: 'பஞ்சாங்கம்',      labelEn: 'Panchangam',     href: '/panchangam',         colorHex: '#2e7d6b' },
-  { labelTa: 'KP ஜோதிடம்',     labelEn: 'KP Astro',       href: '/horoscope/antharam', colorHex: '#7b5ea7' },
   { labelTa: 'வாஸ்து',          labelEn: 'Vastu',          href: '/vastu/days',         colorHex: '#1e6fa8' },
   { labelTa: 'பொருத்தம்',       labelEn: 'Matching',       href: '/matching/star',      colorHex: '#b0415e' },
   { labelTa: 'நட்சத்திர பலன்', labelEn: 'Star Reading',   href: '/horoscope/star',     colorHex: '#7b5ea7' },

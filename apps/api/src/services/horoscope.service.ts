@@ -34,6 +34,7 @@ export interface HoroscopeResponse {
     sign_degree: number;
     nakshatra: string;
     longitude: number;
+    navamsa_sign: string;
   };
   planets: PlanetData[];
   rasi_chart: HoroscopeChart;
@@ -319,7 +320,8 @@ export const calculateHoroscope = async (
       sign: lagnaSign,
       sign_degree: lagnaDegree,
       nakshatra: lagnaNode.nakshatra,
-      longitude: lagnaLong
+      longitude: lagnaLong,
+      navamsa_sign: ZODIAC_SIGNS[lagnaNavamsaIndex]
     },
     planets: mappedPlanets,
     rasi_chart,

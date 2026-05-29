@@ -61,7 +61,7 @@ const GRID_CELLS = [
 
 export default function PrasnamChartPage() {
   const { language } = useLanguage()
-  const [prasnamMode, setPrasnamMode] = useState<'aroodha_108' | 'clock'>('clock') // Default to Clock/Katara mode as requested
+  const [prasnamMode, setPrasnamMode] = useState<'aroodha_108' | 'clock'>('clock') // Default to Clock/Kadigara mode as requested
   const [category, setCategory] = useState('general')
   const [aroodhaNumber, setAroodhaNumber] = useState<number | null>(null)
   
@@ -102,9 +102,9 @@ export default function PrasnamChartPage() {
   const labels = {
     ta: {
       title: "பிரஸ்னம் ஜாதகம் (Horary & Clock Prasnam)",
-      subtitle: "சித்தர்கள் அருளிய ஆருட சோதிட முறை. ஆருட 108 எண் கட்டங்கள் அல்லது கடிகார பிரஸ்னம் (கடார பிரஸ்னம்) முட்களைக் கொண்டு துல்லியமாக பலன் அறியலாம்.",
+      subtitle: "சித்தர்கள் அருளிய ஆருட சோதிட முறை. ஆருட 108 எண் கட்டங்கள் அல்லது கடிகார பிரஸ்னம் முட்களைக் கொண்டு துல்லியமாக பலன் அறியலாம்.",
       tabTamboola: "108 தாம்பூல ஆருடம்",
-      tabClock: "கடார பிரஸ்னம் (கடிகாரம்)",
+      tabClock: "கடிகார பிரஸ்னம்",
       category: "கேள்வியின் வகை (Category)",
       aroodha: "ஆருட எண் தேர்வு (1 - 108)",
       aroodhaDesc: "கீழே உள்ள கட்டங்களில் ஒரு எண்ணை மட்டும் தேர்வு செய்யவும் அல்லது தானாக தேர்வு செய்ய 'ஆருட சக்கரம் சுழற்று' என்பதை அழுத்தவும்.",
@@ -129,9 +129,9 @@ export default function PrasnamChartPage() {
     },
     en: {
       title: "Prasnam Chart (Horary)",
-      subtitle: "Traditional horary astrology of Siddhas. Cast with the sacred Tamboola 108 grid or using the mystical Kadigara/Katara Clock Prasnam method.",
+      subtitle: "Traditional horary astrology of Siddhas. Cast with the sacred Tamboola 108 grid or using the mystical Kadigara Clock Prasnam method.",
       tabTamboola: "Tamboola 108 Aroodha",
-      tabClock: "Katara Clock Prasnam",
+      tabClock: "Kadigara Clock Prasnam",
       category: "Question Category",
       aroodha: "Mystical Aroodha Number (1 - 108)",
       aroodhaDesc: "Select a single square from the grid below, or click 'Spin Mystical Wheel' for a divine random selection.",
@@ -661,7 +661,7 @@ export default function PrasnamChartPage() {
                   <span className="w-1.5 h-1.5 rounded-full bg-bg-border inline-block" />
                   <span className="text-[13px] text-text-secondary font-mono">
                     {result.mode === 'clock' 
-                      ? `${language === 'ta' ? 'கடார நேரம்:' : 'Katara Time:'} ${result.clock_time}`
+                      ? `${language === 'ta' ? 'கடிகார நேரம்:' : 'Clock Time:'} ${result.clock_time}`
                       : `NO. ${result.aroodha_number}`
                     }
                   </span>

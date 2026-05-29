@@ -3,6 +3,7 @@ export interface LagnaData {
   sign_degree: number;
   nakshatra: string;
   longitude: number;
+  navamsa_sign: string;
 }
 
 export interface PlanetData {

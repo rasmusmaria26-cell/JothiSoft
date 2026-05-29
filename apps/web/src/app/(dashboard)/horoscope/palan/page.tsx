@@ -84,7 +84,11 @@ export default function PalanPage() {
 
   const handleManualSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!selectedCity || !dob || !tob) return
+    if (!selectedCity) {
+      setError(language === 'ta' ? 'பிறந்த இடத்தைத் தேடி பட்டியலிலிருந்து தேர்ந்தெடுக்கவும்.' : 'Please search and select a birth place from the suggestions.')
+      return
+    }
+    if (!dob || !tob) return
     const [year, month, day] = dob.split('-').map(Number)
     const [hour, minute] = tob.split(':').map(Number)
     fetchHoroscope(year, month, day, hour, minute, selectedCity.latitude || selectedCity.lat!, selectedCity.longitude || selectedCity.lng!)
@@ -163,9 +167,9 @@ export default function PalanPage() {
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-text-primary ml-1">{t.place}</label>
-                <PlaceSearch onSelect={setSelectedCity} />
+                <PlaceSearch onSelect={setSelectedCity} selectedCity={selectedCity} />
               </div>
-              <button type="submit" disabled={!selectedCity}
+              <button type="submit"
                 className="w-full py-3 mt-1 rounded-xl font-bold bg-gradient-to-r from-gold-bright to-gold-deep text-bg-page hover:scale-[1.01] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                 {t.generate}
               </button>
