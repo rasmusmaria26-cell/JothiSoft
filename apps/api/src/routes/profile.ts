@@ -47,13 +47,23 @@ router.get('/birth-profiles', authenticate, async (req: Request, res: Response):
  */
 router.post('/birth-profiles', authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, dob, tob, lat, lng, place_name } = req.body;
+    const { name, dob, tob, lat, lng, place_name, gender } = req.body;
+    const resolvedGender = gender || 'Male';
 
     if (!name || !dob || !tob || lat === undefined || lng === undefined || !place_name) {
       res.status(400).json({
         success: false,
         error: 'VALIDATION_ERROR',
         message: 'Missing required birth details (name, dob, tob, lat, lng, place_name)',
+      });
+      return;
+    }
+
+    if (resolvedGender !== 'Male' && resolvedGender !== 'Female') {
+      res.status(400).json({
+        success: false,
+        error: 'VALIDATION_ERROR',
+        message: 'Gender must be Male or Female',
       });
       return;
     }
@@ -68,7 +78,8 @@ router.post('/birth-profiles', authenticate, async (req: Request, res: Response)
         tob,
         lat,
         lng,
-        place_name
+        place_name,
+        gender: resolvedGender
       }, { onConflict: 'user_id' })
       .select()
       .single();
@@ -104,7 +115,8 @@ router.post('/birth-profiles', authenticate, async (req: Request, res: Response)
 router.put('/birth-profiles/:id', authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const { name, dob, tob, lat, lng, place_name } = req.body;
+    const { name, dob, tob, lat, lng, place_name, gender } = req.body;
+    const resolvedGender = gender || 'Male';
 
     if (!name || !dob || !tob || lat === undefined || lng === undefined || !place_name) {
       res.status(400).json({
@@ -115,10 +127,19 @@ router.put('/birth-profiles/:id', authenticate, async (req: Request, res: Respon
       return;
     }
 
+    if (resolvedGender !== 'Male' && resolvedGender !== 'Female') {
+      res.status(400).json({
+        success: false,
+        error: 'VALIDATION_ERROR',
+        message: 'Gender must be Male or Female',
+      });
+      return;
+    }
+
     // Update with strict user ownership validation
     const { data: profile, error } = await supabaseAdmin
       .from('birth_profiles')
-      .update({ name, dob, tob, lat, lng, place_name })
+      .update({ name, dob, tob, lat, lng, place_name, gender: resolvedGender })
       .eq('id', id)
       .eq('user_id', req.user.id)
       .select()

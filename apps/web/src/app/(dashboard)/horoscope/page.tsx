@@ -25,6 +25,7 @@ export default function HoroscopePage() {
   const [dob, setDob] = useState('')
   const [tob, setTob] = useState('')
   const [selectedCity, setSelectedCity] = useState<CityData | null>(null)
+  const [gender, setGender] = useState<'Male' | 'Female'>('Male')
   const [saveToProfile, setSaveToProfile] = useState(false)
 
   // Loading and result states
@@ -64,7 +65,10 @@ export default function HoroscopePage() {
       planetNakshatra: 'நட்சத்திரம்',
       planetPada: 'பாதம்',
       lagna: 'லக்னம்',
-      activeDasa: 'நடப்பு தசை'
+      activeDasa: 'நடப்பு தசை',
+      gender: 'பாலினம்',
+      male: 'ஆண்',
+      female: 'பெண்',
     },
     en: {
       title: 'Horoscope Generator',
@@ -93,7 +97,10 @@ export default function HoroscopePage() {
       planetNakshatra: 'Star',
       planetPada: 'Pada',
       lagna: 'Lagna',
-      activeDasa: 'Active Dasa'
+      activeDasa: 'Active Dasa',
+      gender: 'Gender',
+      male: 'Male',
+      female: 'Female',
     }
   }[language]
 
@@ -134,6 +141,7 @@ export default function HoroscopePage() {
           setDob(data.dob)
           // Convert "HH:MM:SS" -> "HH:MM" for input type time
           setTob(data.tob.slice(0, 5))
+          setGender((data.gender as 'Male' | 'Female') || 'Male')
           setSelectedCity({
             id: 0,
             name: data.place_name.split(',')[0],
@@ -220,6 +228,7 @@ export default function HoroscopePage() {
           lat,
           lng,
           place_name: `${selectedCity.name}, ${selectedCity.state || selectedCity.country}`,
+          gender
         })
       }
 
@@ -288,6 +297,29 @@ export default function HoroscopePage() {
                       className="w-full bg-bg-elevated/45 border border-bg-border rounded-md pl-10 pr-4 py-2 text-sm text-text-primary focus:outline-none focus:border-gold-mid transition-colors"
                       style={{ background: 'var(--bg-elevated)' }}
                     />
+                  </div>
+                </div>
+
+                {/* Gender */}
+                <div>
+                  <label className="block text-xs font-semibold mb-1 text-text-secondary uppercase tracking-wider">
+                    {labels.gender}
+                  </label>
+                  <div className="flex gap-1.5 p-1 bg-transparent rounded-md border border-bg-border" style={{ background: 'var(--bg-elevated)' }}>
+                    <button
+                      type="button"
+                      onClick={() => setGender('Male')}
+                      className={`flex-1 py-1.5 text-xs font-bold rounded-sm transition-all cursor-pointer ${gender === 'Male' ? 'bg-[var(--gold-deep)] text-[#1a1209]' : 'text-text-muted hover:text-text-primary'}`}
+                    >
+                      {labels.male}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setGender('Female')}
+                      className={`flex-1 py-1.5 text-xs font-bold rounded-sm transition-all cursor-pointer ${gender === 'Female' ? 'bg-[var(--gold-deep)] text-[#1a1209]' : 'text-text-muted hover:text-text-primary'}`}
+                    >
+                      {labels.female}
+                    </button>
                   </div>
                 </div>
 
@@ -491,7 +523,7 @@ export default function HoroscopePage() {
                         chart={horoscope.navamsam_chart}
                         planets={horoscope.planets}
                         title={language === 'ta' ? 'நவாம்ச கட்டம் (D9)' : 'Navamsam Chart (D9)'}
-                        lagnaSign={horoscope.planets.find(p => p.planet === 'Lagna')?.sign || horoscope.lagna.sign}
+                        lagnaSign={horoscope.lagna.navamsa_sign}
                       />
                     </div>
                   )}

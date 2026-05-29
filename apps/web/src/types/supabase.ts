@@ -19,6 +19,7 @@ export interface Database {
           place_name: string
           lat: string
           lng: string
+          gender: string
           created_at: string
           updated_at: string
         }
@@ -31,6 +32,7 @@ export interface Database {
           place_name: string
           lat: string
           lng: string
+          gender?: string
           created_at?: string
           updated_at?: string
         }
@@ -43,6 +45,7 @@ export interface Database {
           place_name?: string
           lat?: string
           lng?: string
+          gender?: string
           created_at?: string
           updated_at?: string
         }

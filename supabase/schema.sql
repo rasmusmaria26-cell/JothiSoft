@@ -72,6 +72,7 @@ CREATE TABLE public.birth_profiles (
   lat         NUMERIC(9,6) NOT NULL,
   lng         NUMERIC(9,6) NOT NULL,
   place_name  TEXT        NOT NULL,
+  gender      TEXT        NOT NULL DEFAULT 'Male' CHECK (gender IN ('Male', 'Female')),
   created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   UNIQUE(user_id)                                         -- one profile per user
 );

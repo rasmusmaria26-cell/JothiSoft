@@ -94,7 +94,7 @@ export default function KataraPrasnamPage() {
 
   const labels = {
     ta: {
-      title: "கடார பிரஸ்னம் (Kadigara / Katara Prasnam)",
+      title: "கடிகார பிரஸ்னம் (Kadigara Clock Prasnam)",
       subtitle: "கடிகார முட்களைக் கொண்டு துல்லியமாக கணிக்கப்படும் ஆருட முறை. மணி முள் ஆருட லக்னத்தையும் (ஆ), நிமிட முள் உதய லக்னத்தையும் (உ) குறிக்கும்.",
       category: "கேள்வியின் வகை (Category)",
       clockTitle: "கடிகார முட்களை அமைக்கவும்",
@@ -102,7 +102,7 @@ export default function KataraPrasnamPage() {
       place: "கேள்வி கேட்கும் இடம்",
       date: "தேதி",
       time: "நேரம்",
-      btnCalculate: "கடார பிரஸ்னம் கணி",
+      btnCalculate: "கடிகார பிரஸ்னம் கணி",
       btnReset: "புதிய பிரஸ்னம்",
       calculating: "ஜாதகம் கணிக்கப்படுகிறது...",
       errorForm: "தயவுசெய்து கேள்வியின் வகை, நேரம் மற்றும் ஊரை தேர்வு செய்யவும்.",
@@ -116,7 +116,7 @@ export default function KataraPrasnamPage() {
       detailsLabel: "பிரஸ்ன விபரங்கள்",
     },
     en: {
-      title: "Katara Clock Prasnam (Horary Oracle)",
+      title: "Kadigara Clock Prasnam (Horary Oracle)",
       subtitle: "A traditional clock-based Vedic horary oracle. The Hour hand represents the Aroodha Lagna ( ஆ ) and the Minute hand represents the Udhaya Lagna ( உ ).",
       category: "Question Category",
       clockTitle: "Adjust Clock Hands",
@@ -124,7 +124,7 @@ export default function KataraPrasnamPage() {
       place: "Query Place/Location",
       date: "Date",
       time: "Time",
-      btnCalculate: "Cast Katara Prasnam",
+      btnCalculate: "Cast Kadigara Clock Prasnam",
       btnReset: "New Horary Query",
       calculating: "Casting Chart...",
       errorForm: "Please select a category, place and set query coordinates.",
@@ -228,7 +228,7 @@ export default function KataraPrasnamPage() {
   ]
 
   return (
-    <ErrorBoundary label="Katara Prasnam failed to load.">
+    <ErrorBoundary label="Kadigara Clock Prasnam failed to load.">
       <div className="max-w-[1100px] mx-auto flex flex-col gap-6">
         
         {/* Top bar */}
@@ -240,7 +240,7 @@ export default function KataraPrasnamPage() {
             <ArrowLeft size={16} />
             {language === 'ta' ? 'முகப்புப்பக்கம்' : 'Back to Dashboard'}
           </Link>
-          <span className="text-[11px] font-mono text-text-muted">KATARA PRO</span>
+          <span className="text-[11px] font-mono text-text-muted">KADIGARA CLOCK</span>
         </div>
 
         {/* Intro Header */}
@@ -489,7 +489,7 @@ export default function KataraPrasnamPage() {
                   <span className="text-[13px] text-text-secondary font-mono">{city?.name}</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-bg-border inline-block" />
                   <span className="text-[13px] text-text-secondary font-mono">
-                    {language === 'ta' ? 'கடார நேரம்:' : 'Katara Time:'} {result.clock_time}
+                    {language === 'ta' ? 'கடிகார நேரம்:' : 'Clock Time:'} {result.clock_time}
                   </span>
                   <span className="w-1.5 h-1.5 rounded-full bg-bg-border inline-block" />
                   <span className="text-[13px] font-bold text-gold-bright uppercase tracking-wider">
@@ -512,7 +512,7 @@ export default function KataraPrasnamPage() {
                   
                   <h3 className="text-sm font-semibold text-gold-bright mb-4 tracking-wider uppercase flex items-center gap-1.5">
                     <Sparkles size={16} />
-                    {language === 'ta' ? 'கடார பிரஸ்னம் சக்கரம்' : 'Katara Rasi Chart'}
+                    {language === 'ta' ? 'கடிகார பிரஸ்னம் சக்கரம்' : 'Kadigara Rasi Chart'}
                   </h3>
 
                   <div className="grid grid-cols-4 grid-rows-4 w-full aspect-square border border-bg-border rounded-lg relative bg-[#080818]/65">

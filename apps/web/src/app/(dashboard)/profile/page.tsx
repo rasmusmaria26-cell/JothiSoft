@@ -16,6 +16,7 @@ interface BirthProfile {
   lat: number
   lng: number
   place_name: string
+  gender: string
 }
 
 export default function ProfilePage() {
@@ -32,6 +33,7 @@ export default function ProfilePage() {
   const [dob, setDob] = useState('')
   const [tob, setTob] = useState('')
   const [selectedCity, setSelectedCity] = useState<CityData | null>(null)
+  const [gender, setGender] = useState<'Male' | 'Female'>('Male')
 
   const labels = {
     ta: {
@@ -51,6 +53,9 @@ export default function ProfilePage() {
       errorFetch: 'விவரங்களை ஏற்றுவதில் பிழை ஏற்பட்டது.',
       errorSave: 'விவரங்களைச் சேமிப்பதில் பிழை ஏற்பட்டது. தயவுசெய்து மீண்டும் முயற்சிக்கவும்.',
       errorDelete: 'விவரங்களை நீக்குவதில் பிழை ஏற்பட்டது.',
+      gender: 'பாலினம்',
+      male: 'ஆண்',
+      female: 'பெண்',
     },
     en: {
       title: 'Birth Profile Manager',
@@ -69,6 +74,9 @@ export default function ProfilePage() {
       errorFetch: 'Failed to retrieve birth profile.',
       errorSave: 'Failed to save birth profile. Please try again.',
       errorDelete: 'Failed to delete birth profile.',
+      gender: 'Gender',
+      male: 'Male',
+      female: 'Female',
     }
   }[language]
 
@@ -84,6 +92,7 @@ export default function ProfilePage() {
         setName(p.name)
         setDob(p.dob)
         setTob(p.tob.slice(0, 5)) // Format HH:MM
+        setGender((p.gender as 'Male' | 'Female') || 'Male')
         setSelectedCity({
           id: 0,
           name: p.place_name.split(',')[0],
@@ -130,6 +139,7 @@ export default function ProfilePage() {
         lat: selectedCity.latitude,
         lng: selectedCity.longitude,
         place_name: `${selectedCity.name}, ${selectedCity.state || selectedCity.country}`,
+        gender
       }
 
       const res = await api.post('/profile/birth-profiles', payload)
@@ -228,6 +238,15 @@ export default function ProfilePage() {
             </div>
 
             <div className="space-y-1">
+              <span className="text-xs text-text-muted font-semibold block uppercase tracking-wider">{labels.gender}</span>
+              <p className="text-lg font-bold flex items-center gap-1.5" style={{ color: 'var(--text-primary)' }}>
+                <span className={`px-3 py-0.5 rounded-full text-xs font-semibold ${profile.gender === 'Female' ? 'bg-pink-950/40 text-pink-400 border border-pink-900/40' : 'bg-blue-950/40 text-blue-400 border border-blue-900/40'}`}>
+                  {profile.gender === 'Female' ? labels.female : labels.male}
+                </span>
+              </p>
+            </div>
+
+            <div className="space-y-1">
               <span className="text-xs text-text-muted font-semibold block uppercase tracking-wider">{labels.place}</span>
               <p className="text-lg font-bold flex items-center gap-1.5" style={{ color: 'var(--text-primary)' }}>
                 <MapPin size={16} style={{ color: 'var(--gold-mid)' }} />
@@ -304,6 +323,29 @@ export default function ProfilePage() {
                   color: 'var(--text-primary)',
                 }}
               />
+            </div>
+
+            {/* Gender */}
+            <div className="space-y-2">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                {labels.gender}
+              </label>
+              <div className="flex gap-1.5 p-1 bg-transparent rounded-[var(--radius-md)] border" style={{ borderColor: 'var(--bg-border)', background: 'var(--bg-elevated)' }}>
+                <button
+                  type="button"
+                  onClick={() => setGender('Male')}
+                  className={`flex-1 py-1.5 text-xs font-bold rounded-[var(--radius-sm)] transition-all cursor-pointer ${gender === 'Male' ? 'bg-[var(--gold-deep)] text-[#1a1209]' : 'text-text-muted hover:text-text-primary'}`}
+                >
+                  {labels.male}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setGender('Female')}
+                  className={`flex-1 py-1.5 text-xs font-bold rounded-[var(--radius-sm)] transition-all cursor-pointer ${gender === 'Female' ? 'bg-[var(--gold-deep)] text-[#1a1209]' : 'text-text-muted hover:text-text-primary'}`}
+                >
+                  {labels.female}
+                </button>
+              </div>
             </div>
 
             {/* Birth Place */}
