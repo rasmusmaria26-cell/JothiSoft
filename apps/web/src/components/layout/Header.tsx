@@ -6,12 +6,20 @@ import { useAuthStore } from '@/store/authStore'
 import { supabase } from '@/lib/supabase'
 import LanguageToggle from '@/components/LanguageToggle'
 import ThemeToggle from '@/components/ThemeToggle'
+import { useAuth } from '@/hooks/useAuth'
+
 
 export function Header() {
   const { user, clearAuth } = useAuthStore()
+  const { user: authUser } = useAuth()
+  const role = authUser?.user_metadata?.role
+  const isAdmin = authUser?.user_metadata?.is_admin === true || role === 'admin'
+  const isRetailer = role === 'retailer'
+
   const displayInitial = user?.name 
     ? user.name.trim().charAt(0).toUpperCase() 
     : (user?.email ? 'U' : 'M')
+
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -44,10 +52,33 @@ export function Header() {
       </motion.div>
 
       <div className="flex items-center gap-3">
+        {isAdmin && (
+          <motion.button
+            onClick={() => window.location.href = '/admin'}
+            className="px-2.5 py-1 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/25 hover:bg-amber-500/20 transition-all shrink-0 flex items-center gap-1"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            ⚙️ <span className="hidden xs:inline">Admin Panel</span>
+          </motion.button>
+        )}
+
+        {isRetailer && (
+          <motion.button
+            onClick={() => window.location.href = '/retailer'}
+            className="px-2.5 py-1 rounded text-[10px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/25 hover:bg-indigo-500/20 transition-all shrink-0 flex items-center gap-1"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            💼 <span className="hidden xs:inline">Partner Hub</span>
+          </motion.button>
+        )}
+
         <div className="flex items-center gap-2 mr-1">
           <LanguageToggle />
           <ThemeToggle />
         </div>
+
 
         <motion.button
           className="w-8 h-8 rounded-full flex items-center justify-center text-text-muted hover:text-text-secondary"

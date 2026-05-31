@@ -93,67 +93,78 @@ router.get('/users', authenticate, requireRole('admin'), async (req, res, next) 
       .select('*');
 
     const links = retailerLinks || [];
-    let filtered = users;
 
-    // 3. Apply Search
-    const searchVal = search as string;
-    if (searchVal) {
-      const term = searchVal.toLowerCase();
-      filtered = filtered.filter(u => 
-        (u.email && u.email.toLowerCase().includes(term)) ||
-        (u.phone && u.phone.includes(term)) ||
-        (u.user_metadata?.name && u.user_metadata.name.toLowerCase().includes(term))
-      );
-    }
+    // 3. Fetch all subscriptions from DB
+    const { data: dbSubscriptions } = await supabaseAdmin
+      .from('subscriptions')
+      .select('*');
+    const dbSubs = dbSubscriptions || [];
 
-    // 4. Apply Filter (ALL, PRO, TRIAL, EXPIRED, ADMIN, RETAILER_UPGRADED, DIRECT_SIGNUP, or specific role)
-    const filterVal = (filter || role) as string;
-    if (filterVal && filterVal !== 'ALL') {
-      if (filterVal === 'PRO') {
-        filtered = filtered.filter(u => u.user_metadata?.plan === 'PRO');
-      } else if (filterVal === 'TRIAL') {
-        filtered = filtered.filter(u => u.user_metadata?.plan === 'FREE' || u.user_metadata?.plan === 'TRIAL');
-      } else if (filterVal === 'EXPIRED') {
-        filtered = filtered.filter(u => !u.user_metadata?.plan || u.user_metadata?.plan === 'EXPIRED');
-      } else if (filterVal === 'ADMIN') {
-        filtered = filtered.filter(u => u.user_metadata?.role === 'admin' || u.user_metadata?.is_admin === true);
-      } else if (filterVal === 'RETAILER_UPGRADED') {
-        filtered = filtered.filter(u => links.some(l => l.customer_id === u.id));
-      } else if (filterVal === 'DIRECT_SIGNUP') {
-        filtered = filtered.filter(u => 
-          u.user_metadata?.role === 'customer' && !links.some(l => l.customer_id === u.id)
-        );
-      } else {
-        filtered = filtered.filter(u => u.user_metadata?.role === filterVal);
-      }
-    }
-
-    // 5. Paginate the filtered results
-    const total = filtered.length;
-    const totalPages = Math.ceil(total / limitNum);
-    const offset = (pageNum - 1) * limitNum;
-    const paginatedUsers = filtered.slice(offset, offset + limitNum);
-
-    // Map to required AdminUserDetail properties with calculatedStatus & upgradedBy retailer tags
-    const mappedUsers = paginatedUsers.map(u => {
+    // 4. Map all users first to ensure fully reconciled statuses from DB source of truth
+    const mappedAllUsers = users.map(u => {
       const adminEmailsEnv = process.env.ADMIN_EMAILS || '';
       const adminEmails = adminEmailsEnv
         .split(',')
         .map((e) => e.trim().toLowerCase())
         .filter(Boolean);
 
-      const isUserAdmin = (u.email && adminEmails.includes(u.email.toLowerCase())) || u.user_metadata?.is_admin === true;
+      const isUserAdmin = (u.email && adminEmails.includes(u.email.toLowerCase())) || u.user_metadata?.is_admin === true || u.user_metadata?.role === 'admin';
+      const userRole = u.user_metadata?.role || (isUserAdmin ? 'admin' : 'customer');
+
+      // Reconcile subscription plan from the database
+      const dbSub = dbSubs.find(s => s.user_id === u.id);
+      const link = links.find(l => l.customer_id === u.id);
+
       let calculatedStatus: 'TRIAL' | 'PRO' | 'EXPIRED' | 'ADMIN' = 'EXPIRED';
+      let plan = 'FREE';
+      let planExpiresAt = null;
+
       if (isUserAdmin) {
         calculatedStatus = 'ADMIN';
-      } else if (u.user_metadata?.plan === 'PRO') {
-        calculatedStatus = 'PRO';
-      } else if (u.user_metadata?.plan === 'FREE' || u.user_metadata?.plan === 'TRIAL') {
-        calculatedStatus = 'TRIAL';
+        plan = 'PRO';
+      } else if (dbSub) {
+        plan = dbSub.plan || 'FREE';
+        if (dbSub.plan === 'PRO') {
+          const expires = dbSub.expires_at ? new Date(dbSub.expires_at) : null;
+          planExpiresAt = dbSub.expires_at;
+          if (!expires || expires > new Date()) {
+            calculatedStatus = 'PRO';
+          } else {
+            calculatedStatus = 'EXPIRED';
+          }
+        } else {
+          // FREE/TRIAL check
+          const trialExpires = dbSub.trial_expires_at 
+            ? new Date(dbSub.trial_expires_at)
+            : new Date(new Date(dbSub.created_at || u.created_at).getTime() + 24 * 60 * 60 * 1000);
+          if (trialExpires > new Date()) {
+            calculatedStatus = 'TRIAL';
+          } else {
+            calculatedStatus = 'EXPIRED';
+          }
+        }
+      } else if (link) {
+        // Retailer bridge link fallback
+        plan = 'PRO';
+        planExpiresAt = link.expires_at;
+        const expires = link.expires_at ? new Date(link.expires_at) : null;
+        if (!expires || expires > new Date()) {
+          calculatedStatus = 'PRO';
+        } else {
+          calculatedStatus = 'EXPIRED';
+        }
+      } else {
+        // Absolute fallback: 24h trial from user registration
+        const createdAt = u.created_at ? new Date(u.created_at) : new Date();
+        const trialExpires = new Date(createdAt.getTime() + 24 * 60 * 60 * 1000);
+        if (trialExpires > new Date()) {
+          calculatedStatus = 'TRIAL';
+        } else {
+          calculatedStatus = 'EXPIRED';
+        }
       }
 
       // Check if user has been upgraded by a retailer
-      const link = links.find(l => l.customer_id === u.id);
       let upgradedBy = null;
       if (link) {
         const retailerUser = users.find(r => r.id === link.retailer_id);
@@ -171,14 +182,55 @@ router.get('/users', authenticate, requireRole('admin'), async (req, res, next) 
         phone:           u.phone || '',
         email:           u.email || '',
         name:            u.user_metadata?.name || 'Anonymous User',
-        role:            u.user_metadata?.role ?? 'customer',
-        plan:            u.user_metadata?.plan ?? 'FREE',
-        plan_expires_at: u.user_metadata?.plan_expires_at,
+        role:            userRole,
+        plan,
+        plan_expires_at: planExpiresAt,
         created_at:      u.created_at,
         calculatedStatus,
         upgradedBy,
       };
     });
+
+    let filtered = mappedAllUsers;
+
+    // 5. Apply Search
+    const searchVal = search as string;
+    if (searchVal) {
+      const term = searchVal.toLowerCase();
+      filtered = filtered.filter(u => 
+        (u.email && u.email.toLowerCase().includes(term)) ||
+        (u.phone && u.phone.includes(term)) ||
+        (u.name && u.name.toLowerCase().includes(term))
+      );
+    }
+
+    // 6. Apply Filter (ALL, PRO, TRIAL, EXPIRED, ADMIN, RETAILER, RETAILER_UPGRADED, DIRECT_SIGNUP or specific role)
+    const filterVal = (filter || role) as string;
+    if (filterVal && filterVal !== 'ALL') {
+      if (filterVal === 'PRO') {
+        filtered = filtered.filter(u => u.calculatedStatus === 'PRO');
+      } else if (filterVal === 'TRIAL') {
+        filtered = filtered.filter(u => u.calculatedStatus === 'TRIAL');
+      } else if (filterVal === 'EXPIRED') {
+        filtered = filtered.filter(u => u.calculatedStatus === 'EXPIRED');
+      } else if (filterVal === 'ADMIN') {
+        filtered = filtered.filter(u => u.calculatedStatus === 'ADMIN' || u.role === 'admin');
+      } else if (filterVal === 'RETAILER') {
+        filtered = filtered.filter(u => u.role === 'retailer');
+      } else if (filterVal === 'RETAILER_UPGRADED') {
+        filtered = filtered.filter(u => u.upgradedBy !== null);
+      } else if (filterVal === 'DIRECT_SIGNUP') {
+        filtered = filtered.filter(u => u.role === 'customer' && u.upgradedBy === null);
+      } else {
+        filtered = filtered.filter(u => u.role === filterVal);
+      }
+    }
+
+    // 7. Paginate the filtered results
+    const total = filtered.length;
+    const totalPages = Math.ceil(total / limitNum);
+    const offset = (pageNum - 1) * limitNum;
+    const paginatedUsers = filtered.slice(offset, offset + limitNum);
 
     return res.json({
       success: true,
@@ -187,7 +239,7 @@ router.get('/users', authenticate, requireRole('admin'), async (req, res, next) 
         page: pageNum,
         limit: limitNum,
         totalPages,
-        users: mappedUsers,
+        users: paginatedUsers,
       }
     });
   } catch (err) { next(err); }
@@ -218,8 +270,44 @@ router.get('/users/:userId', async (req: Request, res: Response): Promise<void> 
       return;
     }
 
-    // 2. Fetch manual activation audit logs (mocked as empty since subscription_history does not exist)
-    const history: any[] = [];
+    // 2. Fetch manual activation audit logs from subscription_history
+    const { data: dbHistory, error: historyErr } = await supabaseAdmin
+      .from('subscription_history')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (historyErr) {
+      console.error('[Admin Single User History Fetch Error]:', historyErr);
+    }
+    const history = dbHistory || [];
+
+    // 3. Fetch retailer link if exists to show who upgraded this customer
+    let upgradedBy = null;
+    let link = null;
+    try {
+      const { data: dbLink } = await supabaseAdmin
+        .from('retailer_customers')
+        .select('*')
+        .eq('customer_id', userId)
+        .maybeSingle();
+
+      if (dbLink) {
+        link = dbLink;
+        const { data: { user: retailerUser } } = await supabaseAdmin.auth.admin.getUserById(dbLink.retailer_id);
+        if (retailerUser) {
+          upgradedBy = {
+            retailerId: dbLink.retailer_id,
+            name: retailerUser.user_metadata?.name || 'Unknown Retailer',
+            email: retailerUser.email || '',
+            phone: retailerUser.phone || '',
+            activated_at: dbLink.activated_at || dbLink.created_at,
+          };
+        }
+      }
+    } catch (err) {
+      console.error('[Admin Single User upgradedBy Fetch Error]:', err);
+    }
 
     const adminEmailsEnv = process.env.ADMIN_EMAILS || '';
     const adminEmails = adminEmailsEnv
@@ -227,21 +315,48 @@ router.get('/users/:userId', async (req: Request, res: Response): Promise<void> 
       .map((e) => e.trim().toLowerCase())
       .filter(Boolean);
 
-    // Determine status
+    // Determine status aligned with users list logic
     const sub = user.subscriptions?.[0] || user.subscriptions || null;
-    let status = 'EXPIRED';
-    const isUserAdmin = (user.email && adminEmails.includes(user.email.toLowerCase())) || user.user_metadata?.is_admin === true;
+    let status: 'TRIAL' | 'PRO' | 'EXPIRED' | 'ADMIN' = 'EXPIRED';
+    const isUserAdmin = (user.email && adminEmails.includes(user.email.toLowerCase())) || user.user_metadata?.is_admin === true || user.user_metadata?.role === 'admin';
 
     if (isUserAdmin) {
       status = 'ADMIN';
     } else if (sub) {
-      if (sub.plan === 'PRO' && sub.expires_at && new Date(sub.expires_at) > new Date()) {
-        status = 'PRO';
-      } else if (sub.plan === 'FREE' && sub.created_at) {
-        const trialExpires = new Date(new Date(sub.created_at).getTime() + 24 * 60 * 60 * 1000);
+      if (sub.plan === 'PRO') {
+        const expires = sub.expires_at ? new Date(sub.expires_at) : null;
+        if (!expires || expires > new Date()) {
+          status = 'PRO';
+        } else {
+          status = 'EXPIRED';
+        }
+      } else {
+        // FREE/TRIAL check
+        const trialExpires = sub.trial_expires_at 
+          ? new Date(sub.trial_expires_at)
+          : new Date(new Date(sub.created_at || user.created_at).getTime() + 24 * 60 * 60 * 1000);
         if (trialExpires > new Date()) {
           status = 'TRIAL';
+        } else {
+          status = 'EXPIRED';
         }
+      }
+    } else if (link) {
+      // Retailer bridge link fallback
+      const expires = link.expires_at ? new Date(link.expires_at) : null;
+      if (!expires || expires > new Date()) {
+        status = 'PRO';
+      } else {
+        status = 'EXPIRED';
+      }
+    } else {
+      // Absolute fallback: 24h trial from user registration
+      const createdAt = user.created_at ? new Date(user.created_at) : new Date();
+      const trialExpires = new Date(createdAt.getTime() + 24 * 60 * 60 * 1000);
+      if (trialExpires > new Date()) {
+        status = 'TRIAL';
+      } else {
+        status = 'EXPIRED';
       }
     }
 
@@ -258,6 +373,7 @@ router.get('/users/:userId', async (req: Request, res: Response): Promise<void> 
         subscription: subWithNote,
         calculatedStatus: status,
         history: history || [],
+        upgradedBy,
       },
     });
   } catch (error: any) {
@@ -346,6 +462,22 @@ router.post('/users/:userId/activate', async (req: Request, res: Response): Prom
 
     if (authMetaErr) {
       console.error('[Auth Metadata Update Failed]:', authMetaErr);
+    }
+
+    // 5. Log manual activation into subscription_history for auditing
+    const { error: historyLogErr } = await supabaseAdmin
+      .from('subscription_history')
+      .insert({
+        user_id: userId,
+        activated_by: adminEmail,
+        plan: 'PRO',
+        starts_at: now.toISOString(),
+        expires_at: newExpiresStr || '2099-12-31T23:59:59.000Z',
+        payment_note: payment_note || 'Manual activation by Admin',
+      });
+
+    if (historyLogErr) {
+      console.error('[Admin Subscription History Log Failed]:', historyLogErr);
     }
 
     res.json({
@@ -586,14 +718,15 @@ router.get('/retailers/:id/customers', async (req: Request, res: Response): Prom
   }
 });
 
-// PUT /api/admin/users/:id/role — change any user's role
+// PUT /api/admin/users/:id/role — change any user's role (retailer ↔ customer only)
 router.put('/users/:id/role', async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     const { role } = req.body;
 
-    if (!['admin', 'retailer', 'customer'].includes(role)) {
-      res.status(400).json({ success: false, message: 'Invalid role specified.' });
+    // Block admin role assignment via this endpoint — use /toggle-admin instead
+    if (!['retailer', 'customer'].includes(role)) {
+      res.status(400).json({ success: false, message: 'Invalid role. Only "retailer" and "customer" are assignable via this endpoint.' });
       return;
     }
 
@@ -605,6 +738,22 @@ router.put('/users/:id/role', async (req: Request, res: Response): Promise<void>
       res.status(400).json({ success: false, error: 'UPDATE_FAILED', message: error.message });
       return;
     }
+
+    // Audit log: role change is a sensitive privileged action
+    const adminEmail = req.user?.email || req.user?.id || 'unknown';
+    await supabaseAdmin
+      .from('subscription_history')
+      .insert({
+        user_id: id,
+        activated_by: adminEmail,
+        plan: 'ROLE_CHANGE',
+        payment_note: `Role changed to "${role}" by admin (${adminEmail})`,
+        starts_at: new Date().toISOString(),
+        expires_at: null,
+      })
+      .then(({ error: logErr }) => {
+        if (logErr) console.error('[Role Change Audit Log Failed]:', logErr);
+      });
 
     res.json({
       success: true,

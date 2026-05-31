@@ -3,10 +3,16 @@ import cors from 'cors';
 import { errorHandler } from './middleware/errorHandler';
 import { apiLimiter } from './middleware/rateLimit';
 import * as dotenv from 'dotenv';
-dotenv.config({ path: '../../.env' }); // Load from root
+import * as path from 'path';
+dotenv.config({ path: path.resolve(__dirname, '../../.env') }); // Load from local apps/api/.env
+dotenv.config({ path: path.resolve(__dirname, '../../../../.env') }); // Fallback to monorepo root .env
 
 const app = express();
 const port = process.env.PORT || 4000;
+
+// Enable 'trust proxy' so express-rate-limit correctly identifies actual client IP behind reverse proxies (Cloudflare, Railway, etc.)
+app.set('trust proxy', 1);
+
 
 const allowedOrigins = [
   'https://jothisoft.com',

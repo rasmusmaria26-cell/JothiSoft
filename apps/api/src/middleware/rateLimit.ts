@@ -29,7 +29,7 @@ export const calcLimiter = rateLimit({
 // Stricter rate limiter for authentication endpoints (login and register)
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 120, // Limit each IP to 120 authentication requests per windowMs (increased for smoother multi-user testing)
+  max: 15, // Limit each IP to 15 authentication requests per windowMs — prevents credential stuffing
   standardHeaders: true,
   legacyHeaders: false,
   message: {
