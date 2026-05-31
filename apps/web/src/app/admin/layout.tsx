@@ -121,7 +121,7 @@ export default function AdminLayout({
 
           <div className="flex flex-col gap-2">
             <Link
-              href="/panchangam"
+              href="/"
               className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-bold border border-[var(--bg-border)] hover:bg-[var(--bg-active)] transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             >
               🔮 Go to Main App
