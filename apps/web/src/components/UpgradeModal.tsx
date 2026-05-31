@@ -28,7 +28,7 @@ Phone: ${phone}
 Email: ${email}`;
 
   const encodedMessage = encodeURIComponent(messageText);
-  const whatsappUrl = `https://wa.me/919943485055?text=${encodedMessage}`; // Client's WhatsApp support link
+  const whatsappUrl = `https://wa.me/919659657770?text=${encodedMessage}`; // Client's WhatsApp support link
 
   return (
     <section
@@ -155,8 +155,8 @@ Email: ${email}`;
           </h5>
           <ol className="list-decimal list-inside space-y-2 text-xs text-white/80 pl-1">
             <li>
-              <span className="font-medium text-white">GPay / PhonePe / Paytm</span> மூலம் <span className="font-bold text-[var(--gold-bright)]">9943485055</span> எண்ணிற்கு <span className="font-bold text-[var(--gold-bright)]">{selectedPlan === 'LIFETIME' ? '₹2,999' : '₹299'}</span> செலுத்தவும்.
-              <p className="text-white/40 ml-4 mt-0.5">Pay {selectedPlan === 'LIFETIME' ? '₹2,999' : '₹299'} to 9943485055 via GPay / PhonePe / Paytm.</p>
+              <span className="font-medium text-white">GPay / PhonePe / Paytm</span> மூலம் <span className="font-bold text-[var(--gold-bright)]">9659657770</span> எண்ணிற்கு <span className="font-bold text-[var(--gold-bright)]">{selectedPlan === 'LIFETIME' ? '₹2,999' : '₹299'}</span> செலுத்தவும்.
+              <p className="text-white/40 ml-4 mt-0.5">Pay {selectedPlan === 'LIFETIME' ? '₹2,999' : '₹299'} to 9659657770 via GPay / PhonePe / Paytm.</p>
             </li>
             <li>
               பணம் செலுத்திய ರசீதை <span className="font-medium text-white">WhatsApp</span> மூலம் அனுப்பி உங்கள் கணக்கை செயல்படுத்தக் கூறவும்.
@@ -178,7 +178,7 @@ Email: ${email}`;
           </a>
 
           <a
-            href="tel:+919943485055"
+            href="tel:+919659657770"
             className="flex items-center justify-center gap-2 w-full py-3 rounded-[var(--radius-md)] font-bold text-base transition-all duration-150 hover:bg-white/10 active:scale-[0.98] border cursor-pointer"
             style={{ borderColor: 'var(--bg-border)', background: 'var(--bg-elevated)', color: 'var(--text-primary)' }}
           >
