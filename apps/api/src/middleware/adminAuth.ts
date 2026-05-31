@@ -34,7 +34,7 @@ export const requireAdmin = async (
     }
 
     // 2. Check dynamic admin status in Supabase Auth user metadata
-    if (req.user.user_metadata?.is_admin === true) {
+    if (req.user.user_metadata?.is_admin === true || req.user.user_metadata?.role === 'admin') {
       return next();
     }
 
