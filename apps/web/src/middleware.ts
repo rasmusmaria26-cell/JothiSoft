@@ -110,7 +110,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 3b. Retailer space security: Only retailers can access /retailer
+  // 3b. Retailer space security: Only retailers and administrators can access /retailer
   if (pathname.startsWith('/retailer')) {
     if (!user) {
       return redirect('/login')
@@ -118,7 +118,15 @@ export async function middleware(request: NextRequest) {
     const meta = user.user_metadata ?? {}
     const isRetailer = meta.role === 'retailer'
 
-    if (!isRetailer) {
+    const adminEmailsEnv = process.env.ADMIN_EMAILS || ''
+    const adminEmails = adminEmailsEnv
+      .split(',')
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean)
+    const isBootstrapAdmin = user.email && adminEmails.includes(user.email.toLowerCase())
+    const isAdmin = meta.role === 'admin' || meta.is_admin === true || isBootstrapAdmin
+
+    if (!isRetailer && !isAdmin) {
       return redirect('/')
     }
   }

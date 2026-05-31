@@ -72,6 +72,7 @@ export default function AdminUsersListPage() {
             <option value="TRIAL">Active Trials</option>
             <option value="EXPIRED">Expired Trials</option>
             <option value="ADMIN">Administrators</option>
+            <option value="RETAILER">Retailers (Partners)</option>
             <option value="RETAILER_UPGRADED">Upgraded by Retailer</option>
             <option value="DIRECT_SIGNUP">Direct Signups</option>
           </select>
@@ -124,6 +125,13 @@ export default function AdminUsersListPage() {
                         <div className="flex flex-col gap-0.5">
                           <Link href={`/admin/users/${user.id}`} className="hover:underline font-bold text-[var(--text-primary)] flex items-center gap-2">
                             <span>{user.name || 'Anonymous User'}</span>
+                            {user.role === 'retailer' && (
+                              <span 
+                                className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
+                              >
+                                💼 Retailer Partner
+                              </span>
+                            )}
                             {user.upgradedBy && (
                               <span 
                                 title={`Upgraded by retailer: ${user.upgradedBy.name} (${user.upgradedBy.email || user.upgradedBy.phone})`}
@@ -171,7 +179,16 @@ export default function AdminUsersListPage() {
                 <div key={user.id} className="p-4 space-y-3 hover:bg-[var(--bg-active)] transition-colors">
                   <div className="flex items-start justify-between gap-3">
                     <Link href={`/admin/users/${user.id}`} className="hover:underline font-bold text-[var(--text-primary)] flex flex-col gap-0.5">
-                      <span className="text-sm">{user.name || 'Anonymous User'}</span>
+                      <span className="text-sm flex items-center gap-1.5">
+                        {user.name || 'Anonymous User'}
+                        {user.role === 'retailer' && (
+                          <span 
+                            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
+                          >
+                            💼 Retailer
+                          </span>
+                        )}
+                      </span>
                       <span className="text-[10px] font-normal text-[var(--text-muted)] truncate max-w-[200px]">{user.email || 'No email registered'}</span>
                     </Link>
                     <span className={`px-2 py-0.5 rounded text-[9px] font-bold tracking-wide shrink-0 ${getStatusBadgeClass(user.calculatedStatus)}`}>

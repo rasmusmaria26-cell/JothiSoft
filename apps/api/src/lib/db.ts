@@ -1,6 +1,8 @@
 import { Pool } from 'pg';
 import * as dotenv from 'dotenv';
-dotenv.config({ path: '../../.env' }); // Load from root
+import * as path from 'path';
+dotenv.config({ path: path.resolve(__dirname, '../../.env') }); // Load from local apps/api/.env
+dotenv.config({ path: path.resolve(__dirname, '../../../../.env') }); // Fallback to monorepo root .env
 
 // Use the Supabase Postgres connection string
 const connectionString = process.env.DATABASE_URL || 

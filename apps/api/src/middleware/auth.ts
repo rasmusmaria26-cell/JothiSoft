@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { supabaseAdmin } from '../lib/supabase';
+import { supabaseAnon } from '../lib/supabase';
 
 // Extend Express Request to include user data
 declare global {
@@ -30,8 +30,8 @@ export const authenticate = async (
 
     const token = authHeader.split(' ')[1];
 
-    // Verify token with Supabase Auth
-    const { data: { user }, error } = await supabaseAdmin.auth.getUser(token);
+    // Verify token with the dedicated, non-privileged Supabase client to prevent pollution of supabaseAdmin
+    const { data: { user }, error } = await supabaseAnon.auth.getUser(token);
 
     if (error || !user) {
       return res.status(401).json({

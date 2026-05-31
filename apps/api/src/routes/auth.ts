@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { supabaseAdmin } from '../lib/supabase';
+import { supabaseAdmin, supabaseAnon } from '../lib/supabase';
 import { authenticate } from '../middleware/auth';
 import { apiLimiter, authLimiter } from '../middleware/rateLimit';
 
@@ -71,36 +71,32 @@ router.post('/register', authLimiter, async (req: Request, res: Response): Promi
       return;
     }
 
-    // Check if email already exists (skip for synthetic emails — phone is the identity)
+    // Check if email or phone already exists — merged into one generic error to prevent user enumeration
+    let alreadyExists = false;
     if (!isSyntheticEmail) {
       const { data: existingUser } = await supabaseAdmin
         .from('users')
         .select('id')
         .eq('email', cleanEmail)
         .maybeSingle();
-
-      if (existingUser) {
-        res.status(400).json({
-          success: false,
-          error: 'USER_EXISTS',
-          message: 'மின்னஞ்சல் ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது · Email already registered',
-        });
-        return;
-      }
+      if (existingUser) alreadyExists = true;
     }
 
-    // Check if phone already exists in public.users to avoid duplicating
-    const { data: existingPhone } = await supabaseAdmin
-      .from('users')
-      .select('id')
-      .eq('phone', cleanPhone)
-      .maybeSingle();
+    if (!alreadyExists) {
+      const { data: existingPhone } = await supabaseAdmin
+        .from('users')
+        .select('id')
+        .eq('phone', cleanPhone)
+        .maybeSingle();
+      if (existingPhone) alreadyExists = true;
+    }
 
-    if (existingPhone) {
+    if (alreadyExists) {
       res.status(400).json({
         success: false,
-        error: 'PHONE_EXISTS',
-        message: 'தொலைபேசி எண் ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது · Phone number already registered',
+        error: 'USER_EXISTS',
+        // Generic message — deliberately does not reveal whether email or phone is duplicate
+        message: 'இந்த விவரங்கள் ஏற்கனவே பயன்படுத்தப்படுகின்றன · An account with these details already exists',
       });
       return;
     }
@@ -113,7 +109,7 @@ router.post('/register', authLimiter, async (req: Request, res: Response): Promi
       email: cleanEmail,
       password,
       phone: cleanPhone,
-      email_confirm: true, // Set to false here when standard SMTP is fully connected in production!
+      email_confirm: process.env.NODE_ENV !== 'production', // In production, require email verification via SMTP
       phone_confirm: true,
       user_metadata: {
         name,
@@ -204,14 +200,14 @@ router.post('/login', authLimiter, async (req: Request, res: Response): Promise<
 
       if (userProfile) {
         if (userProfile.email && userProfile.email.trim() !== '') {
-          const { data, error } = await supabaseAdmin.auth.signInWithPassword({
+          const { data, error } = await supabaseAnon.auth.signInWithPassword({
             email: userProfile.email,
             password,
           });
           session = data;
           authError = error;
         } else if (userProfile.phone) {
-          const { data, error } = await supabaseAdmin.auth.signInWithPassword({
+          const { data, error } = await supabaseAnon.auth.signInWithPassword({
             phone: userProfile.phone,
             password,
           });
@@ -227,7 +223,7 @@ router.post('/login', authLimiter, async (req: Request, res: Response): Promise<
         }
       } else {
         // Fallback: Attempt direct login with input phone number
-        const { data, error } = await supabaseAdmin.auth.signInWithPassword({
+        const { data, error } = await supabaseAnon.auth.signInWithPassword({
           phone: cleanPhone,
           password,
         });
@@ -236,7 +232,7 @@ router.post('/login', authLimiter, async (req: Request, res: Response): Promise<
 
         // Try pre-pending +91 as fallback if standard login failed
         if (authError && !cleanPhone.startsWith('+')) {
-          const { data: prefixedData, error: prefixedError } = await supabaseAdmin.auth.signInWithPassword({
+          const { data: prefixedData, error: prefixedError } = await supabaseAnon.auth.signInWithPassword({
             phone: `+91${cleanPhone}`,
             password,
           });
@@ -248,7 +244,7 @@ router.post('/login', authLimiter, async (req: Request, res: Response): Promise<
       }
     } else {
       // Standard email sign in
-      const { data, error } = await supabaseAdmin.auth.signInWithPassword({
+      const { data, error } = await supabaseAnon.auth.signInWithPassword({
         email: inputVal.toLowerCase(),
         password,
       });
@@ -336,7 +332,7 @@ router.post('/refresh', async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const { data: session, error } = await supabaseAdmin.auth.refreshSession({
+    const { data: session, error } = await supabaseAnon.auth.refreshSession({
       refresh_token,
     });
 
@@ -376,7 +372,7 @@ router.post('/logout', authenticate, async (req: Request, res: Response): Promis
     const token = authHeader.split(' ')[1];
 
     // Sign out from Supabase
-    const { error } = await supabaseAdmin.auth.signOut();
+    const { error } = await supabaseAnon.auth.signOut();
 
     if (error) {
       res.status(400).json({

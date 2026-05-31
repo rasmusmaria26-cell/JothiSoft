@@ -18,7 +18,9 @@ router.post('/customers/create', async (req: Request, res: Response): Promise<vo
     const { email, password, name, phone, durationDays = 30 } = req.body;
     const retailerId = req.user.id;
 
-    const expiresAt = new Date(Date.now() + parseInt(durationDays) * 24 * 60 * 60 * 1000).toISOString();
+    const rawDays = parseInt(durationDays) || 30;
+    const clampedDays = Math.min(Math.max(rawDays, 1), 365); // min 1 day, max 1 year
+    const expiresAt = new Date(Date.now() + clampedDays * 24 * 60 * 60 * 1000).toISOString();
 
     // 1. Create user in Supabase Auth
     const { data: user, error: createError } = await supabaseAdmin.auth.admin.createUser({
@@ -230,7 +232,9 @@ router.post('/customers/upgrade', async (req: Request, res: Response): Promise<v
       return;
     }
 
-    const expiresAt = new Date(Date.now() + parseInt(durationDays) * 24 * 60 * 60 * 1000).toISOString();
+    const rawDays2 = parseInt(durationDays) || 30;
+    const clampedDays2 = Math.min(Math.max(rawDays2, 1), 365); // min 1 day, max 1 year
+    const expiresAt = new Date(Date.now() + clampedDays2 * 24 * 60 * 60 * 1000).toISOString();
 
     // 2. Link in retailer_customers table
     const { error: linkError } = await supabaseAdmin
@@ -283,6 +287,23 @@ router.post('/customers/upgrade', async (req: Request, res: Response): Promise<v
       console.error('[Retailer Customer Auth Update Error]:', updateError);
       res.status(400).json({ success: false, error: 'AUTH_UPDATE_FAILED', message: updateError.message });
       return;
+    }
+
+    // 5. Log manual activation into subscription_history for auditing
+    const retailerNameOrEmail = req.user.email || req.user.phone || retailerId;
+    const { error: historyLogErr } = await supabaseAdmin
+      .from('subscription_history')
+      .insert({
+        user_id: targetUser.id,
+        activated_by: `Retailer: ${retailerNameOrEmail}`,
+        plan: 'PRO',
+        starts_at: new Date().toISOString(),
+        expires_at: expiresAt,
+        payment_note: `Upgraded by Retailer Partner (Duration: ${durationDays} days)`,
+      });
+
+    if (historyLogErr) {
+      console.error('[Retailer Upgrade Subscription History Log Failed]:', historyLogErr);
     }
 
     res.status(200).json({
