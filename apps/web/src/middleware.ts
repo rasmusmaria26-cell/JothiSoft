@@ -44,7 +44,7 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   // 1b. Authenticated + root consumer routes → redirect to appropriate dashboards
-  if (user && (pathname === '/' || pathname === '/upgrade')) {
+  if (user && pathname === '/upgrade') {
     const meta = user.user_metadata ?? {}
     const adminEmailsEnv = process.env.ADMIN_EMAILS || ''
     const adminEmails = adminEmailsEnv
