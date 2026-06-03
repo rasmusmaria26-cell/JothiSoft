@@ -28,15 +28,14 @@ export default function LoginPage() {
 
     try {
       if (isRegister) {
-        // Registration: name, phone, email, and password are all required
+        // Registration: name, phone, and password are required
         const cleanPhone = phone.trim().replace(/\s+/g, '')
-        const cleanEmail = email.trim().toLowerCase()
 
-        if (!name.trim() || !cleanPhone || !cleanEmail || !password) {
+        if (!name.trim() || !cleanPhone || !password) {
           throw new Error('அனைத்து புலங்களையும் நிரப்பவும் · Please fill in all fields')
         }
 
-        const body = { email: cleanEmail, password, name, phone: cleanPhone, language: 'ta' }
+        const body = { password, name, phone: cleanPhone, language: 'ta' }
 
         const res = await fetch(`${apiUrl}/auth/register`, {
           method: 'POST',
@@ -107,7 +106,7 @@ export default function LoginPage() {
   const isSubmitDisabled =
     loading ||
     password.length < 6 ||
-    (isRegister ? !phone.trim() || !name.trim() || !email.trim() : !phone.trim())
+    (isRegister ? !phone.trim() || !name.trim() : !phone.trim())
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 relative overflow-hidden bg-[#03020c]">
@@ -260,23 +259,6 @@ export default function LoginPage() {
                   <p className="text-[10px] text-white/30 pl-1">இந்த எண்ணைக் கொண்டு உள்நுழைவீர்கள் · You will use this number to log in</p>
                 </div>
 
-                {/* Email — register only */}
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-amber-500/80">
-                    மின்னஞ்சல் · Email <span className="text-amber-400 normal-case font-normal">(தேவை · Required)</span>
-                  </label>
-                  <div className="relative group">
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder=""
-                      required={isRegister}
-                      className="w-full bg-slate-950/60 px-4 py-3 pl-10 text-sm rounded-lg border border-white/10 outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-white placeholder-white/30"
-                    />
-                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/20 text-sm pointer-events-none group-focus-within:text-amber-500/50 transition-colors">✉</span>
-                  </div>
-                </div>
               </>
             )}
 
