@@ -23,17 +23,17 @@ router.post('/register', authLimiter, async (req: Request, res: Response): Promi
   try {
     const { email, password, name, phone, language = 'ta' } = req.body;
 
-    if (!email || !password || !phone) {
+    if (!password || !phone) {
       res.status(400).json({
         success: false,
         error: 'VALIDATION_ERROR',
-        message: 'மின்னஞ்சல், கடவுச்சொல் மற்றும் தொலைபேசி எண் தேவை · Email, password, and phone number are required',
+        message: 'கடவுச்சொல் மற்றும் தொலைபேசி எண் தேவை · Password and phone number are required',
       });
       return;
     }
 
-    const cleanEmail = email.trim().toLowerCase();
     const cleanPhone = phone.trim().replace(/\s+/g, '');
+    const cleanEmail = email ? email.trim().toLowerCase() : `${cleanPhone}@jothisoft.phone`;
     const isSyntheticEmail = cleanEmail.endsWith('@jothisoft.phone');
 
     // 1. Email format validation — skip for synthetic phone-derived emails
