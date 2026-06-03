@@ -270,6 +270,17 @@ router.get('/users/:userId', async (req: Request, res: Response): Promise<void> 
       return;
     }
 
+    // Fetch auth user to get the true metadata (name, email, phone, role)
+    let authUser: any = null;
+    try {
+      const { data: authData } = await supabaseAdmin.auth.admin.getUserById(userId);
+      if (authData?.user) {
+        authUser = authData.user;
+      }
+    } catch (err) {
+      console.error('[Admin Single User Auth Fetch Error]:', err);
+    }
+
     // 2. Fetch manual activation audit logs from subscription_history
     const { data: dbHistory, error: historyErr } = await supabaseAdmin
       .from('subscription_history')
@@ -318,7 +329,11 @@ router.get('/users/:userId', async (req: Request, res: Response): Promise<void> 
     // Determine status aligned with users list logic
     const sub = user.subscriptions?.[0] || user.subscriptions || null;
     let status: 'TRIAL' | 'PRO' | 'EXPIRED' | 'ADMIN' = 'EXPIRED';
-    const isUserAdmin = (user.email && adminEmails.includes(user.email.toLowerCase())) || user.user_metadata?.is_admin === true || user.user_metadata?.role === 'admin';
+    
+    const userEmail = authUser?.email || user.email;
+    const isUserAdmin = (userEmail && adminEmails.includes(userEmail.toLowerCase())) || 
+      authUser?.user_metadata?.is_admin === true || 
+      authUser?.user_metadata?.role === 'admin';
 
     if (isUserAdmin) {
       status = 'ADMIN';
@@ -362,13 +377,20 @@ router.get('/users/:userId', async (req: Request, res: Response): Promise<void> 
 
     const subWithNote = sub ? {
       ...sub,
-      payment_note: user.user_metadata?.payment_note || null,
+      payment_note: authUser?.user_metadata?.payment_note || null,
     } : null;
+
+    const userRole = authUser?.user_metadata?.role || (isUserAdmin ? 'admin' : 'customer');
 
     res.json({
       success: true,
       data: {
         ...user,
+        name: authUser?.user_metadata?.name || user.name || 'Anonymous User',
+        email: authUser?.email || user.email || '',
+        phone: authUser?.phone || user.phone || '',
+        language: authUser?.user_metadata?.language || user.language || 'ta',
+        role: userRole,
         is_admin: isUserAdmin,
         subscription: subWithNote,
         calculatedStatus: status,
