@@ -104,12 +104,12 @@ router.post('/register', authLimiter, async (req: Request, res: Response): Promi
 
     const trialExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
-    // 1. Create user in auth.users using Admin API (with email_confirm: true for seamless dev/prod testing)
+    // 1. Create user in auth.users using Admin API (with email_confirm: true to skip email verification)
     const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email: cleanEmail,
       password,
       phone: cleanPhone,
-      email_confirm: process.env.NODE_ENV !== 'production', // In production, require email verification via SMTP
+      email_confirm: true,
       phone_confirm: true,
       user_metadata: {
         name,
@@ -183,7 +183,7 @@ router.post('/login', authLimiter, async (req: Request, res: Response): Promise<
     if (/^\+?[0-9]{7,15}$/.test(inputVal.replace(/\s+/g, ''))) {
       const cleanPhone = inputVal.replace(/\s+/g, '');
       const cleanDigits = cleanPhone.replace(/[^0-9]/g, '');
-      
+
       // Match by the last 8-10 digits as a suffix search
       const minLen = Math.min(cleanDigits.length, 10);
       const suffix = cleanDigits.substring(cleanDigits.length - minLen);
