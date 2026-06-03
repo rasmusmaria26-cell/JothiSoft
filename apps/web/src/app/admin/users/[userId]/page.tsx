@@ -291,6 +291,24 @@ export default function AdminUserDetailPage() {
                 {roleToggling ? 'புதுப்பிக்கப்படுகிறது... · Updating...' : user.is_admin ? 'Demote Admin Status' : 'Promote to Administrator'}
               </button>
             </div>
+
+            {/* Retailer management Box */}
+            {user.role === 'retailer' && (
+              <div className="border-t border-[var(--bg-border)] pt-5 space-y-3">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider block">Retailer Partner Status</span>
+                  <span className="text-[10px] text-[var(--text-muted)] block">This user is currently a Retailer. You can demote them back to a regular customer.</span>
+                </div>
+
+                <button
+                  onClick={() => handleUpdateRole('customer')}
+                  disabled={updatingRole}
+                  className="w-full py-2.5 rounded text-xs font-bold transition-all duration-150 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed border border-red-900/50 bg-red-950/10 text-red-400 hover:bg-red-950/30 cursor-pointer"
+                >
+                  {updatingRole ? 'வாடிக்கையாளராக மாற்றப்படுகிறது... · Demoting...' : 'Demote to Customer / வாடிக்கையாளராக மாற்றவும்'}
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="text-[10px] text-[var(--text-muted)] text-center mt-6">
