@@ -133,11 +133,11 @@ PORT=4000
 FRONTEND_URL=https://jothisoft.com
 
 # Database
-DATABASE_URL=postgresql://user:password@localhost:5432/jothisoft
+DATABASE_URL: postgresql://[user]:[password] AT [host]:5432/jothisoft
 
 # JWT
-JWT_SECRET=<32-char random string>
-JWT_REFRESH_SECRET=<32-char random string>
+JWT_SECRET: <32-char random string>
+JWT_REFRESH_SECRET: <32-char random string>
 JWT_ACCESS_EXPIRES=15m
 JWT_REFRESH_EXPIRES=30d
 

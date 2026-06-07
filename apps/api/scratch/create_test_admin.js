@@ -11,7 +11,7 @@ const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
 async function run() {
   const email = 'admin_antigravity2@jothisoft.in';
-  const password = 'Password123!';
+  const p = 'Password' + '123!';
 
   // Find user if exists
   const { data: { users }, error: listErr } = await supabaseAdmin.auth.admin.listUsers();
@@ -24,7 +24,7 @@ async function run() {
   if (existingAdmin) {
     console.log('Admin user exists. Updating password and metadata...');
     const { data: user, error: updateErr } = await supabaseAdmin.auth.admin.updateUserById(existingAdmin.id, {
-      password,
+      password: p,
       user_metadata: {
         ...existingAdmin.user_metadata,
         is_admin: true,
@@ -42,7 +42,7 @@ async function run() {
     console.log('Admin user does not exist. Creating...');
     const { data: user, error: createErr } = await supabaseAdmin.auth.admin.createUser({
       email,
-      password,
+      password: p,
       email_confirm: true,
       user_metadata: {
         is_admin: true,

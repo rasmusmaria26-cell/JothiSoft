@@ -12,6 +12,7 @@ interface RasiChartProps {
   lagnaSign: string
   isPrint?: boolean
   language?: 'ta' | 'en'
+  titleClassName?: string
 }
 
 const ZODIAC_SIGNS = [
@@ -69,7 +70,7 @@ const GRID_CELLS = [
   { index: 4, sign: 'Kumbha', gridClass: 'col-start-1 row-start-2' },
 ]
 
-export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, language: propLanguage }: RasiChartProps) {
+export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, language: propLanguage, titleClassName }: RasiChartProps) {
   const { language: contextLanguage } = useLanguage()
   const language = propLanguage || contextLanguage
   const lagnaIndex = ZODIAC_SIGNS.indexOf(lagnaSign)
@@ -92,7 +93,7 @@ export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, l
   return (
     <div className="flex flex-col items-center w-full max-w-[440px] mx-auto p-1">
       {/* Chart Title */}
-      <h3 className={`text-sm font-semibold mb-3 tracking-wider uppercase ${isPrint ? 'text-gray-900' : 'text-gold-deep dark:text-gold-bright'}`}>
+      <h3 className={titleClassName || `text-sm font-semibold mb-3 tracking-wider uppercase ${isPrint ? 'text-gray-900' : 'text-gold-deep dark:text-gold-bright'}`}>
         {title}
       </h3>
 
@@ -160,14 +161,14 @@ export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, l
 
               {/* Planets Content */}
               <div className={`flex-1 flex flex-wrap items-center justify-center ${isPrint ? 'gap-0.5 p-0' : 'gap-1.5 p-1'}`}>
-                {signPlanets.map((planet) => {
+                {signPlanets.map((planet, idx) => {
                   const abbr = language === 'ta' 
                     ? (PLANET_MAP_TA[planet.name] || planet.name)
                     : (PLANET_MAP_EN[planet.name] || planet.name)
 
                   return (
                     <span
-                      key={planet.name}
+                      key={`${planet.name}-${idx}`}
                       className={`
                         inline-flex items-center justify-center font-bold rounded
                         ${isPrint 
@@ -208,8 +209,8 @@ export function RasiChart({ chart, planets, title, lagnaSign, isPrint = false, l
                   <p className="font-semibold text-gold-deep dark:text-gold-bright border-b border-bg-border/40 pb-1 mb-1">
                     {signName} ({language === 'ta' ? 'கோள்கள்' : 'Planets'})
                   </p>
-                  {signPlanets.map((p) => (
-                    <div key={p.name} className="flex justify-between text-text-secondary">
+                  {signPlanets.map((p, idx) => (
+                    <div key={`${p.name}-${idx}`} className="flex justify-between text-text-secondary">
                       <span className="font-medium text-text-primary">{p.name}</span>
                       <span>
                         {p.fullData?.sign_degree?.toFixed(2)}° · {p.fullData?.nakshatra}

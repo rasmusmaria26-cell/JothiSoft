@@ -64,6 +64,39 @@ export interface HoroscopeResponse {
       name_ta: string;
     };
   };
+  divisional_charts?: Record<string, { chart: HoroscopeChart; lagna_sign: string }>;
+  dosha_analysis?: {
+    sevvai_dosham: {
+      has_dosha: boolean;
+      status_en: string;
+      status_ta: string;
+      severity: 'None' | 'Low' | 'Medium' | 'High';
+      description_en: string;
+      description_ta: string;
+      cancellation_rules_en?: string[];
+      cancellation_rules_ta?: string[];
+      remedies_en: string[];
+      remedies_ta: string[];
+    };
+    rahu_ketu_dosham: {
+      has_dosha: boolean;
+      status_en: string;
+      status_ta: string;
+      severity: 'None' | 'Low' | 'Medium' | 'High';
+      description_en: string;
+      description_ta: string;
+      remedies_en: string[];
+      remedies_ta: string[];
+    };
+  };
+  dasha_prediction?: {
+    mahadasha_lord: string;
+    bhukti_lord: string;
+    mahadasha_prediction_en: string;
+    mahadasha_prediction_ta: string;
+    bhukti_prediction_en: string;
+    bhukti_prediction_ta: string;
+  };
 }
 
 export interface DashaPeriod {

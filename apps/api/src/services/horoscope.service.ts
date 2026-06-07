@@ -1,6 +1,9 @@
 import { cachedProkeralaFetch } from '../lib/prokerala';
 import { formatDatetime, formatCoordinates } from '../lib/utils';
 import { getLocalPanchangam } from './localPanchangam.service';
+import { buildDivisionalChart } from './divisional.service';
+import { calculateDoshaAnalysis, DoshaAnalysisResponse } from './dosha.service';
+import { getDashaBhuktiPrediction, DashaPredictionResult } from './dashaPrediction.service';
 
 export interface PlanetData {
   planet: string;
@@ -66,6 +69,9 @@ export interface HoroscopeResponse {
       name_ta: string;
     };
   };
+  divisional_charts?: Record<string, { chart: HoroscopeChart; lagna_sign: string }>;
+  dosha_analysis?: DoshaAnalysisResponse;
+  dasha_prediction?: DashaPredictionResult;
 }
 
 const ZODIAC_SIGNS = [
@@ -315,6 +321,19 @@ export const calculateHoroscope = async (
   const birthDateObj = new Date(datetime);
   const localPanchangam = getLocalPanchangam(birthDateObj);
 
+  // Calculate divisional charts: D2, D3, D4, D6, D7, D10, D12, D16, D20, D24, D27, D30, D40, D45, D60
+  const divs = [2, 3, 4, 6, 7, 10, 12, 16, 20, 24, 27, 30, 40, 45, 60];
+  const divisional_charts: Record<string, { chart: HoroscopeChart; lagna_sign: string }> = {};
+  divs.forEach((d) => {
+    divisional_charts[`D${d}`] = buildDivisionalChart(mappedPlanets, lagnaLong, d);
+  });
+
+  // Calculate dosha analysis
+  const dosha_analysis = calculateDoshaAnalysis(mappedPlanets);
+
+  // Calculate dasha predictions
+  const dasha_prediction = getDashaBhuktiPrediction(dashaResult.current.dasha, dashaResult.current.bhukti);
+
   return {
     lagna: {
       sign: lagnaSign,
@@ -352,7 +371,10 @@ export const calculateHoroscope = async (
         name: localPanchangam.karana.name,
         name_ta: localPanchangam.karana.name_ta
       }
-    }
+    },
+    divisional_charts,
+    dosha_analysis,
+    dasha_prediction
   };
 };
 

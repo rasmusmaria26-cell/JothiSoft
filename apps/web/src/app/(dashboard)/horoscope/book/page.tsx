@@ -14,10 +14,18 @@ export default function BookChartPage() {
   const { language } = useLanguage()
 
   const [name, setName] = useState('')
+  const [fatherName, setFatherName] = useState('')
+  const [motherName, setMotherName] = useState('')
   const [dob, setDob] = useState('')
   const [tob, setTob] = useState('')
   const [selectedCity, setSelectedCity] = useState<CityData | null>(null)
   const [reportLanguage, setReportLanguage] = useState<'ta' | 'en'>('ta')
+  const [gender, setGender] = useState<'Male' | 'Female'>('Male')
+
+  // Astrologer Details
+  const [astroName, setAstroName] = useState('')
+  const [astroAddress, setAstroAddress] = useState('')
+  const [astroPhone, setAstroPhone] = useState('')
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -27,11 +35,15 @@ export default function BookChartPage() {
 
   const t = language === 'ta' ? {
     title: 'புத்தக ஜாதகம்',
-    subtitle: '4 பக்க விரிவான ஜாதக நூல் — அச்சிட தயார்',
+    subtitle: '8 பக்க விரிவான ஜாதக நூல் — அச்சிட தயார்',
     back: 'முகப்பிற்குச் செல்',
     formTitle: 'பிறப்பு விவரங்கள்',
     name: 'முழு பெயர்',
     namePlaceholder: 'எ.கா. காவியா',
+    fatherName: 'தந்தை பெயர்',
+    fatherPlaceholder: '',
+    motherName: 'தாய் பெயர்',
+    motherPlaceholder: '',
     dob: 'பிறந்த தேதி',
     tob: 'பிறந்த நேரம்',
     place: 'பிறந்த இடம்',
@@ -41,13 +53,28 @@ export default function BookChartPage() {
     error: 'ஜாதகத்தை உருவாக்குவதில் பிழை. மீண்டும் முயற்சிக்கவும்.',
     print: 'அச்சிடு / PDF சேமி',
     back2: 'மீண்டும் உருவாக்கு',
+    astroSectionTitle: 'ஜோதிடர் விவரங்கள் (விருப்பம்)',
+    astroSectionDesc: 'அறிக்கையின் அட்டையில் அச்சிட உங்கள் விவரங்களை உள்ளிடவும்.',
+    astroName: 'ஜோதிடர் பெயர்',
+    astroNamePlaceholder: '',
+    astroAddress: 'முகவரி',
+    astroAddressPlaceholder: '',
+    astroPhone: 'தொலைபேசி எண்',
+    astroPhonePlaceholder: '',
+    gender: 'பாலினம்',
+    male: 'ஆண்',
+    female: 'பெண்'
   } : {
     title: 'Book Horoscope',
-    subtitle: '4-page comprehensive Jathagam booklet — ready to print',
+    subtitle: '8-page comprehensive Jathagam booklet — ready to print',
     back: 'Back to Dashboard',
     formTitle: 'Birth Details',
     name: 'Full Name',
     namePlaceholder: 'e.g. Kavya',
+    fatherName: "Father's Name",
+    fatherPlaceholder: '',
+    motherName: "Mother's Name",
+    motherPlaceholder: '',
     dob: 'Date of Birth',
     tob: 'Time of Birth',
     place: 'Birth Place',
@@ -57,6 +84,17 @@ export default function BookChartPage() {
     error: 'Error generating horoscope. Please try again.',
     print: 'Print / Save PDF',
     back2: 'Generate Another',
+    astroSectionTitle: 'Astrologer Details (Optional)',
+    astroSectionDesc: 'Enter your business details to show them on the cover of the printed report.',
+    astroName: 'Astrologer Name',
+    astroNamePlaceholder: '',
+    astroAddress: 'Address',
+    astroAddressPlaceholder: '',
+    astroPhone: 'Phone Number',
+    astroPhonePlaceholder: '',
+    gender: 'Gender',
+    male: 'Male',
+    female: 'Female'
   }
 
   const handleGenerate = async (e: React.FormEvent) => {
@@ -157,45 +195,124 @@ export default function BookChartPage() {
               }}
             >
               <form onSubmit={handleGenerate} className="flex flex-col gap-5">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-sm font-medium text-text-primary ml-1">{t.name}</label>
-                    <input
-                      type="text" required value={name}
-                      onChange={e => setName(e.target.value)}
-                      placeholder={t.namePlaceholder}
-                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-sm font-medium text-text-primary ml-1">{t.place}</label>
-                    <PlaceSearch onSelect={setSelectedCity} selectedCity={selectedCity} />
-                  </div>
-                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Left Column: Birth Details */}
+                  <div className="lg:col-span-2 flex flex-col gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-sm font-medium text-text-primary ml-1">{t.name}</label>
+                        <input
+                          type="text" required value={name}
+                          onChange={e => setName(e.target.value)}
+                          placeholder={t.namePlaceholder}
+                          className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-sm font-medium text-text-primary ml-1">{t.place}</label>
+                        <PlaceSearch onSelect={setSelectedCity} selectedCity={selectedCity} />
+                      </div>
+                    </div>
 
-                {/* Language Toggle */}
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-medium text-text-primary ml-1">{t.lang}</label>
-                  <div className="flex bg-bg-page border border-bg-border rounded-xl overflow-hidden p-1">
-                    {(['ta', 'en'] as const).map(l => (
-                      <button key={l} type="button" onClick={() => setReportLanguage(l)}
-                        className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${reportLanguage === l ? 'bg-gold-deep/20 text-gold-bright shadow-sm' : 'text-text-muted hover:text-white'}`}>
-                        {l === 'ta' ? 'தமிழ் (Tamil)' : 'English'}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-sm font-medium text-text-primary ml-1">{t.fatherName}</label>
+                        <input
+                          type="text" value={fatherName}
+                          onChange={e => setFatherName(e.target.value)}
+                          placeholder={t.fatherPlaceholder}
+                          className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-sm font-medium text-text-primary ml-1">{t.motherName}</label>
+                        <input
+                          type="text" value={motherName}
+                          onChange={e => setMotherName(e.target.value)}
+                          placeholder={t.motherPlaceholder}
+                          className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
+                        />
+                      </div>
+                    </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-sm font-medium text-text-primary ml-1">{t.dob}</label>
-                    <input type="date" required value={dob} onChange={e => setDob(e.target.value)}
-                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-1">
+                      {/* Language Toggle */}
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium text-text-primary ml-1">{t.lang}</label>
+                        <div className="flex bg-bg-page border border-bg-border rounded-xl overflow-hidden p-1">
+                          {(['ta', 'en'] as const).map(l => (
+                            <button key={l} type="button" onClick={() => setReportLanguage(l)}
+                              className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${reportLanguage === l ? 'bg-gold-deep/20 text-gold-bright shadow-sm' : 'text-text-muted hover:text-white'}`}>
+                              {l === 'ta' ? 'தமிழ் (Tamil)' : 'English'}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Gender Toggle */}
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium text-text-primary ml-1">{t.gender}</label>
+                        <div className="flex bg-bg-page border border-bg-border rounded-xl overflow-hidden p-1">
+                          {(['Male', 'Female'] as const).map(g => (
+                            <button key={g} type="button" onClick={() => setGender(g)}
+                              className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${gender === g ? 'bg-gold-deep/20 text-gold-bright shadow-sm' : 'text-text-muted hover:text-white'}`}>
+                              {g === 'Male' ? t.male : t.female}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-1">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-sm font-medium text-text-primary ml-1">{t.dob}</label>
+                        <input type="date" required value={dob} onChange={e => setDob(e.target.value)}
+                          className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all" />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-sm font-medium text-text-primary ml-1">{t.tob}</label>
+                        <input type="time" required value={tob} onChange={e => setTob(e.target.value)}
+                          className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all" />
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-sm font-medium text-text-primary ml-1">{t.tob}</label>
-                    <input type="time" required value={tob} onChange={e => setTob(e.target.value)}
-                      className="w-full bg-bg-page border border-bg-border rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all" />
+
+                  {/* Right Column: Astrologer Details card */}
+                  <div className="lg:col-span-1 border border-bg-border rounded-2xl p-4 sm:p-5 bg-bg-page/30 flex flex-col gap-4 self-start shadow-inner">
+                    <div className="flex flex-col gap-1 border-b border-bg-border pb-3">
+                      <h3 className="font-bold text-gold-bright text-base tracking-tight">{t.astroSectionTitle}</h3>
+                      <p className="text-text-secondary text-xs leading-relaxed">{t.astroSectionDesc}</p>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-text-primary ml-1">{t.astroName}</label>
+                      <input 
+                        type="text"
+                        value={astroName}
+                        onChange={(e) => setAstroName(e.target.value)}
+                        placeholder={t.astroNamePlaceholder}
+                        className="w-full bg-bg-page border border-bg-border rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-text-primary ml-1">{t.astroAddress}</label>
+                      <textarea
+                        value={astroAddress}
+                        onChange={(e) => setAstroAddress(e.target.value)}
+                        placeholder={t.astroAddressPlaceholder}
+                        rows={2}
+                        className="w-full bg-bg-page border border-bg-border rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all resize-none"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-text-primary ml-1">{t.astroPhone}</label>
+                      <input 
+                        type="text"
+                        value={astroPhone}
+                        onChange={(e) => setAstroPhone(e.target.value)}
+                        placeholder={t.astroPhonePlaceholder}
+                        className="w-full bg-bg-page border border-bg-border rounded-xl px-3 py-2.5 text-sm text-text-primary focus:outline-none focus:ring-1 focus:ring-gold-mid transition-all"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -245,8 +362,21 @@ export default function BookChartPage() {
                 <BookChartReport
                   data={horoscope}
                   dasa={dasa}
-                  profile={{ name, dob, tob, place: selectedCity?.name || '' }}
+                  profile={{
+                    name,
+                    dob,
+                    tob,
+                    place: selectedCity?.name || '',
+                    gender,
+                    fatherName,
+                    motherName
+                  }}
                   language={reportLanguage}
+                  astrologer={astroName ? {
+                    name: astroName,
+                    address: astroAddress,
+                    phone: astroPhone
+                  } : undefined}
                 />
               )}
             </div>
