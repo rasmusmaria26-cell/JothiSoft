@@ -143,11 +143,38 @@ export const adminApi = {
    */
   createRetailer: async (data: {
     name: string;
-    email: string;
+    email?: string;
     phone: string;
     password?: string;
   }): Promise<{ success: boolean; user: any }> => {
     const res = await api.post('/admin/retailers/create', data);
+    return res.data;
+  },
+
+  /**
+   * Create a new Customer account
+   */
+  createCustomer: async (data: {
+    name: string;
+    email?: string;
+    phone: string;
+    password?: string;
+    activateProImmediately?: boolean;
+    duration?: '30_DAYS' | '60_DAYS' | '90_DAYS' | '1_YEAR' | 'LIFETIME';
+    paymentNote?: string;
+  }): Promise<{ success: boolean; user: any }> => {
+    const res = await api.post('/admin/customers/create', data);
+    return res.data;
+  },
+
+  /**
+   * Change a user's password
+   */
+  changePassword: async (
+    userId: string,
+    newPassword: string
+  ): Promise<{ success: boolean; message: string }> => {
+    const res = await api.post(`/admin/users/${userId}/change-password`, { newPassword });
     return res.data;
   },
 };

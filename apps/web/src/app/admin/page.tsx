@@ -11,17 +11,33 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true)
   const { addToast } = useToastStore()
 
+  // activeTab for dual forms
+  const [activeTab, setActiveTab] = useState<'retailer' | 'customer'>('retailer')
+
   // Retailer form state
   const [retailerName, setRetailerName] = useState('')
-  const [retailerEmail, setRetailerEmail] = useState('')
   const [retailerPhone, setRetailerPhone] = useState('')
   const [retailerPassword, setRetailerPassword] = useState('')
   const [creatingRetailer, setCreatingRetailer] = useState(false)
 
+  // Customer form state
+  const [customerName, setCustomerName] = useState('')
+  const [customerPhone, setCustomerPhone] = useState('')
+  const [customerPassword, setCustomerPassword] = useState('')
+  const [activatePro, setActivatePro] = useState(false)
+  const [customerDuration, setCustomerDuration] = useState<'30_DAYS' | '1_YEAR'>('30_DAYS')
+  const [customerPaymentNote, setCustomerPaymentNote] = useState('')
+  const [creatingCustomer, setCreatingCustomer] = useState(false)
+
   const handleCreateRetailer = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!retailerName || !retailerEmail || !retailerPhone) {
+    if (!retailerName || !retailerPhone || !retailerPassword) {
       addToast('அனைத்து துறைகளும் கட்டாயமாகும் · All fields are required', 'warning')
+      return
+    }
+
+    if (retailerPassword.length < 8 || !/\d/.test(retailerPassword)) {
+      addToast('கடவுச்சொல் குறைந்தது 8 எழுத்துக்கள் இருக்க வேண்டும் மற்றும் ஒரு எண் இருக்க வேண்டும் · Password must be at least 8 characters long and contain at least one number', 'warning')
       return
     }
 
@@ -29,13 +45,11 @@ export default function AdminDashboardPage() {
       setCreatingRetailer(true)
       await adminApi.createRetailer({
         name: retailerName,
-        email: retailerEmail,
         phone: retailerPhone,
-        password: retailerPassword || undefined,
+        password: retailerPassword,
       })
       addToast('புதிய சில்லறை விற்பனையாளர் வெற்றிகரமாக சேர்க்கப்பட்டார் · Retailer account created successfully!', 'success')
       setRetailerName('')
-      setRetailerEmail('')
       setRetailerPhone('')
       setRetailerPassword('')
       loadDashboardData()
@@ -43,6 +57,43 @@ export default function AdminDashboardPage() {
       addToast(err.message || 'Retailer creation failed', 'error')
     } finally {
       setCreatingRetailer(false)
+    }
+  }
+
+  const handleCreateCustomer = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!customerName || !customerPhone || !customerPassword) {
+      addToast('அனைத்து துறைகளும் கட்டாயமாகும் · All fields are required', 'warning')
+      return
+    }
+
+    if (customerPassword.length < 8 || !/\d/.test(customerPassword)) {
+      addToast('கடவுச்சொல் குறைந்தது 8 எழுத்துக்கள் இருக்க வேண்டும் மற்றும் ஒரு எண் இருக்க வேண்டும் · Password must be at least 8 characters long and contain at least one number', 'warning')
+      return
+    }
+
+    try {
+      setCreatingCustomer(true)
+      await adminApi.createCustomer({
+        name: customerName,
+        phone: customerPhone,
+        password: customerPassword,
+        activateProImmediately: activatePro,
+        duration: activatePro ? customerDuration : undefined,
+        paymentNote: activatePro ? customerPaymentNote || undefined : undefined,
+      })
+      addToast('புதிய வாடிக்கையாளர் வெற்றிகரமாக சேர்க்கப்பட்டார் · Customer account created successfully!', 'success')
+      setCustomerName('')
+      setCustomerPhone('')
+      setCustomerPassword('')
+      setActivatePro(false)
+      setCustomerDuration('30_DAYS')
+      setCustomerPaymentNote('')
+      loadDashboardData()
+    } catch (err: any) {
+      addToast(err.message || 'Customer creation failed', 'error')
+    } finally {
+      setCreatingCustomer(false)
     }
   }
 
@@ -244,75 +295,186 @@ export default function AdminDashboardPage() {
           )}
         </div>
 
-        {/* Retailer Creation Card (1/3 width) */}
+        {/* Creation Card (1/3 width) - Tabbed UI */}
         <div
           className="lg:col-span-1 p-6 rounded-[var(--radius-lg)] border space-y-4 h-fit"
           style={{ background: 'var(--bg-card)', borderColor: 'var(--bg-border)' }}
         >
-          <div>
-            <h3 className="text-base font-bold text-[var(--text-primary)] flex items-center gap-2">
-              💼 சில்லறை விற்பனையாளர் பதிவு
-            </h3>
-            <p className="text-xs text-[var(--text-muted)] mt-0.5">Register a new Retailer partner account</p>
+          {/* Tab headers */}
+          <div className="flex border-b border-[var(--bg-border)] pb-2 gap-4">
+            <button
+              onClick={() => setActiveTab('retailer')}
+              className={`pb-2 text-xs font-bold transition-all border-b-2 cursor-pointer ${
+                activeTab === 'retailer'
+                  ? 'border-[var(--gold-bright)] text-[var(--gold-bright)]'
+                  : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+              }`}
+            >
+              💼 சில்லறை விற்பனையாளர் (Retailer)
+            </button>
+            <button
+              onClick={() => setActiveTab('customer')}
+              className={`pb-2 text-xs font-bold transition-all border-b-2 cursor-pointer ${
+                activeTab === 'customer'
+                  ? 'border-[var(--gold-bright)] text-[var(--gold-bright)]'
+                  : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+              }`}
+            >
+              👤 வாடிக்கையாளர் (Customer)
+            </button>
           </div>
 
-          <form onSubmit={handleCreateRetailer} className="space-y-4 text-xs">
-            <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Partner Name</label>
-              <input
-                type="text"
-                required
-                value={retailerName}
-                onChange={(e) => setRetailerName(e.target.value)}
-                placeholder="e.g. Anbu Astrologer"
-                className="w-full bg-[var(--bg-elevated)] px-3 py-2 rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
-              />
-            </div>
+          {activeTab === 'retailer' ? (
+            <form onSubmit={handleCreateRetailer} className="space-y-4 text-xs">
+              <div>
+                <h4 className="font-bold text-[var(--text-primary)] mb-1">
+                  சில்லறை விற்பனையாளர் பதிவு
+                </h4>
+                <p className="text-[10px] text-[var(--text-muted)]">Register a new Retailer partner account</p>
+              </div>
 
-            <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Email Address</label>
-              <input
-                type="email"
-                required
-                value={retailerEmail}
-                onChange={(e) => setRetailerEmail(e.target.value)}
-                placeholder="e.g. partner@jothisoft.com"
-                className="w-full bg-[var(--bg-elevated)] px-3 py-2 rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
-              />
-            </div>
+              <div className="space-y-1.5">
+                <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Partner Name</label>
+                <input
+                  type="text"
+                  required
+                  value={retailerName}
+                  onChange={(e) => setRetailerName(e.target.value)}
+                  placeholder="e.g. Anbu Astrologer"
+                  className="w-full bg-[var(--bg-elevated)] px-3 py-2 rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
+                />
+              </div>
 
-            <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Mobile Number</label>
-              <input
-                type="tel"
-                required
-                value={retailerPhone}
-                onChange={(e) => setRetailerPhone(e.target.value)}
-                placeholder="e.g. +919876543210"
-                className="w-full bg-[var(--bg-elevated)] px-3 py-2 rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
-              />
-            </div>
+              <div className="space-y-1.5">
+                <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Mobile Number</label>
+                <input
+                  type="tel"
+                  required
+                  value={retailerPhone}
+                  onChange={(e) => setRetailerPhone(e.target.value)}
+                  placeholder="e.g. +919876543210"
+                  className="w-full bg-[var(--bg-elevated)] px-3 py-2 rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
+                />
+              </div>
 
-            <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Password (Optional)</label>
-              <input
-                type="password"
-                value={retailerPassword}
-                onChange={(e) => setRetailerPassword(e.target.value)}
-                placeholder="Auto-generated if left blank"
-                className="w-full bg-[var(--bg-elevated)] px-3 py-2 rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
-              />
-            </div>
+              <div className="space-y-1.5">
+                <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Password (Required)</label>
+                <input
+                  type="password"
+                  required
+                  value={retailerPassword}
+                  onChange={(e) => setRetailerPassword(e.target.value)}
+                  placeholder="Min 8 characters, at least 1 number"
+                  className="w-full bg-[var(--bg-elevated)] px-3 py-2 rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
+                />
+              </div>
 
-            <button
-              type="submit"
-              disabled={creatingRetailer}
-              className="w-full py-2.5 rounded font-bold transition-all duration-150 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
-              style={{ background: 'var(--gold-deep)', color: '#1a1209' }}
-            >
-              {creatingRetailer ? 'உருவாக்கப்படுகிறது... · Creating...' : 'Register Retailer Account'}
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={creatingRetailer}
+                className="w-full py-2.5 rounded font-bold transition-all duration-150 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
+                style={{ background: 'var(--gold-deep)', color: '#1a1209' }}
+              >
+                {creatingRetailer ? 'உருவாக்கப்படுகிறது... · Creating...' : 'Register Retailer Account'}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleCreateCustomer} className="space-y-4 text-xs">
+              <div>
+                <h4 className="font-bold text-[var(--text-primary)] mb-1">
+                  வாடிக்கையாளர் பதிவு
+                </h4>
+                <p className="text-[10px] text-[var(--text-muted)]">Create a new customer account directly</p>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Customer Name</label>
+                <input
+                  type="text"
+                  required
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
+                  placeholder="e.g. Kumar Swamy"
+                  className="w-full bg-[var(--bg-elevated)] px-3 py-2 rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Mobile Number (Required)</label>
+                <input
+                  type="tel"
+                  required
+                  value={customerPhone}
+                  onChange={(e) => setCustomerPhone(e.target.value)}
+                  placeholder="e.g. +919876543211"
+                  className="w-full bg-[var(--bg-elevated)] px-3 py-2 rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Password (Required)</label>
+                <input
+                  type="password"
+                  required
+                  value={customerPassword}
+                  onChange={(e) => setCustomerPassword(e.target.value)}
+                  placeholder="Min 8 characters, at least 1 number"
+                  className="w-full bg-[var(--bg-elevated)] px-3 py-2 rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
+                />
+              </div>
+
+              {/* Activate PRO Option */}
+              <div className="flex items-center gap-2 p-2 rounded bg-amber-500/5 border border-amber-500/10 mt-2">
+                <input
+                  type="checkbox"
+                  id="activatePro"
+                  checked={activatePro}
+                  onChange={(e) => setActivatePro(e.target.checked)}
+                  className="w-4 h-4 accent-[var(--gold-bright)] cursor-pointer"
+                />
+                <label htmlFor="activatePro" className="font-bold text-[var(--text-primary)] cursor-pointer select-none">
+                  உடனடியாக PRO திட்டத்தை செயல்படுத்துக · Activate PRO immediately
+                </label>
+              </div>
+
+              {/* Conditional PRO Settings */}
+              {activatePro && (
+                <div className="space-y-3 p-3 rounded border border-[var(--bg-border)] bg-black/10 transition-all duration-300">
+                  <div className="space-y-1.5">
+                    <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">PRO Duration</label>
+                    <select
+                      value={customerDuration}
+                      onChange={(e: any) => setCustomerDuration(e.target.value)}
+                      className="w-full bg-[var(--bg-elevated)] px-3 py-2 rounded border border-[var(--bg-border)] outline-none text-[var(--text-primary)]"
+                    >
+                      <option value="30_DAYS">மாதாந்திர திட்டம் · Monthly (30 Days)</option>
+                      <option value="1_YEAR">வருடாந்திர திட்டம் · Yearly (1 Year)</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Payment Note / Reference (Optional)</label>
+                    <input
+                      type="text"
+                      value={customerPaymentNote}
+                      onChange={(e) => setCustomerPaymentNote(e.target.value)}
+                      placeholder="e.g. Paid cash, GPay ref #1234"
+                      className="w-full bg-[var(--bg-elevated)] px-3 py-2 rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={creatingCustomer}
+                className="w-full py-2.5 rounded font-bold transition-all duration-150 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
+                style={{ background: 'var(--gold-deep)', color: '#1a1209' }}
+              >
+                {creatingCustomer ? 'உருவாக்கப்படுகிறது... · Creating...' : 'Create Customer Account'}
+              </button>
+            </form>
+          )}
         </div>
 
       </div>

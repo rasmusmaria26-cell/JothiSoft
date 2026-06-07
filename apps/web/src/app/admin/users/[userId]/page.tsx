@@ -13,6 +13,9 @@ export default function AdminUserDetailPage() {
   const { addToast } = useToastStore()
   const userId = params.userId as string
 
+  const currentAdminRole = currentAdmin?.user_metadata?.role || 'customer'
+  const isCurrentAdmin = currentAdmin?.user_metadata?.is_admin === true || currentAdminRole === 'admin'
+
   const [user, setUser] = useState<AdminUserDetail | null>(null)
   const [loading, setLoading] = useState(true)
   const [activating, setActivating] = useState(false)
@@ -20,6 +23,42 @@ export default function AdminUserDetailPage() {
   const [updatingRole, setUpdatingRole] = useState(false)
   const [paymentNote, setPaymentNote] = useState('')
   const [duration, setDuration] = useState<'30_DAYS' | 'LIFETIME'>('30_DAYS')
+
+  // Password change form state
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [updatingPassword, setUpdatingPassword] = useState(false)
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newPassword || !confirmPassword) {
+      addToast('கடவுச்சொற்கள் கட்டாயமாகும் · Passwords are required', 'warning')
+      return
+    }
+
+    if (newPassword !== confirmPassword) {
+      addToast('கடவுச்சொற்கள் பொருந்தவில்லை · Passwords do not match', 'warning')
+      return
+    }
+
+    if (newPassword.length < 8 || !/\d/.test(newPassword)) {
+      addToast('கடவுச்சொல் குறைந்தது 8 எழுத்துக்கள் இருக்க வேண்டும் மற்றும் ஒரு எண் இருக்க வேண்டும் · Password must be at least 8 characters long and contain at least one number', 'warning')
+      return
+    }
+
+    try {
+      setUpdatingPassword(true)
+      await adminApi.changePassword(userId, newPassword)
+      addToast('கடவுச்சொல் வெற்றிகரமாக மாற்றப்பட்டது · Password changed successfully!', 'success')
+      setNewPassword('')
+      setConfirmPassword('')
+      await loadUserDetail()
+    } catch (err: any) {
+      addToast(err.message || 'Password update failed', 'error')
+    } finally {
+      setUpdatingPassword(false)
+    }
+  }
 
   const handleUpdateRole = async (newRole: 'admin' | 'retailer' | 'customer') => {
     if (user?.id === currentAdmin?.id) {
@@ -307,6 +346,50 @@ export default function AdminUserDetailPage() {
                 >
                   {updatingRole ? 'வாடிக்கையாளராக மாற்றப்படுகிறது... · Demoting...' : 'Demote to Customer / வாடிக்கையாளராக மாற்றவும்'}
                 </button>
+              </div>
+            )}
+
+            {/* Change Password Box */}
+            {isCurrentAdmin && (
+              <div className="border-t border-[var(--bg-border)] pt-5 space-y-3">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider block">Change User Password</span>
+                  <span className="text-[10px] text-[var(--text-muted)] block">
+                    Password must be at least 8 characters long and contain at least one numeric digit.
+                  </span>
+                </div>
+
+                <form onSubmit={handleChangePassword} className="space-y-2.5">
+                  <div className="space-y-1">
+                    <input
+                      type="password"
+                      required
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="New Password"
+                      className="w-full bg-[var(--bg-elevated)] px-3 py-1.5 text-xs rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <input
+                      type="password"
+                      required
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Confirm Password"
+                      className="w-full bg-[var(--bg-elevated)] px-3 py-1.5 text-xs rounded border border-[var(--bg-border)] outline-none transition-all duration-300 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 text-[var(--text-primary)] placeholder-[var(--text-muted)]/50"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={updatingPassword}
+                    className="w-full py-2 rounded text-xs font-bold transition-all duration-150 bg-amber-500/10 border border-amber-500/20 text-amber-500 hover:bg-amber-500/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    {updatingPassword ? 'மாற்றப்படுகிறது... · Changing...' : 'Update Password'}
+                  </button>
+                </form>
               </div>
             )}
           </div>

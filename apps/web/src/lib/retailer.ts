@@ -40,6 +40,24 @@ export const retailerApi = {
   },
 
   /**
+   * Fetch available customers who are unclaimed, non-admin, and in TRIAL/EXPIRED status
+   */
+  getAvailableCustomers: async (params: { search?: string; page?: number; limit?: number }): Promise<{
+    success: boolean;
+    customers: any[];
+    totalCount: number;
+    totalPages: number;
+    page: number;
+  }> => {
+    const queryParams = new URLSearchParams();
+    if (params.search) queryParams.append('search', params.search);
+    if (params.page) queryParams.append('page', params.page.toString());
+    if (params.limit) queryParams.append('limit', params.limit.toString());
+    const res = await api.get(`/retailer/customers/available?${queryParams.toString()}`);
+    return res;
+  },
+
+  /**
    * Upgrade an existing customer account to premium PRO
    */
   upgradeCustomer: async (customerId: string, durationDays: number): Promise<{ success: boolean; customer: any; message?: string }> => {
