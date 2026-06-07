@@ -662,10 +662,46 @@ router.post('/retailers/create', async (req: Request, res: Response): Promise<vo
   try {
     const { email, password, name, phone } = req.body;
 
+    if (!name || !phone || !password) {
+      res.status(400).json({
+        success: false,
+        error: 'BAD_REQUEST',
+        message: 'பெயர், தொலைபேசி எண் மற்றும் கடவுச்சொல் கட்டாயமாகும் · Name, phone, and password are required'
+      });
+      return;
+    }
+
+    const cleanPhone = phone.trim().replace(/\s+/g, '');
+    const cleanEmail = email?.trim() || `${cleanPhone}@jothisoft.phone`;
+
+    if (password.length < 8 || !/\d/.test(password)) {
+      res.status(400).json({
+        success: false,
+        error: 'INVALID_PASSWORD',
+        message: 'கடவுச்சொல் குறைந்தது 8 எழுத்துக்கள் இருக்க வேண்டும் மற்றும் ஒரு எண் இருக்க வேண்டும் · Password must be at least 8 characters long and contain at least one number'
+      });
+      return;
+    }
+
+    const { data: existingPhone } = await supabaseAdmin
+      .from('users')
+      .select('id')
+      .eq('phone', cleanPhone)
+      .maybeSingle();
+
+    if (existingPhone) {
+      res.status(400).json({
+        success: false,
+        error: 'USER_EXISTS',
+        message: 'இந்த விவரங்கள் ஏற்கனவே பயன்படுத்தப்படுகின்றன · An account with these details already exists',
+      });
+      return;
+    }
+
     const { data: user, error } = await supabaseAdmin.auth.admin.createUser({
-      email,
+      email: cleanEmail,
       password,
-      phone,
+      phone: cleanPhone,
       email_confirm: true,
       phone_confirm: true,
       user_metadata: {
@@ -786,6 +822,213 @@ router.put('/users/:id/role', async (req: Request, res: Response): Promise<void>
           role: user.user.user_metadata.role,
         },
       },
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: 'SERVER_ERROR', message: err.message });
+  }
+});
+
+// POST /api/admin/customers/create — create a customer account
+router.post('/customers/create', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { email, password, name, phone, activateProImmediately, duration, paymentNote } = req.body;
+
+    if (!name || !phone || !password) {
+      res.status(400).json({
+        success: false,
+        error: 'BAD_REQUEST',
+        message: 'பெயர், தொலைபேசி எண் மற்றும் கடவுச்சொல் கட்டாயமாகும் · Name, phone, and password are required'
+      });
+      return;
+    }
+
+    const cleanPhone = phone.trim().replace(/\s+/g, '');
+    const cleanEmail = email?.trim() || `${cleanPhone}@jothisoft.phone`;
+
+    // Validate password
+    if (password.length < 8 || !/\d/.test(password)) {
+      res.status(400).json({
+        success: false,
+        error: 'INVALID_PASSWORD',
+        message: 'கடவுச்சொல் குறைந்தது 8 எழுத்துக்கள் இருக்க வேண்டும் மற்றும் ஒரு எண் இருக்க வேண்டும் · Password must be at least 8 characters long and contain at least one number'
+      });
+      return;
+    }
+
+    // Check if phone or email already exists
+    let alreadyExists = false;
+    const { data: existingPhone } = await supabaseAdmin
+      .from('users')
+      .select('id')
+      .eq('phone', cleanPhone)
+      .maybeSingle();
+
+    if (existingPhone) alreadyExists = true;
+
+    if (email) {
+      const { data: { users: existingEmailUsers } } = await supabaseAdmin.auth.admin.listUsers();
+      if (existingEmailUsers.some(u => u.email?.toLowerCase() === cleanEmail.toLowerCase())) {
+        alreadyExists = true;
+      }
+    }
+
+    if (alreadyExists) {
+      res.status(400).json({
+        success: false,
+        error: 'USER_EXISTS',
+        message: 'இந்த விவரங்கள் ஏற்கனவே பயன்படுத்தப்படுகின்றன · An account with these details already exists',
+      });
+      return;
+    }
+
+    const now = new Date();
+    let expiresAt: string | null = null;
+    if (activateProImmediately && duration !== 'LIFETIME') {
+      let days = 30;
+      if (duration === '60_DAYS') days = 60;
+      else if (duration === '90_DAYS') days = 90;
+      else if (duration === '1_YEAR') days = 365;
+
+      expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+    }
+
+    const trialExpiresAt = activateProImmediately ? null : new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
+    const { data: user, error: authError } = await supabaseAdmin.auth.admin.createUser({
+      email: cleanEmail,
+      password: password || undefined,
+      phone: cleanPhone,
+      email_confirm: true,
+      phone_confirm: true,
+      user_metadata: {
+        name,
+        language: 'ta',
+        role: 'customer',
+        plan: activateProImmediately ? 'PRO' : 'FREE',
+        plan_expires_at: expiresAt,
+        is_admin: false,
+        trial_expires_at: trialExpiresAt,
+      },
+    });
+
+    if (authError || !user?.user) {
+      res.status(400).json({
+        success: false,
+        error: 'CREATE_CUSTOMER_FAILED',
+        message: authError?.message || 'Failed to create auth user',
+      });
+      return;
+    }
+
+    // Update public.users profile (sync fields)
+    await supabaseAdmin
+      .from('users')
+      .update({
+        name,
+        email: cleanEmail,
+        language: 'ta',
+      })
+      .eq('id', user.user.id);
+
+    // If PRO toggle is ON: upsert subscriptions row as PRO and log to history
+    if (activateProImmediately) {
+      const { error: subError } = await supabaseAdmin
+        .from('subscriptions')
+        .upsert(
+          {
+            user_id: user.user.id,
+            plan: 'PRO',
+            starts_at: now.toISOString(),
+            expires_at: expiresAt,
+          },
+          { onConflict: 'user_id' }
+        );
+
+      if (subError) {
+        console.error('[Admin Customer Create Sub Upsert Error]:', subError);
+      }
+
+      const adminEmail = req.user?.email || req.user?.id || 'Admin';
+      const { error: historyError } = await supabaseAdmin
+        .from('subscription_history')
+        .insert({
+          user_id: user.user.id,
+          activated_by: adminEmail,
+          plan: 'PRO',
+          starts_at: now.toISOString(),
+          expires_at: expiresAt || '2099-12-31T23:59:59.000Z',
+          payment_note: paymentNote || 'PRO Activated immediately on Admin creation',
+        });
+
+      if (historyError) {
+        console.error('[Admin Customer Create History Log Failed]:', historyError);
+      }
+    }
+
+    res.status(201).json({
+      success: true,
+      message: 'வாடிக்கையாளர் கணக்கு வெற்றிகரமாக உருவாக்கப்பட்டது · Customer account created successfully!',
+      data: {
+        customer: {
+          id: user.user.id,
+          email: user.user.email,
+          phone: user.user.phone,
+          name: user.user.user_metadata.name,
+        },
+      },
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: 'SERVER_ERROR', message: err.message });
+  }
+});
+
+// POST /api/admin/users/:userId/change-password — change a user's password
+router.post('/users/:userId/change-password', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { userId } = req.params;
+    const { newPassword } = req.body;
+
+    if (!newPassword || newPassword.length < 8 || !/\d/.test(newPassword)) {
+      res.status(400).json({
+        success: false,
+        error: 'INVALID_PASSWORD',
+        message: 'கடவுச்சொல் குறைந்தது 8 எழுத்துக்கள் இருக்க வேண்டும் மற்றும் ஒரு எண் இருக்க வேண்டும் · Password must be at least 8 characters long and contain at least one number'
+      });
+      return;
+    }
+
+    const { data: user, error: updateError } = await supabaseAdmin.auth.admin.updateUserById(userId as string, {
+      password: newPassword,
+    });
+
+    if (updateError) {
+      res.status(400).json({
+        success: false,
+        error: 'PASSWORD_UPDATE_FAILED',
+        message: updateError.message,
+      });
+      return;
+    }
+
+    // Log password change into subscription_history for auditing
+    const adminEmail = req.user?.email || req.user?.id || 'Admin';
+    await supabaseAdmin
+      .from('subscription_history')
+      .insert({
+        user_id: userId,
+        activated_by: adminEmail,
+        plan: 'PASSWORD_CHANGE',
+        payment_note: `Password changed by admin (${adminEmail})`,
+        starts_at: new Date().toISOString(),
+        expires_at: null,
+      })
+      .then(({ error: logErr }) => {
+        if (logErr) console.error('[Password Change Audit Log Failed]:', logErr);
+      });
+
+    res.json({
+      success: true,
+      message: 'கடவுச்சொல் வெற்றிகரமாக மாற்றப்பட்டது · Password changed successfully!',
     });
   } catch (err: any) {
     res.status(500).json({ success: false, error: 'SERVER_ERROR', message: err.message });

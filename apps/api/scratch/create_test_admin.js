@@ -10,7 +10,7 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
 async function run() {
-  const email = 'admin_antigravity@jothisoft.in';
+  const email = 'admin_antigravity2@jothisoft.in';
   const password = 'Password123!';
 
   // Find user if exists
