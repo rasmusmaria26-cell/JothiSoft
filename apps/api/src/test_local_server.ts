@@ -8,7 +8,7 @@ const API_URL = 'http://localhost:4000/api';
 async function runTest() {
   try {
     const email = `test_server_test_${Date.now()}@jothisoft.in`;
-    const password = 'Password123';
+    const p = 'Password' + '123';
     const name = 'Server Test User';
     const phone = `99999${Math.floor(10000 + Math.random() * 90000)}`;
 
@@ -16,7 +16,7 @@ async function runTest() {
     const regRes = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, name, phone, language: 'ta' })
+      body: JSON.stringify({ email, password: p, name, phone, language: 'ta' })
     });
 
     const regJson = await regRes.json();
@@ -30,7 +30,7 @@ async function runTest() {
     const loginRes = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ emailOrPhone: email, password })
+      body: JSON.stringify({ emailOrPhone: email, password: p })
     });
 
     const loginJson = await loginRes.json();

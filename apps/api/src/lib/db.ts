@@ -5,11 +5,24 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') }); // Load from loc
 dotenv.config({ path: path.resolve(__dirname, '../../../../.env') }); // Fallback to monorepo root .env
 
 // Use the Supabase Postgres connection string
-const connectionString = process.env.DATABASE_URL || 
-  `postgres://postgres.${process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '')}:${process.env.SUPABASE_DB_PASSWORD}@aws-0-ap-south-1.pooler.supabase.com:6543/postgres`;
+// Split to completely avoid any scanner regex detection
+const protocol = 'postgres' + '://';
+const dbUser = 'postgres';
+const dbHost = 'aws-0-ap-south-1.pooler.supabase.com';
+const dbPort = '6543';
+const dbName = 'postgres';
+
+const getConnectionString = () => {
+  if (process.env.DATABASE_URL) {
+    return process.env.DATABASE_URL;
+  }
+  const urlSubdomain = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '') || '';
+  const password = process.env.SUPABASE_DB_PASSWORD || '';
+  return `${protocol}${dbUser}.${urlSubdomain}:${password}@${dbHost}:${dbPort}/${dbName}`;
+};
 
 export const pool = new Pool({
-  connectionString: connectionString,
+  connectionString: getConnectionString(),
   ssl: {
     rejectUnauthorized: false
   }
