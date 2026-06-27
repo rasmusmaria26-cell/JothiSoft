@@ -11,6 +11,7 @@ import { PlaceSearch } from '@/components/astro/PlaceSearch'
 import { RasiChart } from '@/components/astro/RasiChart'
 import { DasaTable } from '@/components/astro/DasaTable'
 import { PredictionsTab } from '@/components/astro/PredictionsTab'
+import { VastuTab } from '@/components/astro/VastuTab'
 import { CityData, HoroscopeResponse, DashaResponse, PlanetData } from '@/types/astro'
 import ErrorBoundary from '@/components/common/ErrorBoundary'
 import { HoroscopeSkeleton } from '@/components/astro/SkeletonCards'
@@ -33,7 +34,7 @@ export default function HoroscopePage() {
   const [error, setError] = useState<string | null>(null)
   const [horoscope, setHoroscope] = useState<HoroscopeResponse | null>(null)
   const [dasa, setDasa] = useState<DashaResponse | null>(null)
-  const [activeTab, setActiveTab] = useState<'charts' | 'planets' | 'dasa' | 'predictions'>('charts')
+  const [activeTab, setActiveTab] = useState<'charts' | 'planets' | 'dasa' | 'predictions' | 'vastu'>('charts')
   const [isSavedProfileLoading, setIsSavedProfileLoading] = useState(false)
 
   // Labels dictionary
@@ -55,6 +56,7 @@ export default function HoroscopePage() {
       tabPlanets: 'கிரக நிலைகள்',
       tabDasa: 'தசா புக்தி',
       tabPredictions: 'பலன்கள்',
+      tabVastu: 'வாஸ்து குறிப்பு',
       recalculate: 'புதிய கணிப்பு',
       loadingProfile: 'சேமிக்கப்பட்ட விவரங்கள் ஏற்றப்படுகின்றன...',
       errorFetch: 'கணிப்புகளைப் பெறுவதில் பிழை ஏற்பட்டது. மீண்டும் முயற்சிக்கவும்.',
@@ -87,6 +89,7 @@ export default function HoroscopePage() {
       tabPlanets: 'Planets Strength',
       tabDasa: 'Dasa & Bhukti',
       tabPredictions: 'Predictions',
+      tabVastu: 'Vastu Guide',
       recalculate: 'Reset Details',
       loadingProfile: 'Loading saved profile...',
       errorFetch: 'Error fetching horoscope calculation. Please try again.',
@@ -483,13 +486,13 @@ export default function HoroscopePage() {
                     </p>
                   </div>
 
-                  {/* Tabs Selector */}
-                  <div className="flex bg-[var(--bg-elevated)] border border-bg-border p-1 rounded-lg self-start">
+                  <div className="flex flex-wrap gap-1 bg-[var(--bg-elevated)] border border-bg-border p-1 rounded-lg self-start">
                     {[
                       { id: 'charts', label: labels.tabCharts },
                       { id: 'planets', label: labels.tabPlanets },
                       { id: 'dasa', label: labels.tabDasa },
-                      { id: 'predictions', label: labels.tabPredictions }
+                      { id: 'predictions', label: labels.tabPredictions },
+                      { id: 'vastu', label: labels.tabVastu }
                     ].map((tab) => (
                       <button
                         key={tab.id}
@@ -627,6 +630,12 @@ export default function HoroscopePage() {
                   {activeTab === 'predictions' && horoscope.predictions && (
                     <div className="py-2">
                       <PredictionsTab predictions={horoscope.predictions} />
+                    </div>
+                  )}
+
+                  {activeTab === 'vastu' && (
+                    <div className="py-2">
+                      <VastuTab horoscope={horoscope} />
                     </div>
                   )}
                 </div>

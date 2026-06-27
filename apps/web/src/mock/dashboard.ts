@@ -5,7 +5,7 @@ import {
   Heart, GitMerge, Search, CheckCircle,
   Hash, Timer, Home, Ruler,
   HelpCircle, Zap, Bird, Feather,
-  CircleDot, Flame, Sun, Gift, BookMarked,
+  CircleDot, Flame, Sun, Gift, BookMarked, Sparkles,
 } from 'lucide-react'
 
 import { CategorySectionProps } from '../components/dashboard/CategorySection'
@@ -18,6 +18,8 @@ export const categoryData: CategorySectionProps[] = [
     modules: [
       { icon: Star,       labelTa: 'ஜாதகம்',         labelEn: 'Horoscope',      sublabelTa: 'Full Horoscope',  sublabelEn: 'Full Horoscope',  href: '/horoscope',           badge: 'TOP' },
       { icon: FileText,   labelTa: 'ஜாதகம் PDF',      labelEn: 'Horoscope PDF',  sublabelTa: 'ஒற்றை பக்கம்',        sublabelEn: 'Single Page',      href: '/horoscope/pdf' },
+      { icon: BookMarked, labelTa: 'முழு ஜாதகம் (PDF)', labelEn: 'Full Jathagam (PDF)', sublabelTa: '20-பக்கங்கள்',        sublabelEn: '20 Pages',         href: '/horoscope/jathagam',  badge: 'NEW' },
+      { icon: Sparkles,   labelTa: 'முழு ஜாதகம் 2.0',   labelEn: 'Full Jathagam 2.0', sublabelTa: '20-பக்கங்கள்',        sublabelEn: '20 Pages',         href: '/horoscope/jathagam', badge: 'NEW' },
       { icon: Eye,        labelTa: 'ஜாதக பலன்',      labelEn: 'Predictions',    sublabelTa: 'Prediction',      sublabelEn: 'Prediction',      href: '/horoscope/palan' },
       { icon: BookOpen,   labelTa: 'புத்தக ஜாதகம்',  labelEn: 'Book Chart',     sublabelTa: 'Book PDF',        sublabelEn: 'Book PDF',        href: '/horoscope/book' },
       { icon: Moon,       labelTa: 'நட்சத்திர பலன்', labelEn: 'Star Readings',  sublabelTa: 'Star',            sublabelEn: 'Star',            href: '/horoscope/star' },

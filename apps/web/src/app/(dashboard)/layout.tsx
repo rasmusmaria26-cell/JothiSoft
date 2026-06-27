@@ -65,7 +65,7 @@ export default function DashboardLayout({
         <div className="print:hidden">
           <Header />
         </div>
-        <div className="flex pt-[52px]">
+        <div className="flex pt-[52px] print:block print:pt-0">
           <main className="
             flex-1
             min-w-0

@@ -38,3 +38,30 @@ Thumbs.db
 # IDE
 .vscode
 .idea
+
+# ── Loose asset files dropped in repo ROOT only (not inside apps/) ────────────
+/*.pdf
+/*.png
+/*.jpg
+/*.jpeg
+/*.gif
+
+# ── Backup / temp editor files ───────────────────────────────────────────────
+*.bak
+*.tmp
+*.orig
+*.swp
+*~
+
+# ── API one-off test / scratch scripts ───────────────────────────────────────
+apps/api/test_*.js
+apps/api/test_*.ts
+apps/api/src/scripts/
+
+# ── Planning & AI-generated session artifacts (local only) ───────────────────
+implementation_plan.md
+walkthrough.md
+task.md
+
+# ── Scratch workspace directories ────────────────────────────────────────────
+jothisoft/

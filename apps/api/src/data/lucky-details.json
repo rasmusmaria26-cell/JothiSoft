@@ -1,0 +1,86 @@
+{
+  "Mesha": {
+    "day_ta": "செவ்வாய்",
+    "color_ta": "சிவப்பு",
+    "stone_ta": "பவளம்",
+    "deity_ta": "முருகன்",
+    "number": 9
+  },
+  "Vrishabha": {
+    "day_ta": "வெள்ளி",
+    "color_ta": "வெண்மை, வெளிர் நீலம்",
+    "stone_ta": "வைரம்",
+    "deity_ta": "மகாலட்சுமி",
+    "number": 6
+  },
+  "Mithuna": {
+    "day_ta": "புதன்",
+    "color_ta": "பச்சை",
+    "stone_ta": "மரகதம்",
+    "deity_ta": "விஷ்ணு",
+    "number": 5
+  },
+  "Kataka": {
+    "day_ta": "திங்கள்",
+    "color_ta": "வெண்மை",
+    "stone_ta": "முத்து",
+    "deity_ta": "பார்வதி",
+    "number": 2
+  },
+  "Simha": {
+    "day_ta": "ஞாயிறு",
+    "color_ta": "சிவப்பு, தங்கம்",
+    "stone_ta": "மாணிக்கம்",
+    "deity_ta": "சிவன்",
+    "number": 1
+  },
+  "Kanya": {
+    "day_ta": "புதன்",
+    "color_ta": "பச்சை",
+    "stone_ta": "மரகதம்",
+    "deity_ta": "விஷ்ணு",
+    "number": 5
+  },
+  "Thula": {
+    "day_ta": "வெள்ளி",
+    "color_ta": "வெளிர் நீலம், வெண்மை",
+    "stone_ta": "வைரம்",
+    "deity_ta": "மகாலட்சுமி",
+    "number": 6
+  },
+  "Vrischika": {
+    "day_ta": "செவ்வாய்",
+    "color_ta": "சிவப்பு",
+    "stone_ta": "பவளம்",
+    "deity_ta": "முருகன்",
+    "number": 9
+  },
+  "Dhanus": {
+    "day_ta": "வியாழன்",
+    "color_ta": "மஞ்சள்",
+    "stone_ta": "புஷ்பராகம்",
+    "deity_ta": "தட்சிணாமூர்த்தி",
+    "number": 3
+  },
+  "Makara": {
+    "day_ta": "சனி",
+    "color_ta": "கருப்பு, நீலம்",
+    "stone_ta": "நீலம்",
+    "deity_ta": "சாஸ்தா, அனுமன்",
+    "number": 8
+  },
+  "Kumbha": {
+    "day_ta": "சனி",
+    "color_ta": "நீலம், கருப்பு",
+    "stone_ta": "நீலம்",
+    "deity_ta": "சாஸ்தா, அனுமன்",
+    "number": 8
+  },
+  "Meena": {
+    "day_ta": "வியாழன்",
+    "color_ta": "மஞ்சள்",
+    "stone_ta": "புஷ்பராகம்",
+    "deity_ta": "தட்சிணாமூர்த்தி",
+    "number": 3
+  }
+}
