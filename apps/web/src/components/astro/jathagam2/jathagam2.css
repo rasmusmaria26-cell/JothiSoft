@@ -1,0 +1,102 @@
+/* apps/web/src/components/astro/jathagam2/jathagam2.css */
+.jathagam-2-wrapper {
+  --sripathi-static-framework: #6b1426;  /* Royal Burgundy */
+  --sripathi-dynamic-data: #b8860b;       /* Antique Bronze Gold */
+  --sripathi-narrative-text: #2c3e50;    /* Charcoal Slate Grey */
+}
+
+@page {
+  size: A4 portrait;
+  margin: 0 !important;
+}
+
+@media print {
+  html, body {
+    width: 210mm !important;
+    height: auto !important;
+    min-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    overflow: visible !important;
+  }
+  
+  /* Reset layout hierarchies on print */
+  body > div,
+  body > div > div,
+  body > div > div > div,
+  main,
+  section,
+  article,
+  .min-h-screen,
+  .h-screen,
+  .overflow-y-auto {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    position: static !important;
+    transform: none !important;
+  }
+  
+  * {
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+    box-shadow: none !important;
+  }
+  
+  header, footer, nav, button, aside, .no-print, [role="button"] {
+    display: none !important;
+  }
+  
+  .jathagam2-page, .page-print-container {
+    page-break-after: always !important;
+    page-break-inside: avoid !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    box-sizing: border-box;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
+
+@media screen {
+  .jathagam2-page {
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+  }
+}
+
+/* Base print media container */
+.page-print-container {
+  width: 210mm;
+  height: 297mm;
+  padding: 12mm;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.inner-border {
+  height: 100%;
+  width: 100%;
+  border: 4px double var(--sripathi-dynamic-data);
+  padding: 18px;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}

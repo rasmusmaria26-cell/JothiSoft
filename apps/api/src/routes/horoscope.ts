@@ -1,5 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { calculateHoroscope, calculateVimshottariDasha, calculateTransit } from '../services/horoscope.service';
+import { getCalendarEras } from '../lib/traditionalCalendar';
+import { calculateAthiyandham } from '../lib/athiyandham';
 import { calcLimiter } from '../middleware/rateLimit';
 import { authenticate } from '../middleware/auth';
 import { requireSubscription } from '../middleware/subscription';
@@ -23,10 +25,24 @@ router.post('/calculate', authenticate, requireSubscription, async (req: Request
     }
 
     const data = await calculateHoroscope(date, time, lat, lng, utcOffset, language);
+    const calendarEras = getCalendarEras(date);
+
+    // Compute birth datetime in UTC for Athiyandham
+    let athiyandham: any = null;
+    try {
+      const [y, m, d] = (date as string).split('-').map(Number);
+      const [hh, mm] = (time as string).split(':').map(Number);
+      const offsetMins = Number(utcOffset) * 60;
+      const localMs = Date.UTC(y, m - 1, d, hh, mm);
+      const utcMs   = localMs - offsetMins * 60_000;
+      athiyandham   = calculateAthiyandham(new Date(utcMs), Number(lat), Number(lng));
+    } catch (e) {
+      console.warn('[Athiyandham]', e);
+    }
 
     res.json({
       success: true,
-      data,
+      data: { ...data, calendar_eras: calendarEras, athiyandham },
     });
   } catch (error: any) {
     console.error('[Horoscope Error]:', error);

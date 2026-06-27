@@ -1,0 +1,1946 @@
+{
+  "Ashwini": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Ashwini 1",
+      "padam": "1",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Ashwini 2",
+      "padam": "2",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Ashwini 3",
+      "padam": "3",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Ashwini 4",
+      "padam": "4",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Ashwini 1",
+      "padam": "1",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Ashwini 2",
+      "padam": "2",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Ashwini 3",
+      "padam": "3",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Ashwini 4",
+      "padam": "4",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Ashwini 1",
+      "padam": "1",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Ashwini 2",
+      "padam": "2",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    }
+  ],
+  "Bharani": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Bharani 2",
+      "padam": "2",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Bharani 3",
+      "padam": "3",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Bharani 4",
+      "padam": "4",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Bharani 1",
+      "padam": "1",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Bharani 2",
+      "padam": "2",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Bharani 3",
+      "padam": "3",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Bharani 4",
+      "padam": "4",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Bharani 1",
+      "padam": "1",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Bharani 2",
+      "padam": "2",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Bharani 3",
+      "padam": "3",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    }
+  ],
+  "Krittika": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Krittika 3",
+      "padam": "3",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Krittika 4",
+      "padam": "4",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Krittika 1",
+      "padam": "1",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Krittika 2",
+      "padam": "2",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Krittika 3",
+      "padam": "3",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Krittika 4",
+      "padam": "4",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Krittika 1",
+      "padam": "1",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Krittika 2",
+      "padam": "2",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Krittika 3",
+      "padam": "3",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Krittika 4",
+      "padam": "4",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    }
+  ],
+  "Rohini": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Rohini 4",
+      "padam": "4",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Rohini 1",
+      "padam": "1",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Rohini 2",
+      "padam": "2",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Rohini 3",
+      "padam": "3",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Rohini 4",
+      "padam": "4",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Rohini 1",
+      "padam": "1",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Rohini 2",
+      "padam": "2",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Rohini 3",
+      "padam": "3",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Rohini 4",
+      "padam": "4",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Rohini 1",
+      "padam": "1",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    }
+  ],
+  "Mrigashira": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Mrigashira 1",
+      "padam": "1",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Mrigashira 2",
+      "padam": "2",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Mrigashira 3",
+      "padam": "3",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Mrigashira 4",
+      "padam": "4",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Mrigashira 1",
+      "padam": "1",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Mrigashira 2",
+      "padam": "2",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Mrigashira 3",
+      "padam": "3",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Mrigashira 4",
+      "padam": "4",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Mrigashira 1",
+      "padam": "1",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Mrigashira 2",
+      "padam": "2",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    }
+  ],
+  "Ardra": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Ardra 2",
+      "padam": "2",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Ardra 3",
+      "padam": "3",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Ardra 4",
+      "padam": "4",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Ardra 1",
+      "padam": "1",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Ardra 2",
+      "padam": "2",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Ardra 3",
+      "padam": "3",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Ardra 4",
+      "padam": "4",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Ardra 1",
+      "padam": "1",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Ardra 2",
+      "padam": "2",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Ardra 3",
+      "padam": "3",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    }
+  ],
+  "Punarvasu": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Punarvasu 3",
+      "padam": "3",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Punarvasu 4",
+      "padam": "4",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Punarvasu 1",
+      "padam": "1",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Punarvasu 2",
+      "padam": "2",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Punarvasu 3",
+      "padam": "3",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Punarvasu 4",
+      "padam": "4",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Punarvasu 1",
+      "padam": "1",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Punarvasu 2",
+      "padam": "2",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Punarvasu 3",
+      "padam": "3",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Punarvasu 4",
+      "padam": "4",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    }
+  ],
+  "Pushya": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Pushya 4",
+      "padam": "4",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Pushya 1",
+      "padam": "1",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Pushya 2",
+      "padam": "2",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Pushya 3",
+      "padam": "3",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Pushya 4",
+      "padam": "4",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Pushya 1",
+      "padam": "1",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Pushya 2",
+      "padam": "2",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Pushya 3",
+      "padam": "3",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Pushya 4",
+      "padam": "4",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Pushya 1",
+      "padam": "1",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    }
+  ],
+  "Ashlesha": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Ashlesha 1",
+      "padam": "1",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Ashlesha 2",
+      "padam": "2",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Ashlesha 3",
+      "padam": "3",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Ashlesha 4",
+      "padam": "4",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Ashlesha 1",
+      "padam": "1",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Ashlesha 2",
+      "padam": "2",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Ashlesha 3",
+      "padam": "3",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Ashlesha 4",
+      "padam": "4",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Ashlesha 1",
+      "padam": "1",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Ashlesha 2",
+      "padam": "2",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    }
+  ],
+  "Magha": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Magha 2",
+      "padam": "2",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Magha 3",
+      "padam": "3",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Magha 4",
+      "padam": "4",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Magha 1",
+      "padam": "1",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Magha 2",
+      "padam": "2",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Magha 3",
+      "padam": "3",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Magha 4",
+      "padam": "4",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Magha 1",
+      "padam": "1",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Magha 2",
+      "padam": "2",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Magha 3",
+      "padam": "3",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    }
+  ],
+  "Purva Phalguni": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Purva Phalguni 3",
+      "padam": "3",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Purva Phalguni 4",
+      "padam": "4",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Purva Phalguni 1",
+      "padam": "1",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Purva Phalguni 2",
+      "padam": "2",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Purva Phalguni 3",
+      "padam": "3",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Purva Phalguni 4",
+      "padam": "4",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Purva Phalguni 1",
+      "padam": "1",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Purva Phalguni 2",
+      "padam": "2",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Purva Phalguni 3",
+      "padam": "3",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Purva Phalguni 4",
+      "padam": "4",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    }
+  ],
+  "Uttara Phalguni": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Uttara Phalguni 4",
+      "padam": "4",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Uttara Phalguni 1",
+      "padam": "1",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Uttara Phalguni 2",
+      "padam": "2",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Uttara Phalguni 3",
+      "padam": "3",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Uttara Phalguni 4",
+      "padam": "4",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Uttara Phalguni 1",
+      "padam": "1",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Uttara Phalguni 2",
+      "padam": "2",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Uttara Phalguni 3",
+      "padam": "3",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Uttara Phalguni 4",
+      "padam": "4",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Uttara Phalguni 1",
+      "padam": "1",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    }
+  ],
+  "Hasta": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Hasta 1",
+      "padam": "1",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Hasta 2",
+      "padam": "2",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Hasta 3",
+      "padam": "3",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Hasta 4",
+      "padam": "4",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Hasta 1",
+      "padam": "1",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Hasta 2",
+      "padam": "2",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Hasta 3",
+      "padam": "3",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Hasta 4",
+      "padam": "4",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Hasta 1",
+      "padam": "1",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Hasta 2",
+      "padam": "2",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    }
+  ],
+  "Chitra": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Chitra 2",
+      "padam": "2",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Chitra 3",
+      "padam": "3",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Chitra 4",
+      "padam": "4",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Chitra 1",
+      "padam": "1",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Chitra 2",
+      "padam": "2",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Chitra 3",
+      "padam": "3",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Chitra 4",
+      "padam": "4",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Chitra 1",
+      "padam": "1",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Chitra 2",
+      "padam": "2",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Chitra 3",
+      "padam": "3",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    }
+  ],
+  "Swati": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Swati 3",
+      "padam": "3",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Swati 4",
+      "padam": "4",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Swati 1",
+      "padam": "1",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Swati 2",
+      "padam": "2",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Swati 3",
+      "padam": "3",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Swati 4",
+      "padam": "4",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Swati 1",
+      "padam": "1",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Swati 2",
+      "padam": "2",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Swati 3",
+      "padam": "3",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Swati 4",
+      "padam": "4",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    }
+  ],
+  "Vishakha": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Vishakha 4",
+      "padam": "4",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Vishakha 1",
+      "padam": "1",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Vishakha 2",
+      "padam": "2",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Vishakha 3",
+      "padam": "3",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Vishakha 4",
+      "padam": "4",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Vishakha 1",
+      "padam": "1",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Vishakha 2",
+      "padam": "2",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Vishakha 3",
+      "padam": "3",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Vishakha 4",
+      "padam": "4",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Vishakha 1",
+      "padam": "1",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    }
+  ],
+  "Anuradha": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Anuradha 1",
+      "padam": "1",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Anuradha 2",
+      "padam": "2",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Anuradha 3",
+      "padam": "3",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Anuradha 4",
+      "padam": "4",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Anuradha 1",
+      "padam": "1",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Anuradha 2",
+      "padam": "2",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Anuradha 3",
+      "padam": "3",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Anuradha 4",
+      "padam": "4",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Anuradha 1",
+      "padam": "1",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Anuradha 2",
+      "padam": "2",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    }
+  ],
+  "Jyeshtha": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Jyeshtha 2",
+      "padam": "2",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Jyeshtha 3",
+      "padam": "3",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Jyeshtha 4",
+      "padam": "4",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Jyeshtha 1",
+      "padam": "1",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Jyeshtha 2",
+      "padam": "2",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Jyeshtha 3",
+      "padam": "3",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Jyeshtha 4",
+      "padam": "4",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Jyeshtha 1",
+      "padam": "1",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Jyeshtha 2",
+      "padam": "2",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Jyeshtha 3",
+      "padam": "3",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    }
+  ],
+  "Mula": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Mula 3",
+      "padam": "3",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Mula 4",
+      "padam": "4",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Mula 1",
+      "padam": "1",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Mula 2",
+      "padam": "2",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Mula 3",
+      "padam": "3",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Mula 4",
+      "padam": "4",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Mula 1",
+      "padam": "1",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Mula 2",
+      "padam": "2",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Mula 3",
+      "padam": "3",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Mula 4",
+      "padam": "4",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    }
+  ],
+  "Purva Ashadha": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Purva Ashadha 4",
+      "padam": "4",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Purva Ashadha 1",
+      "padam": "1",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Purva Ashadha 2",
+      "padam": "2",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Purva Ashadha 3",
+      "padam": "3",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Purva Ashadha 4",
+      "padam": "4",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Purva Ashadha 1",
+      "padam": "1",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Purva Ashadha 2",
+      "padam": "2",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Purva Ashadha 3",
+      "padam": "3",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Purva Ashadha 4",
+      "padam": "4",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Purva Ashadha 1",
+      "padam": "1",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    }
+  ],
+  "Uttara Ashadha": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Uttara Ashadha 1",
+      "padam": "1",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Uttara Ashadha 2",
+      "padam": "2",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Uttara Ashadha 3",
+      "padam": "3",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Uttara Ashadha 4",
+      "padam": "4",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Uttara Ashadha 1",
+      "padam": "1",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Uttara Ashadha 2",
+      "padam": "2",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Uttara Ashadha 3",
+      "padam": "3",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Uttara Ashadha 4",
+      "padam": "4",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Uttara Ashadha 1",
+      "padam": "1",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Uttara Ashadha 2",
+      "padam": "2",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    }
+  ],
+  "Shravana": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Shravana 2",
+      "padam": "2",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Shravana 3",
+      "padam": "3",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Shravana 4",
+      "padam": "4",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Shravana 1",
+      "padam": "1",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Shravana 2",
+      "padam": "2",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Shravana 3",
+      "padam": "3",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Shravana 4",
+      "padam": "4",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Shravana 1",
+      "padam": "1",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Shravana 2",
+      "padam": "2",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Shravana 3",
+      "padam": "3",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    }
+  ],
+  "Dhanishta": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Dhanishta 3",
+      "padam": "3",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Dhanishta 4",
+      "padam": "4",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Dhanishta 1",
+      "padam": "1",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Dhanishta 2",
+      "padam": "2",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Dhanishta 3",
+      "padam": "3",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Dhanishta 4",
+      "padam": "4",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Dhanishta 1",
+      "padam": "1",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Dhanishta 2",
+      "padam": "2",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Dhanishta 3",
+      "padam": "3",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Dhanishta 4",
+      "padam": "4",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    }
+  ],
+  "Shatabhisha": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Shatabhisha 4",
+      "padam": "4",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Shatabhisha 1",
+      "padam": "1",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Shatabhisha 2",
+      "padam": "2",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Shatabhisha 3",
+      "padam": "3",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Shatabhisha 4",
+      "padam": "4",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Shatabhisha 1",
+      "padam": "1",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Shatabhisha 2",
+      "padam": "2",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Shatabhisha 3",
+      "padam": "3",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Shatabhisha 4",
+      "padam": "4",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Shatabhisha 1",
+      "padam": "1",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    }
+  ],
+  "Purva Bhadrapada": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Purva Bhadrapada 1",
+      "padam": "1",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Purva Bhadrapada 2",
+      "padam": "2",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Purva Bhadrapada 3",
+      "padam": "3",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Purva Bhadrapada 4",
+      "padam": "4",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Purva Bhadrapada 1",
+      "padam": "1",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Purva Bhadrapada 2",
+      "padam": "2",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Purva Bhadrapada 3",
+      "padam": "3",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Purva Bhadrapada 4",
+      "padam": "4",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Purva Bhadrapada 1",
+      "padam": "1",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Purva Bhadrapada 2",
+      "padam": "2",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    }
+  ],
+  "Uttara Bhadrapada": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Uttara Bhadrapada 2",
+      "padam": "2",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Uttara Bhadrapada 3",
+      "padam": "3",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Uttara Bhadrapada 4",
+      "padam": "4",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Uttara Bhadrapada 1",
+      "padam": "1",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Uttara Bhadrapada 2",
+      "padam": "2",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Uttara Bhadrapada 3",
+      "padam": "3",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Uttara Bhadrapada 4",
+      "padam": "4",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Uttara Bhadrapada 1",
+      "padam": "1",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Uttara Bhadrapada 2",
+      "padam": "2",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Uttara Bhadrapada 3",
+      "padam": "3",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    }
+  ],
+  "Revati": [
+    {
+      "no": 1,
+      "nakshatra_ta": "Revati 3",
+      "padam": "3",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    },
+    {
+      "no": 2,
+      "nakshatra_ta": "Revati 4",
+      "padam": "4",
+      "karagam_ta": "கேது",
+      "kiragam_ta": "சூரியன்"
+    },
+    {
+      "no": 3,
+      "nakshatra_ta": "Revati 1",
+      "padam": "1",
+      "karagam_ta": "சுக்கிரன்",
+      "kiragam_ta": "சந்திரன்"
+    },
+    {
+      "no": 4,
+      "nakshatra_ta": "Revati 2",
+      "padam": "2",
+      "karagam_ta": "சூரியன்",
+      "kiragam_ta": "செவ்வாய்"
+    },
+    {
+      "no": 5,
+      "nakshatra_ta": "Revati 3",
+      "padam": "3",
+      "karagam_ta": "சந்திரன்",
+      "kiragam_ta": "ராகு"
+    },
+    {
+      "no": 6,
+      "nakshatra_ta": "Revati 4",
+      "padam": "4",
+      "karagam_ta": "செவ்வாய்",
+      "kiragam_ta": "குரு"
+    },
+    {
+      "no": 7,
+      "nakshatra_ta": "Revati 1",
+      "padam": "1",
+      "karagam_ta": "ராகு",
+      "kiragam_ta": "சனி"
+    },
+    {
+      "no": 8,
+      "nakshatra_ta": "Revati 2",
+      "padam": "2",
+      "karagam_ta": "குரு",
+      "kiragam_ta": "புதன்"
+    },
+    {
+      "no": 9,
+      "nakshatra_ta": "Revati 3",
+      "padam": "3",
+      "karagam_ta": "சனி",
+      "kiragam_ta": "கேது"
+    },
+    {
+      "no": 10,
+      "nakshatra_ta": "Revati 4",
+      "padam": "4",
+      "karagam_ta": "புதன்",
+      "kiragam_ta": "சுக்கிரன்"
+    }
+  ]
+}

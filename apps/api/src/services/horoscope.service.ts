@@ -4,6 +4,7 @@ import { getLocalPanchangam } from './localPanchangam.service';
 import { buildDivisionalChart } from './divisional.service';
 import { calculateDoshaAnalysis, DoshaAnalysisResponse } from './dosha.service';
 import { getDashaBhuktiPrediction, DashaPredictionResult } from './dashaPrediction.service';
+import { calculateMandhi } from './mandhi.service';
 
 export interface PlanetData {
   planet: string;
@@ -59,19 +60,68 @@ export interface HoroscopeResponse {
     tithi: {
       name: string;
       name_ta: string;
+      paksha: string;      // 'shukla' | 'krishna'
+      paksha_ta: string;   // 'வளர்பிறை' | 'தேய்பிறை'
+      ending_nazhigai?: number;
+      ending_vinadi?: number;
+      ending_time?: string;
+    };
+    nakshatra?: {
+      name: string;
+      name_ta: string;
+      ending_nazhigai?: number;
+      ending_vinadi?: number;
+      ending_time?: string;
     };
     yoga: {
       name: string;
       name_ta: string;
+      ending_nazhigai?: number;
+      ending_vinadi?: number;
     };
     karana: {
       name: string;
       name_ta: string;
+      ending_nazhigai?: number;
+      ending_vinadi?: number;
     };
+    udhayadhi?: {
+      nazhigai: number;
+      vinadi: number;
+    };
+    sunrise_iso?: string;
   };
   divisional_charts?: Record<string, { chart: HoroscopeChart; lagna_sign: string }>;
   dosha_analysis?: DoshaAnalysisResponse;
   dasha_prediction?: DashaPredictionResult;
+  calendar_eras?: {
+    kaliyuga: number;
+    salivahana: number;
+    kollam: number;
+    hijri: number;
+  };
+  athiyandham?: {
+    nakshatra: string;
+    nakshatra_index: number;
+    dasha_lord: string;
+    dasha_lord_years: number;
+    total_minutes: number;
+    gone_minutes: number;
+    remaining_minutes: number;
+    star_start_iso: string;
+    star_end_iso: string;
+    total_naz: { nazhigai: number; vinadi: number };
+    gone_naz: { nazhigai: number; vinadi: number };
+    remaining_naz: { nazhigai: number; vinadi: number };
+    star_start_udhayadhi?: { nazhigai: number; vinadi: number };
+    star_end_udhayadhi?: { nazhigai: number; vinadi: number };
+  };
+  dasha_timeline?: Array<{
+    dasha_lord: string;
+    bhukti_lord: string;
+    start_date: string;
+    end_date: string;
+  }>;
 }
 
 const ZODIAC_SIGNS = [
@@ -317,9 +367,19 @@ export const calculateHoroscope = async (
     return dateStr;
   };
 
-  // Calculate local panchangam (Tithi, Yoga, Karana)
+  // Calculate local panchangam (Tithi, Yoga, Karana) — lat/lng needed for sunrise-based Nazhigai
   const birthDateObj = new Date(datetime);
-  const localPanchangam = getLocalPanchangam(birthDateObj);
+  const localPanchangam = getLocalPanchangam(birthDateObj, lat, lng);
+
+  // Calculate Mandhi (Gulikan) and insert into planets + rasi_chart
+  const mandhiData = calculateMandhi(date, lat, lng, utcOffset);
+  const mandhiSignIndex = ZODIAC_SIGNS.indexOf(mandhiData.sign);
+  if (mandhiSignIndex !== -1) {
+    const mandhiHouse = ((mandhiSignIndex - lagnaIndex + 12) % 12) + 1;
+    mandhiData.house = mandhiHouse;
+    mappedPlanets.push(mandhiData);
+    rasi_chart[`house_${mandhiHouse}`].push('Mandhi');
+  }
 
   // Calculate divisional charts: D2, D3, D4, D6, D7, D10, D12, D16, D20, D24, D27, D30, D40, D45, D60
   const divs = [2, 3, 4, 6, 7, 10, 12, 16, 20, 24, 27, 30, 40, 45, 60];
@@ -333,6 +393,15 @@ export const calculateHoroscope = async (
 
   // Calculate dasha predictions
   const dasha_prediction = getDashaBhuktiPrediction(dashaResult.current.dasha, dashaResult.current.bhukti);
+
+  const dasha_timeline = dashaResult.timeline.flatMap((period: any) =>
+    period.bhuktis.map((bhukti: any) => ({
+      dasha_lord: period.dasha_lord,
+      bhukti_lord: bhukti.dasha_lord,
+      start_date: formatDateToDDMMYYYY(bhukti.start_date),
+      end_date: formatDateToDDMMYYYY(bhukti.end_date)
+    }))
+  );
 
   return {
     lagna: {
@@ -360,21 +429,40 @@ export const calculateHoroscope = async (
     },
     panchangam: {
       tithi: {
-        name: localPanchangam.tithi.name,
-        name_ta: localPanchangam.tithi.name_ta
+        name:            localPanchangam.tithi.name,
+        name_ta:         localPanchangam.tithi.name_ta,
+        paksha:          localPanchangam.tithi.paksha,
+        paksha_ta:       localPanchangam.tithi.paksha_ta,
+        ending_nazhigai: localPanchangam.tithi.ending_nazhigai,
+        ending_vinadi:   localPanchangam.tithi.ending_vinadi,
+        ending_time:     localPanchangam.tithi.ending_time,
+      },
+      nakshatra: {
+        name:            localPanchangam.nakshatra.name,
+        name_ta:         localPanchangam.nakshatra.name_ta,
+        ending_nazhigai: localPanchangam.nakshatra.ending_nazhigai,
+        ending_vinadi:   localPanchangam.nakshatra.ending_vinadi,
+        ending_time:     localPanchangam.nakshatra.ending_time,
       },
       yoga: {
-        name: localPanchangam.yoga.name,
-        name_ta: localPanchangam.yoga.name_ta
+        name:            localPanchangam.yoga.name,
+        name_ta:         localPanchangam.yoga.name_ta,
+        ending_nazhigai: localPanchangam.yoga.ending_nazhigai,
+        ending_vinadi:   localPanchangam.yoga.ending_vinadi,
       },
       karana: {
-        name: localPanchangam.karana.name,
-        name_ta: localPanchangam.karana.name_ta
-      }
+        name:            localPanchangam.karana.name,
+        name_ta:         localPanchangam.karana.name_ta,
+        ending_nazhigai: localPanchangam.karana.ending_nazhigai,
+        ending_vinadi:   localPanchangam.karana.ending_vinadi,
+      },
+      udhayadhi: localPanchangam.udhayadhi,
+      sunrise_iso: localPanchangam.sunrise_iso,
     },
     divisional_charts,
     dosha_analysis,
-    dasha_prediction
+    dasha_prediction,
+    dasha_timeline
   };
 };
 
