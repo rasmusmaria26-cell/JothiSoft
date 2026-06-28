@@ -1,6 +1,8 @@
 import React from 'react'
 import { HoroscopeResponse, DashaResponse } from '@/types/astro'
 import { RasiChart } from '@/components/astro/RasiChart'
+import { PageWrapper } from './jathagam2/shared/PageWrapper'
+import { PDF_GREEN, PDF_RED, PDF_BLACK } from './jathagam2/shared/jathagam2.constants'
 
 interface BookChartReportProps {
   data: HoroscopeResponse
@@ -62,9 +64,6 @@ const formatDate = (dateStr: string) => {
   } catch { return dateStr }
 }
 
-const PAGE = "relative bg-white text-black w-[210mm] h-[297mm] mx-auto overflow-hidden print:shadow-none shadow-2xl flex flex-col justify-between"
-const DIVIDER = "w-full border-t border-gray-300"
-
 export function BookChartReport({ data, dasa, profile, language, astrologer }: BookChartReportProps) {
   const isTa = language === 'ta'
   const P = isTa ? PLANET_MAP_TA : PLANET_MAP_EN
@@ -88,24 +87,24 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
   )
 
   const renderHeader = (pageTitle: string, pageNum: number) => (
-    <div className="flex flex-col gap-2 px-10 pt-8">
+    <div className="flex flex-col gap-1 w-full" style={{ marginBottom: '10px' }}>
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-xl font-bold text-gray-900">{pageTitle}</h3>
-          <p className="text-[10px] text-gray-500 font-sans">{profile.name} · {profile.dob}</p>
+          <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: PDF_GREEN }}>{pageTitle}</h3>
+          <p style={{ fontSize: '10px', color: PDF_BLACK, fontFamily: 'sans-serif' }}>{profile.name} · {profile.dob}</p>
         </div>
-        <p className="text-sm font-black tracking-widest text-gray-900">
-          JOTHI<span style={{ color: '#c9922a' }}>SOFT</span>
+        <p style={{ fontSize: '14px', fontWeight: '900', letterSpacing: '0.1em', color: PDF_GREEN }}>
+          JOTHI<span style={{ color: PDF_RED }}>SOFT</span>
         </p>
       </div>
-      <div className={DIVIDER} />
+      <div style={{ borderTop: `1.5px solid ${PDF_RED}`, width: '100%', marginTop: '4px' }} />
     </div>
   )
 
   const renderFooter = (pageNum: number) => (
-    <div className="px-10 pb-8 flex flex-col gap-2">
-      <div className={DIVIDER} />
-      <div className="flex justify-between items-center text-[10px] text-gray-400 font-sans">
+    <div className="w-full flex flex-col gap-1 mt-auto" style={{ paddingTop: '10px' }}>
+      <div style={{ borderTop: `1.5px solid ${PDF_RED}`, width: '100%', marginBottom: '4px' }} />
+      <div className="flex justify-between items-center text-[10px] font-sans" style={{ color: PDF_BLACK }}>
         <span>{isTa ? 'ஜோதிசாஃப்ட் ஜோதிட அறிக்கை' : 'JothiSoft Astrological Systems'}</span>
         <span>{isTa ? 'பக்கம்' : 'Page'} {pageNum}</span>
       </div>
@@ -116,119 +115,137 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
     <>
       <style>{`
         @media print {
-          @page { margin: 0; size: A4; }
+          @page { margin: 0; size: A4 portrait; }
           body { -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 0; padding: 0; }
-          .page-break { page-break-before: always; }
+          .jathagam-page {
+            page-break-after: always !important;
+            page-break-inside: avoid !important;
+            margin: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+            width: 210mm !important;
+            height: 297mm !important;
+            box-sizing: border-box;
+            overflow: hidden !important;
+            display: flex !important;
+            flex-direction: column !important;
+          }
+        }
+        @media screen {
+          .jathagam-page {
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+          }
         }
       `}</style>
 
       {/* ══════════════════════════════════════════════
           PAGE 1: COVER
       ══════════════════════════════════════════════ */}
-      <div className={PAGE} style={{ fontFamily: "'Georgia', serif" }}>
-        <div className="w-full h-3 bg-gray-900" />
-        <div className="w-full h-1" style={{ background: '#c9922a' }} />
-
-        <div className="flex flex-col items-center justify-center flex-grow px-12 gap-6 text-center my-auto">
+      <PageWrapper showU={false}>
+        <div className="flex flex-col items-center justify-center flex-grow gap-6 text-center my-auto" style={{ fontFamily: "'Georgia', serif" }}>
           {/* App brand */}
           <div className="flex flex-col items-center gap-1">
-            <p className="text-xs tracking-[0.4em] uppercase text-gray-500 font-sans">Powered by</p>
-            <h1 className="text-3xl font-black tracking-widest text-gray-900">
-              JOTHI<span style={{ color: '#c9922a' }}>SOFT</span>
+            <p style={{ fontSize: '10px', letterSpacing: '0.4em', textTransform: 'uppercase', color: PDF_BLACK, fontFamily: 'sans-serif' }}>
+              {isTa ? 'வழங்குபவர்' : 'Powered by'}
+            </p>
+            <h1 style={{ fontSize: '30px', fontWeight: '900', letterSpacing: '0.1em', color: PDF_GREEN }}>
+              JOTHI<span style={{ color: PDF_RED }}>SOFT</span>
             </h1>
           </div>
 
           {/* Ornamental divider */}
           <div className="flex items-center gap-3 w-full max-w-xs">
-            <div className="flex-1 h-px bg-gray-300" />
-            <span className="text-gray-400 text-lg">✦</span>
-            <div className="flex-1 h-px bg-gray-300" />
+            <div style={{ flex: 1, height: '1.5px', backgroundColor: PDF_RED }} />
+            <span style={{ color: PDF_GREEN, fontSize: '18px' }}>✦</span>
+            <div style={{ flex: 1, height: '1.5px', backgroundColor: PDF_RED }} />
           </div>
 
           {/* Report type */}
           <div className="flex flex-col items-center gap-2">
-            <p className="text-xs tracking-[0.5em] uppercase text-gray-500 font-sans">
+            <p style={{ fontSize: '11px', letterSpacing: '0.3em', textTransform: 'uppercase', color: PDF_BLACK, fontFamily: 'sans-serif' }}>
               {isTa ? 'புத்தக ஜாதகம்' : 'Book Horoscope'}
             </p>
-            <h2 className="text-4xl font-bold text-gray-900 leading-tight">
+            <h2 style={{ fontSize: '36px', fontWeight: 'bold', color: PDF_GREEN }}>
               {isTa ? 'ஜாதகம்' : 'Jathagam'}
             </h2>
-            <p className="text-xs text-gray-500 font-sans">
+            <p style={{ fontSize: '12px', color: PDF_BLACK, fontFamily: 'sans-serif' }}>
               {isTa ? 'விம்சோத்தரி தசா நாடி' : 'Vimshottari Dasa System'}
             </p>
           </div>
 
           {/* Ornamental divider */}
           <div className="flex items-center gap-3 w-full max-w-xs">
-            <div className="flex-1 h-px bg-gray-300" />
-            <span className="text-gray-400 text-lg">✦</span>
-            <div className="flex-1 h-px bg-gray-300" />
+            <div style={{ flex: 1, height: '1.5px', backgroundColor: PDF_RED }} />
+            <span style={{ color: PDF_GREEN, fontSize: '18px' }}>✦</span>
+            <div style={{ flex: 1, height: '1.5px', backgroundColor: PDF_RED }} />
           </div>
 
           {/* Subject name */}
           <div className="flex flex-col items-center gap-1">
-            <p className="text-xs tracking-[0.4em] uppercase text-gray-500 font-sans">
+            <p style={{ fontSize: '10px', letterSpacing: '0.3em', textTransform: 'uppercase', color: PDF_BLACK, fontFamily: 'sans-serif' }}>
               {isTa ? 'பெயர்' : 'Prepared For'}
             </p>
-            <p className="text-3xl font-bold text-gray-900 tracking-wide">
+            <p style={{ fontSize: '28px', fontWeight: 'bold', color: PDF_GREEN }}>
               {profile.name}
             </p>
           </div>
 
           {/* Birth details block */}
-          <div className="w-full max-w-lg border border-gray-300 rounded-xl overflow-hidden bg-gray-50 text-[11px] text-left">
-            <div className="grid grid-cols-2 divide-x divide-gray-300 border-b border-gray-300">
+          <div style={{ width: '100%', maxWidth: '480px', border: `1.5px solid ${PDF_GREEN}`, borderRadius: '12px', overflow: 'hidden', backgroundColor: '#fffdf9', fontSize: '12px', textAlign: 'left' }}>
+            <div className="grid grid-cols-2 divide-x border-b" style={{ borderColor: PDF_GREEN }}>
               <div className="p-2.5 flex flex-col gap-1">
-                <div className="flex justify-between border-b border-gray-200/60 pb-1">
-                  <span className="text-gray-500">{isTa ? 'பெயர்:' : 'Name:'}</span>
-                  <span className="font-bold text-gray-900 truncate max-w-[140px]">{profile.name}</span>
+                <div className="flex justify-between border-b pb-1" style={{ borderColor: 'rgba(107, 20, 38, 0.15)' }}>
+                  <span style={{ color: PDF_BLACK }}>{isTa ? 'பெயர்:' : 'Name:'}</span>
+                  <span style={{ fontWeight: 'bold', color: PDF_GREEN }} className="truncate max-w-[140px]">{profile.name}</span>
                 </div>
-                <div className="flex justify-between border-b border-gray-200/60 pb-1">
-                  <span className="text-gray-500">{isTa ? 'தந்தை:' : 'Father:'}</span>
-                  <span className="font-bold text-gray-900 truncate max-w-[140px]">{profile.fatherName || '—'}</span>
+                <div className="flex justify-between border-b pb-1" style={{ borderColor: 'rgba(107, 20, 38, 0.15)' }}>
+                  <span style={{ color: PDF_BLACK }}>{isTa ? 'தந்தை:' : 'Father:'}</span>
+                  <span style={{ fontWeight: 'bold', color: PDF_GREEN }} className="truncate max-w-[140px]">{profile.fatherName || '—'}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">{isTa ? 'தாய்:' : 'Mother:'}</span>
-                  <span className="font-bold text-gray-900 truncate max-w-[140px]">{profile.motherName || '—'}</span>
+                  <span style={{ color: PDF_BLACK }}>{isTa ? 'தாய்:' : 'Mother:'}</span>
+                  <span style={{ fontWeight: 'bold', color: PDF_GREEN }} className="truncate max-w-[140px]">{profile.motherName || '—'}</span>
                 </div>
               </div>
               <div className="p-2.5 flex flex-col gap-1">
-                <div className="flex justify-between border-b border-gray-200/60 pb-1">
-                  <span className="text-gray-500">{isTa ? 'தேதி:' : 'Date:'}</span>
-                  <span className="font-bold text-gray-900 font-mono">{profile.dob}</span>
+                <div className="flex justify-between border-b pb-1" style={{ borderColor: 'rgba(107, 20, 38, 0.15)' }}>
+                  <span style={{ color: PDF_BLACK }}>{isTa ? 'தேதி:' : 'Date:'}</span>
+                  <span style={{ fontWeight: 'bold', color: PDF_GREEN }} className="font-mono">{profile.dob}</span>
                 </div>
-                <div className="flex justify-between border-b border-gray-200/60 pb-1">
-                  <span className="text-gray-500">{isTa ? 'நேரம்:' : 'Time:'}</span>
-                  <span className="font-bold text-gray-900 font-mono">{profile.tob}</span>
+                <div className="flex justify-between border-b pb-1" style={{ borderColor: 'rgba(107, 20, 38, 0.15)' }}>
+                  <span style={{ color: PDF_BLACK }}>{isTa ? 'நேரம்:' : 'Time:'}</span>
+                  <span style={{ fontWeight: 'bold', color: PDF_GREEN }} className="font-mono">{profile.tob}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">{isTa ? 'பாலினம்:' : 'Gender:'}</span>
-                  <span className="font-bold text-gray-900">
+                  <span style={{ color: PDF_BLACK }}>{isTa ? 'பாலினம்:' : 'Gender:'}</span>
+                  <span style={{ fontWeight: 'bold', color: PDF_GREEN }}>
                     {profile.gender ? (profile.gender === 'Male' ? (isTa ? 'ஆண்' : 'Male') : (isTa ? 'பெண்' : 'Female')) : '—'}
                   </span>
                 </div>
               </div>
             </div>
             
-            <div className="grid grid-cols-2 divide-x divide-gray-300">
+            <div className="grid grid-cols-2 divide-x">
               <div className="p-2.5 flex flex-col gap-1">
-                <div className="flex justify-between border-b border-gray-200/60 pb-1">
-                  <span className="text-gray-500">{isTa ? 'இடம்:' : 'Place:'}</span>
-                  <span className="font-bold text-gray-900 truncate max-w-[140px]">{profile.place}</span>
+                <div className="flex justify-between border-b pb-1" style={{ borderColor: 'rgba(107, 20, 38, 0.15)' }}>
+                  <span style={{ color: PDF_BLACK }}>{isTa ? 'இடம்:' : 'Place:'}</span>
+                  <span style={{ fontWeight: 'bold', color: PDF_GREEN }} className="truncate max-w-[140px]">{profile.place}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">{isTa ? 'லக்னம்:' : 'Lagna:'}</span>
-                  <span className="font-bold text-gold-deep">{S[lagnaSign] || lagnaSign}</span>
+                  <span style={{ color: PDF_BLACK }}>{isTa ? 'லக்னம்:' : 'Lagna:'}</span>
+                  <span style={{ fontWeight: 'bold', color: PDF_RED }}>{S[lagnaSign] || lagnaSign}</span>
                 </div>
               </div>
               <div className="p-2.5 flex flex-col gap-1">
-                <div className="flex justify-between border-b border-gray-200/60 pb-1">
-                  <span className="text-gray-500">{isTa ? 'ராசி:' : 'Rasi:'}</span>
-                  <span className="font-bold text-gray-900">{S[moonSign] || moonSign}</span>
+                <div className="flex justify-between border-b pb-1" style={{ borderColor: 'rgba(107, 20, 38, 0.15)' }}>
+                  <span style={{ color: PDF_BLACK }}>{isTa ? 'ராசி:' : 'Rasi:'}</span>
+                  <span style={{ fontWeight: 'bold', color: PDF_GREEN }}>{S[moonSign] || moonSign}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">{isTa ? 'நட்சத்திரம்:' : 'Star:'}</span>
-                  <span className="font-bold text-gray-900">{N[moonNakshatra] || moonNakshatra} {moonPada ? `(${moonPada})` : ''}</span>
+                  <span style={{ color: PDF_BLACK }}>{isTa ? 'நட்சத்திரம்:' : 'Star:'}</span>
+                  <span style={{ fontWeight: 'bold', color: PDF_GREEN }}>{N[moonNakshatra] || moonNakshatra} {moonPada ? `(${moonPada})` : ''}</span>
                 </div>
               </div>
             </div>
@@ -236,35 +253,32 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
 
           {/* Astrologer Details card */}
           {astrologer?.name && (
-            <div className="p-3 border border-dashed border-gray-300 rounded-xl bg-gray-50/50 w-full max-w-lg text-center flex flex-col gap-0.5">
-              <p className="text-[9px] uppercase tracking-wider text-gray-400 font-sans font-bold">
+            <div style={{ border: `1.5px dashed ${PDF_GREEN}`, borderRadius: '12px', padding: '12px', backgroundColor: '#fffdf9', width: '100%', maxWidth: '480px', display: 'flex', flexDirection: 'column', gap: '2px' }} className="text-center">
+              <p style={{ fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.1em', color: PDF_BLACK, fontFamily: 'sans-serif', fontWeight: 'bold' }}>
                 {isTa ? 'ஜோதிடர் விவரங்கள்' : 'Astrologer Details'}
               </p>
-              <p className="text-xs font-black text-gray-900">{astrologer.name}</p>
-              {astrologer.address && <p className="text-[10px] text-gray-600 font-sans leading-tight">{astrologer.address}</p>}
-              {astrologer.phone && <p className="text-[10px] text-gray-600 font-sans leading-tight font-bold">{isTa ? 'தொலைபேசி:' : 'Phone:'} {astrologer.phone}</p>}
+              <p style={{ fontSize: '13px', fontWeight: 'bold', color: PDF_GREEN }}>{astrologer.name}</p>
+              {astrologer.address && <p style={{ fontSize: '11px', color: PDF_BLACK, fontFamily: 'sans-serif', lineHeight: '1.2' }}>{astrologer.address}</p>}
+              {astrologer.phone && <p style={{ fontSize: '11px', color: PDF_BLACK, fontFamily: 'sans-serif', fontWeight: 'bold', lineHeight: '1.2' }}>{isTa ? 'தொலைபேசி:' : 'Phone:'} {astrologer.phone}</p>}
             </div>
           )}
 
           {/* Generated on */}
-          <p className="text-[10px] text-gray-400 font-sans">
+          <p style={{ fontSize: '10px', color: PDF_BLACK, fontFamily: 'sans-serif' }}>
             {isTa ? 'உருவாக்கப்பட்டது:' : 'Generated on:'} {generatedDate}
           </p>
         </div>
-
-        <div className="w-full h-1" style={{ background: '#c9922a' }} />
-        <div className="w-full h-3 bg-gray-900" />
-      </div>
+      </PageWrapper>
 
       {/* ══════════════════════════════════════════════
           PAGE 2: NATAL CHARTS (D1 & D9)
       ══════════════════════════════════════════════ */}
-      <div className={`${PAGE} page-break`} style={{ fontFamily: "'Georgia', serif" }}>
+      <PageWrapper showU={true}>
         {renderHeader(isTa ? 'கட்ட ஜாதகம்' : 'Natal Charts', 2)}
 
-        <div className="flex-grow px-10 py-6 flex flex-col justify-around">
+        <div className="flex-grow py-6 flex flex-col justify-around">
           {/* Charts side by side */}
-          <div className="grid grid-cols-2 gap-8 justify-items-center">
+          <div className="grid grid-cols-2 gap-8 justify-items-center items-center">
             <div className="flex flex-col items-center gap-2 w-full max-w-[280px]">
               <RasiChart
                 chart={data.rasi_chart}
@@ -273,6 +287,7 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
                 lagnaSign={data.lagna.sign}
                 isPrint={true}
                 language={language}
+                size="medium"
               />
             </div>
             <div className="flex flex-col items-center gap-2 w-full max-w-[280px]">
@@ -283,6 +298,7 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
                 lagnaSign={data.lagna.navamsa_sign || data.lagna.sign}
                 isPrint={true}
                 language={language}
+                size="medium"
               />
             </div>
           </div>
@@ -295,32 +311,32 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
               { label: isTa ? 'நட்சத்திரம்' : 'Birth Star', value: `${N[moonNakshatra] || moonNakshatra} (${moonPada})` },
               { label: isTa ? 'நடப்பு தசை' : 'Current Dasa', value: dasa ? `${P[dasa.current.dasha] || dasa.current.dasha}` : '—' },
             ].map(({ label, value }) => (
-              <div key={label} className="border border-gray-200 rounded-lg p-3 text-center bg-gray-50">
-                <p className="text-[9px] uppercase tracking-wider text-gray-500 mb-1">{label}</p>
-                <p className="text-sm font-bold text-gray-900">{value}</p>
+              <div key={label} style={{ border: `1.5px solid ${PDF_RED}`, borderRadius: '8px', padding: '10px', textAlign: 'center', backgroundColor: '#fffdf9' }}>
+                <p style={{ fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.1em', color: PDF_BLACK, marginBottom: '4px' }}>{label}</p>
+                <p style={{ fontSize: '14px', fontWeight: 'bold', color: PDF_GREEN }}>{value}</p>
               </div>
             ))}
           </div>
         </div>
 
         {renderFooter(2)}
-      </div>
+      </PageWrapper>
 
       {/* ══════════════════════════════════════════════
           PAGE 3: PLANET POSITIONS & PANCHANGAM
       ══════════════════════════════════════════════ */}
-      <div className={`${PAGE} page-break`} style={{ fontFamily: "'Georgia', serif" }}>
+      <PageWrapper showU={true}>
         {renderHeader(isTa ? 'கிரக நிலைகள் & பஞ்சாங்கம்' : 'Planetary Positions & Panchangam', 3)}
 
-        <div className="flex-grow px-10 py-6 flex flex-col justify-around gap-6">
+        <div className="flex-grow py-4 flex flex-col justify-around gap-4">
           {/* Planetary positions table */}
           <div>
-            <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+            <h4 style={{ fontSize: '13px', fontWeight: 'bold', color: PDF_GREEN, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
               {isTa ? 'கிரக அமைப்புகள்' : 'Planetary Degrees'}
             </h4>
-            <table className="w-full text-xs border-collapse">
+            <table className="w-full text-xs border-collapse" style={{ border: `1.5px solid ${PDF_GREEN}` }}>
               <thead>
-                <tr className="bg-gray-900 text-white text-left text-[9px] uppercase tracking-wider">
+                <tr style={{ backgroundColor: PDF_GREEN, color: 'white', textTransform: 'uppercase', fontSize: '9px', letterSpacing: '0.05em' }} className="text-left">
                   <th className="py-2 px-3">{isTa ? 'கிரகம்' : 'Planet'}</th>
                   <th className="py-2 px-3">{isTa ? 'ராசி' : 'Sign'}</th>
                   <th className="py-2 px-3 text-center">{isTa ? 'பாகை' : 'Degree'}</th>
@@ -331,13 +347,13 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
               </thead>
               <tbody>
                 {data.planets.map((planet, idx) => (
-                  <tr key={idx} className={`border-b border-gray-200 ${planet.planet === 'Lagna' ? 'bg-amber-50 font-bold' : idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
-                    <td className="py-1.5 px-3 font-bold text-gray-900">{P[planet.planet] || planet.planet}</td>
-                    <td className="py-1.5 px-3 text-gray-800">{S[planet.sign] || planet.sign}</td>
-                    <td className="py-1.5 px-3 text-center font-mono text-gray-700">{planet.sign_degree.toFixed(2)}°</td>
-                    <td className="py-1.5 px-3 text-center font-bold" style={{ color: '#c9922a' }}>{planet.house}</td>
-                    <td className="py-1.5 px-3 text-gray-700">{N[planet.nakshatra] || planet.nakshatra}</td>
-                    <td className="py-1.5 px-3 text-center text-gray-600">{planet.pada || '—'}</td>
+                  <tr key={idx} style={{ borderBottom: `1px solid rgba(107, 20, 38, 0.15)` }} className={planet.planet === 'Lagna' ? 'font-bold' : ''}>
+                    <td className="py-1.5 px-3 font-bold" style={{ color: PDF_GREEN }}>{P[planet.planet] || planet.planet}</td>
+                    <td className="py-1.5 px-3" style={{ color: PDF_BLACK }}>{S[planet.sign] || planet.sign}</td>
+                    <td className="py-1.5 px-3 text-center font-mono" style={{ color: PDF_BLACK }}>{planet.sign_degree.toFixed(2)}°</td>
+                    <td className="py-1.5 px-3 text-center font-bold" style={{ color: PDF_RED }}>{planet.house}</td>
+                    <td className="py-1.5 px-3" style={{ color: PDF_BLACK }}>{N[planet.nakshatra] || planet.nakshatra}</td>
+                    <td className="py-1.5 px-3 text-center" style={{ color: PDF_BLACK }}>{planet.pada || '—'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -346,26 +362,26 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
 
           {/* Panchangam details box */}
           {data.panchangam && (
-            <div className="border border-gray-200 rounded-xl p-4 bg-gray-50">
-              <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-3">
+            <div style={{ border: `1.5px solid ${PDF_GREEN}`, borderRadius: '12px', padding: '16px', backgroundColor: '#fffdf9' }}>
+              <h4 style={{ fontSize: '13px', fontWeight: 'bold', color: PDF_GREEN, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
                 {isTa ? 'பிறப்பு பஞ்சாங்கம்' : 'Birth Panchangam'}
               </h4>
               <div className="grid grid-cols-3 gap-4">
-                <div className="flex flex-col gap-1 border-r border-gray-200">
-                  <span className="text-[9px] uppercase tracking-wider text-gray-500">{isTa ? 'திதி' : 'Tithi'}</span>
-                  <span className="text-sm font-bold text-gray-900">
+                <div className="flex flex-col gap-1 border-r" style={{ borderColor: 'rgba(107, 20, 38, 0.15)' }}>
+                  <span style={{ fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.05em', color: PDF_BLACK }}>{isTa ? 'திதி' : 'Tithi'}</span>
+                  <span style={{ fontSize: '15px', fontWeight: 'bold', color: PDF_RED }}>
                     {isTa ? data.panchangam.tithi.name_ta : data.panchangam.tithi.name}
                   </span>
                 </div>
-                <div className="flex flex-col gap-1 border-r border-gray-200">
-                  <span className="text-[9px] uppercase tracking-wider text-gray-500">{isTa ? 'யோகம்' : 'Yoga'}</span>
-                  <span className="text-sm font-bold text-gray-900">
+                <div className="flex flex-col gap-1 border-r" style={{ borderColor: 'rgba(107, 20, 38, 0.15)' }}>
+                  <span style={{ fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.05em', color: PDF_BLACK }}>{isTa ? 'யோகம்' : 'Yoga'}</span>
+                  <span style={{ fontSize: '15px', fontWeight: 'bold', color: PDF_RED }}>
                     {isTa ? data.panchangam.yoga.name_ta : data.panchangam.yoga.name}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="text-[9px] uppercase tracking-wider text-gray-500">{isTa ? 'கரணம்' : 'Karana'}</span>
-                  <span className="text-sm font-bold text-gray-900">
+                  <span style={{ fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.05em', color: PDF_BLACK }}>{isTa ? 'கரணம்' : 'Karana'}</span>
+                  <span style={{ fontSize: '15px', fontWeight: 'bold', color: PDF_RED }}>
                     {isTa ? data.panchangam.karana.name_ta : data.panchangam.karana.name}
                   </span>
                 </div>
@@ -375,17 +391,17 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
         </div>
 
         {renderFooter(3)}
-      </div>
+      </PageWrapper>
 
       {/* ══════════════════════════════════════════════
           PAGE 4: DIVISIONAL CHARTS PART 1 (D2-D16)
       ══════════════════════════════════════════════ */}
-      <div className={`${PAGE} page-break`} style={{ fontFamily: "'Georgia', serif" }}>
+      <PageWrapper showU={true}>
         {renderHeader(isTa ? 'வர்க்கக் சக்கரங்கள் (பகுதி 1)' : 'Divisional Charts (Part 1)', 4)}
 
-        <div className="flex-grow px-10 py-4 flex flex-col justify-around">
+        <div className="flex-grow py-4 flex flex-col justify-around">
           {data.divisional_charts ? (
-            <div className="grid grid-cols-2 gap-x-16 gap-y-1.5 justify-items-center justify-center">
+            <div className="grid grid-cols-2 gap-x-16 gap-y-1.5 justify-items-center justify-center items-center">
               {['D2', 'D3', 'D4', 'D6', 'D7', 'D10', 'D12', 'D16'].map((div) => {
                 const divData = data.divisional_charts?.[div]
                 if (!divData) return null
@@ -409,31 +425,32 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
                       lagnaSign={divData.lagna_sign}
                       isPrint={true}
                       language={language}
-                      titleClassName="text-[10px] font-bold mb-1 text-center text-gray-900 leading-tight min-h-[28px] flex items-center justify-center"
+                      titleClassName="text-[10px] font-bold mb-1 text-center leading-tight min-h-[28px] flex items-center justify-center text-[#6b1426]"
+                      size="small"
                     />
                   </div>
                 )
               })}
             </div>
           ) : (
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm" style={{ color: PDF_BLACK }}>
               {isTa ? 'வர்க்கக் சக்கரங்கள் இல்லை' : 'Divisional charts not computed'}
             </p>
           )}
         </div>
 
         {renderFooter(4)}
-      </div>
+      </PageWrapper>
 
       {/* ══════════════════════════════════════════════
           PAGE 5: DIVISIONAL CHARTS PART 2 (D20-D60)
       ══════════════════════════════════════════════ */}
-      <div className={`${PAGE} page-break`} style={{ fontFamily: "'Georgia', serif" }}>
+      <PageWrapper showU={true}>
         {renderHeader(isTa ? 'வர்க்கக் சக்கரங்கள் (பகுதி 2)' : 'Divisional Charts (Part 2)', 5)}
 
-        <div className="flex-grow px-10 py-4 flex flex-col justify-around">
+        <div className="flex-grow py-4 flex flex-col justify-around">
           {data.divisional_charts ? (
-            <div className="grid grid-cols-2 gap-x-16 gap-y-1.5 justify-items-center justify-center">
+            <div className="grid grid-cols-2 gap-x-16 gap-y-1.5 justify-items-center justify-center items-center">
               {['D20', 'D24', 'D27', 'D30', 'D40', 'D45', 'D60'].map((div) => {
                 const divData = data.divisional_charts?.[div]
                 if (!divData) return null
@@ -456,54 +473,60 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
                       lagnaSign={divData.lagna_sign}
                       isPrint={true}
                       language={language}
-                      titleClassName="text-[10px] font-bold mb-1 text-center text-gray-900 leading-tight min-h-[28px] flex items-center justify-center"
+                      titleClassName="text-[10px] font-bold mb-1 text-center leading-tight min-h-[28px] flex items-center justify-center text-[#6b1426]"
+                      size="small"
                     />
                   </div>
                 )
               })}
             </div>
           ) : (
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm" style={{ color: PDF_BLACK }}>
               {isTa ? 'வர்க்கக் சக்கரங்கள் இல்லை' : 'Divisional charts not computed'}
             </p>
           )}
         </div>
 
         {renderFooter(5)}
-      </div>
+      </PageWrapper>
 
       {/* ══════════════════════════════════════════════
           PAGE 6: DOSHA ANALYSIS
       ══════════════════════════════════════════════ */}
-      <div className={`${PAGE} page-break`} style={{ fontFamily: "'Georgia', serif" }}>
+      <PageWrapper showU={true}>
         {renderHeader(isTa ? 'ஜாதக தோஷ ஆய்வுகள்' : 'Dosha Analysis', 6)}
 
-        <div className="flex-grow px-10 py-6 flex flex-col justify-around gap-6">
+        <div className="flex-grow py-6 flex flex-col justify-around gap-6">
           {data.dosha_analysis ? (
             <>
               {/* Sevvai Dosham Card */}
-              <div className="border border-gray-300 rounded-xl p-5 bg-gray-50 flex flex-col gap-3">
+              <div style={{ border: `1.5px solid ${PDF_GREEN}`, borderRadius: '12px', padding: '20px', backgroundColor: '#fffdf9', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div className="flex items-center justify-between">
-                  <h4 className="text-base font-bold text-gray-900">
+                  <h4 style={{ fontSize: '15px', fontWeight: 'bold', color: PDF_GREEN }}>
                     {isTa ? 'செவ்வாய் தோஷ விவரம் (Sevvai Dosham / Manglik)' : 'Mars Dosha Analysis (Sevvai Dosham)'}
                   </h4>
-                  <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase border ${
-                    data.dosha_analysis.sevvai_dosham.severity === 'None'
-                      ? 'bg-green-100 text-green-700 border-green-300'
-                      : data.dosha_analysis.sevvai_dosham.severity === 'Low'
-                      ? 'bg-amber-100 text-amber-700 border-amber-300'
-                      : 'bg-red-100 text-red-700 border-red-300'
-                  }`}>
+                  <span style={{
+                    fontSize: '10px',
+                    padding: '2px 8px',
+                    borderRadius: '4px',
+                    fontWeight: 'bold',
+                    textTransform: 'uppercase',
+                    border: '1px solid',
+                    ...(data.dosha_analysis.sevvai_dosham.severity === 'None'
+                      ? { backgroundColor: '#e6f4ea', color: '#137333', borderColor: '#c2e7cd' }
+                      : { backgroundColor: '#fce8e6', color: '#c5221f', borderColor: '#fad2cf' }
+                    )
+                  }}>
                     {data.dosha_analysis.sevvai_dosham.severity === 'None' ? (isTa ? 'தோஷம் இல்லை' : 'No Dosha') : (isTa ? 'தோஷம் உள்ளது' : 'Dosha Present')}
                   </span>
                 </div>
-                <p className="text-sm text-gray-700 leading-relaxed font-sans">
+                <p style={{ fontSize: '13px', color: PDF_BLACK, lineHeight: '1.4', fontFamily: 'sans-serif' }}>
                   {isTa ? data.dosha_analysis.sevvai_dosham.description_ta : data.dosha_analysis.sevvai_dosham.description_en}
                 </p>
                 {data.dosha_analysis.sevvai_dosham.has_dosha && (
-                  <div className="mt-2 text-xs">
-                    <span className="font-bold text-gray-800">{isTa ? 'பரிந்துரைக்கப்பட்ட பரிகாரங்கள்:' : 'Suggested Remedies:'}</span>
-                    <ul className="list-disc list-inside mt-1.5 text-gray-600 space-y-1 font-sans">
+                  <div style={{ fontSize: '12px' }}>
+                    <span style={{ fontWeight: 'bold', color: PDF_GREEN }}>{isTa ? 'பரிந்துரைக்கப்பட்ட பரிகாரங்கள்:' : 'Suggested Remedies:'}</span>
+                    <ul className="list-disc list-inside mt-1.5 space-y-1 font-sans" style={{ color: PDF_BLACK }}>
                       {(isTa ? data.dosha_analysis.sevvai_dosham.remedies_ta : data.dosha_analysis.sevvai_dosham.remedies_en).map((rem, idx) => (
                         <li key={idx}>{rem}</li>
                       ))}
@@ -513,26 +536,33 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
               </div>
 
               {/* Rahu Ketu Dosham Card */}
-              <div className="border border-gray-300 rounded-xl p-5 bg-gray-50 flex flex-col gap-3">
+              <div style={{ border: `1.5px solid ${PDF_GREEN}`, borderRadius: '12px', padding: '20px', backgroundColor: '#fffdf9', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div className="flex items-center justify-between">
-                  <h4 className="text-base font-bold text-gray-900">
+                  <h4 style={{ fontSize: '15px', fontWeight: 'bold', color: PDF_GREEN }}>
                     {isTa ? 'ராகு கேது சர்ப்ப தோஷம் (Rahu-Ketu / Sarpa Dosha)' : 'Rahu-Ketu Dosha Analysis (Sarpa Dosha)'}
                   </h4>
-                  <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase border ${
-                    data.dosha_analysis.rahu_ketu_dosham.severity === 'None'
-                      ? 'bg-green-100 text-green-700 border-green-300'
-                      : 'bg-red-100 text-red-700 border-red-300'
-                  }`}>
+                  <span style={{
+                    fontSize: '10px',
+                    padding: '2px 8px',
+                    borderRadius: '4px',
+                    fontWeight: 'bold',
+                    textTransform: 'uppercase',
+                    border: '1px solid',
+                    ...(data.dosha_analysis.rahu_ketu_dosham.severity === 'None'
+                      ? { backgroundColor: '#e6f4ea', color: '#137333', borderColor: '#c2e7cd' }
+                      : { backgroundColor: '#fce8e6', color: '#c5221f', borderColor: '#fad2cf' }
+                    )
+                  }}>
                     {data.dosha_analysis.rahu_ketu_dosham.severity === 'None' ? (isTa ? 'தோஷம் இல்லை' : 'No Dosha') : (isTa ? 'தோஷம் உள்ளது' : 'Dosha Present')}
                   </span>
                 </div>
-                <p className="text-sm text-gray-700 leading-relaxed font-sans">
+                <p style={{ fontSize: '13px', color: PDF_BLACK, lineHeight: '1.4', fontFamily: 'sans-serif' }}>
                   {isTa ? data.dosha_analysis.rahu_ketu_dosham.description_ta : data.dosha_analysis.rahu_ketu_dosham.description_en}
                 </p>
                 {data.dosha_analysis.rahu_ketu_dosham.has_dosha && (
-                  <div className="mt-2 text-xs">
-                    <span className="font-bold text-gray-800">{isTa ? 'பரிந்துரைக்கப்பட்ட பரிகாரங்கள்:' : 'Suggested Remedies:'}</span>
-                    <ul className="list-disc list-inside mt-1.5 text-gray-600 space-y-1 font-sans">
+                  <div style={{ fontSize: '12px' }}>
+                    <span style={{ fontWeight: 'bold', color: PDF_GREEN }}>{isTa ? 'பரிந்துரைக்கப்பட்ட பரிகாரங்கள்:' : 'Suggested Remedies:'}</span>
+                    <ul className="list-disc list-inside mt-1.5 space-y-1 font-sans" style={{ color: PDF_BLACK }}>
                       {(isTa ? data.dosha_analysis.rahu_ketu_dosham.remedies_ta : data.dosha_analysis.rahu_ketu_dosham.remedies_en).map((rem, idx) => (
                         <li key={idx}>{rem}</li>
                       ))}
@@ -542,31 +572,31 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
               </div>
             </>
           ) : (
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm" style={{ color: PDF_BLACK }}>
               {isTa ? 'தோஷ விவரங்கள் இல்லை' : 'Dosha analysis data not available'}
             </p>
           )}
         </div>
 
         {renderFooter(6)}
-      </div>
+      </PageWrapper>
 
       {/* ══════════════════════════════════════════════
           PAGE 7: DASHA-BHUKTI TIMELINES
       ══════════════════════════════════════════════ */}
-      <div className={`${PAGE} page-break`} style={{ fontFamily: "'Georgia', serif" }}>
+      <PageWrapper showU={true}>
         {renderHeader(isTa ? 'விம்சோத்தரி தசா கால அட்டவணை' : 'Dasa-Bhukti Timelines', 7)}
 
-        <div className="flex-grow px-10 py-6 flex flex-col justify-around gap-6">
+        <div className="flex-grow py-6 flex flex-col justify-around gap-6">
           {/* Main Mahadasha Timeline */}
           {dasa && (
             <div>
-              <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+              <h4 style={{ fontSize: '12px', fontWeight: 'bold', color: PDF_GREEN, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
                 {isTa ? 'மகா தசா காலங்கள் (Mahadasha Cycles)' : 'Mahadasha Timeline'}
               </h4>
-              <table className="w-full text-xs border-collapse">
+              <table className="w-full text-xs border-collapse" style={{ border: `1.5px solid ${PDF_GREEN}` }}>
                 <thead>
-                  <tr className="bg-gray-100 text-left text-[9px] uppercase tracking-wider text-gray-600 border-y border-gray-300">
+                  <tr style={{ backgroundColor: PDF_GREEN, color: 'white', textTransform: 'uppercase', fontSize: '9px', letterSpacing: '0.05em' }} className="text-left">
                     <th className="py-2 px-3">{isTa ? 'தசை நாதன்' : 'Dasa Lord'}</th>
                     <th className="py-2 px-3">{isTa ? 'தொடக்கம்' : 'Start'}</th>
                     <th className="py-2 px-3">{isTa ? 'முடிவு' : 'End'}</th>
@@ -577,13 +607,13 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
                   {dasa.timeline.map((d, i) => {
                     const isActive = dasa.current.dasha.toLowerCase() === d.dasha_lord.toLowerCase()
                     return (
-                      <tr key={i} className={`border-b border-gray-200 ${isActive ? 'bg-amber-50 font-bold' : i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
-                        <td className="py-1.5 px-3 font-bold text-gray-900">{P[d.dasha_lord] || d.dasha_lord}</td>
-                        <td className="py-1.5 px-3 text-gray-700 font-mono">{formatDate(d.start_date)}</td>
-                        <td className="py-1.5 px-3 text-gray-700 font-mono">{formatDate(d.end_date)}</td>
+                      <tr key={i} style={{ borderBottom: `1px solid rgba(107, 20, 38, 0.15)` }} className={isActive ? 'font-bold' : ''}>
+                        <td className="py-1.5 px-3 font-bold" style={{ color: PDF_GREEN }}>{P[d.dasha_lord] || d.dasha_lord}</td>
+                        <td className="py-1.5 px-3 font-mono" style={{ color: PDF_BLACK }}>{formatDate(d.start_date)}</td>
+                        <td className="py-1.5 px-3 font-mono" style={{ color: PDF_BLACK }}>{formatDate(d.end_date)}</td>
                         <td className="py-1.5 px-3">
                           {isActive && (
-                            <span className="text-[8px] bg-green-100 text-green-700 border border-green-300 px-1.5 py-0.5 rounded font-bold uppercase font-sans">
+                            <span style={{ fontSize: '8px', backgroundColor: '#e6f4ea', color: '#137333', border: '1px solid #c2e7cd', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold', textTransform: 'uppercase', fontFamily: 'sans-serif' }}>
                               {isTa ? 'நடப்பு' : 'Active'}
                             </span>
                           )}
@@ -599,12 +629,12 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
           {/* Sub-Bhukti Timeline for active Mahadasha */}
           {dasa && activeDashaObj && activeDashaObj.bhuktis && (
             <div>
-              <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+              <h4 style={{ fontSize: '12px', fontWeight: 'bold', color: PDF_GREEN, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
                 {isTa ? `${P[dasa.current.dasha] || dasa.current.dasha} தசையில் உள்ள புத்தி காலங்கள்` : `Bhukti Timeline for ${dasa.current.dasha} Dasa`}
               </h4>
-              <table className="w-full text-xs border-collapse">
+              <table className="w-full text-xs border-collapse" style={{ border: `1.5px solid ${PDF_GREEN}` }}>
                 <thead>
-                  <tr className="bg-gray-100 text-left text-[9px] uppercase tracking-wider text-gray-600 border-y border-gray-300">
+                  <tr style={{ backgroundColor: PDF_GREEN, color: 'white', textTransform: 'uppercase', fontSize: '9px', letterSpacing: '0.05em' }} className="text-left">
                     <th className="py-2 px-3">{isTa ? 'புத்தி நாதன்' : 'Bhukti Lord'}</th>
                     <th className="py-2 px-3">{isTa ? 'தொடக்கம்' : 'Start'}</th>
                     <th className="py-2 px-3">{isTa ? 'முடிவு' : 'End'}</th>
@@ -615,15 +645,15 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
                   {activeDashaObj.bhuktis.map((b, i) => {
                     const isActive = dasa.current.bhukti.toLowerCase() === b.dasha_lord.toLowerCase()
                     return (
-                      <tr key={i} className={`border-b border-gray-200 ${isActive ? 'bg-green-50 font-bold' : i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
-                        <td className="py-1.5 px-3 font-bold text-gray-900">
+                      <tr key={i} style={{ borderBottom: `1px solid rgba(107, 20, 38, 0.15)` }} className={isActive ? 'font-bold' : ''}>
+                        <td className="py-1.5 px-3 font-bold" style={{ color: PDF_GREEN }}>
                           {P[dasa.current.dasha] || dasa.current.dasha} - {P[b.dasha_lord] || b.dasha_lord}
                         </td>
-                        <td className="py-1.5 px-3 text-gray-700 font-mono">{formatDate(b.start_date)}</td>
-                        <td className="py-1.5 px-3 text-gray-700 font-mono">{formatDate(b.end_date)}</td>
+                        <td className="py-1.5 px-3 font-mono" style={{ color: PDF_BLACK }}>{formatDate(b.start_date)}</td>
+                        <td className="py-1.5 px-3 font-mono" style={{ color: PDF_BLACK }}>{formatDate(b.end_date)}</td>
                         <td className="py-1.5 px-3">
                           {isActive && (
-                            <span className="text-[8px] bg-green-100 text-green-700 border border-green-300 px-1.5 py-0.5 rounded font-bold uppercase font-sans">
+                            <span style={{ fontSize: '8px', backgroundColor: '#e6f4ea', color: '#137333', border: '1px solid #c2e7cd', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold', textTransform: 'uppercase', fontFamily: 'sans-serif' }}>
                               {isTa ? 'நடப்பு' : 'Active'}
                             </span>
                           )}
@@ -638,48 +668,48 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
         </div>
 
         {renderFooter(7)}
-      </div>
+      </PageWrapper>
 
       {/* ══════════════════════════════════════════════
           PAGE 8: PREDICTIONS & DASHA INTERPRETATION
       ══════════════════════════════════════════════ */}
-      <div className={`${PAGE} page-break`} style={{ fontFamily: "'Georgia', serif" }}>
+      <PageWrapper showU={true}>
         {renderHeader(isTa ? 'ஜாதக பலன்கள் & தசா பலன்கள்' : 'General & Dasa Predictions', 8)}
 
-        <div className="flex-grow px-10 py-4 flex flex-col justify-around gap-4 overflow-hidden">
+        <div className="flex-grow py-4 flex flex-col justify-around gap-4 overflow-hidden">
           {/* General Predictions summaries */}
           <div className="flex flex-col gap-3">
             {[
               { label: isTa ? 'லக்ன பலன்' : 'Lagna Prediction', text: isTa ? data.predictions.lagna.description_ta : data.predictions.lagna.description_en },
               { label: isTa ? 'இராசி பலன்' : 'Rasi Prediction', text: isTa ? data.predictions.rasi.description_ta : data.predictions.rasi.description_en }
             ].map(({ label, text }, idx) => (
-              <div key={idx} className="border border-gray-200 rounded-xl p-3 bg-gray-50">
-                <h5 className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mb-1">{label}</h5>
-                <p className="text-xs text-gray-700 leading-relaxed font-sans line-clamp-3">{text}</p>
+              <div key={idx} style={{ border: `1.5px solid ${PDF_GREEN}`, borderRadius: '12px', padding: '12px', backgroundColor: '#fffdf9' }}>
+                <h5 style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.05em', color: PDF_BLACK, fontWeight: 'bold', marginBottom: '4px' }}>{label}</h5>
+                <p style={{ fontSize: '12px', color: PDF_BLACK, fontFamily: 'sans-serif', lineHeight: '1.4' }} className="line-clamp-3">{text}</p>
               </div>
             ))}
           </div>
 
           {/* Dasha Predictions */}
           {data.dasha_prediction && (
-            <div className="border border-gray-300 rounded-xl p-4 bg-amber-50/50 flex flex-col gap-2">
-              <h4 className="text-xs font-bold text-amber-900 uppercase tracking-wider">
+            <div style={{ border: `1.5px solid ${PDF_GREEN}`, borderRadius: '12px', padding: '16px', backgroundColor: '#fffdf9', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <h4 style={{ fontSize: '12px', fontWeight: 'bold', color: PDF_GREEN, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 {isTa ? 'தற்போதைய தசை-புத்தி பலன்கள்' : 'Current Dasa-Bhukti Interpretations'}
               </h4>
-              <div className="text-xs text-gray-800 leading-relaxed font-sans space-y-2">
+              <div style={{ fontSize: '12px', color: PDF_BLACK, fontFamily: 'sans-serif', lineHeight: '1.4' }} className="space-y-2">
                 <div>
-                  <strong className="text-gray-900 block mb-0.5">
+                  <strong style={{ color: PDF_GREEN, display: 'block', marginBottom: '2px' }}>
                     {isTa ? `${data.dasha_prediction.mahadasha_lord} தசை பலன்கள்:` : `${data.dasha_prediction.mahadasha_lord} Dasa Results:`}
                   </strong>
-                  <p className="text-gray-700">
+                  <p style={{ color: PDF_BLACK }}>
                     {isTa ? data.dasha_prediction.mahadasha_prediction_ta : data.dasha_prediction.mahadasha_prediction_en}
                   </p>
                 </div>
                 <div>
-                  <strong className="text-gray-900 block mb-0.5">
+                  <strong style={{ color: PDF_GREEN, display: 'block', marginBottom: '2px' }}>
                     {isTa ? `${data.dasha_prediction.bhukti_lord} புத்தி பலன்கள்:` : `${data.dasha_prediction.bhukti_lord} Bhukti Results:`}
                   </strong>
-                  <p className="text-gray-700">
+                  <p style={{ color: PDF_BLACK }}>
                     {isTa ? data.dasha_prediction.bhukti_prediction_ta : data.dasha_prediction.bhukti_prediction_en}
                   </p>
                 </div>
@@ -688,8 +718,8 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
           )}
 
           {/* Disclaimer note */}
-          <div className="pt-2 border-t border-gray-200">
-            <p className="text-[9px] text-gray-400 text-center leading-relaxed font-sans">
+          <div className="pt-2" style={{ borderTop: `1px solid ${PDF_RED}` }}>
+            <p style={{ fontSize: '9px', color: PDF_BLACK, textAlign: 'center', lineHeight: '1.4', fontFamily: 'sans-serif' }}>
               {isTa
                 ? 'இந்த ஜாதக அறிக்கை JothiSoft மூலம் கணித முறைப்படி தயாரிக்கப்பட்டது. இது ஒரு வழிகாட்டியே தவிர இறுதி முடிவல்ல.'
                 : 'This computer-generated report is based on mathematical coordinates. Astrological advice is for guidance and spiritual reference only.'}
@@ -698,7 +728,7 @@ export function BookChartReport({ data, dasa, profile, language, astrologer }: B
         </div>
 
         {renderFooter(8)}
-      </div>
+      </PageWrapper>
     </>
   )
 }

@@ -357,28 +357,30 @@ export default function BookChartPage() {
             </div>
 
             {/* The report */}
-            <div className="w-full flex flex-col items-center gap-4">
-              {horoscope && (
-                <BookChartReport
-                  data={horoscope}
-                  dasa={dasa}
-                  profile={{
-                    name,
-                    dob,
-                    tob,
-                    place: selectedCity?.name || '',
-                    gender,
-                    fatherName,
-                    motherName
-                  }}
-                  language={reportLanguage}
-                  astrologer={astroName ? {
-                    name: astroName,
-                    address: astroAddress,
-                    phone: astroPhone
-                  } : undefined}
-                />
-              )}
+            <div className="w-full overflow-x-auto print:overflow-visible py-4">
+              <div className="min-w-[210mm] mx-auto print:min-w-0 flex flex-col gap-4 print:gap-0">
+                {horoscope && (
+                  <BookChartReport
+                    data={horoscope}
+                    dasa={dasa}
+                    profile={{
+                      name,
+                      dob,
+                      tob,
+                      place: selectedCity?.name || '',
+                      gender,
+                      fatherName,
+                      motherName
+                    }}
+                    language={reportLanguage}
+                    astrologer={astroName ? {
+                      name: astroName,
+                      address: astroAddress,
+                      phone: astroPhone
+                    } : undefined}
+                  />
+                )}
+              </div>
             </div>
 
             {/* Floating print button */}
