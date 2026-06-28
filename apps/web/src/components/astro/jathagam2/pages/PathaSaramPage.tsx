@@ -1,24 +1,10 @@
 import React from 'react'
 import { PageWrapper } from '../shared/PageWrapper'
-import { PDF_GREEN, PDF_RED, PDF_BORDER, NAKSHATRA_MAP_TA } from '../shared/jathagam2.constants'
+import { PDF_GREEN, PDF_RED, PDF_BORDER } from '../shared/jathagam2.constants'
 import type { PathaRow } from '@/types/jathagam'
 
 interface PathaSaramPageProps {
   pathaSaram: PathaRow[]
-}
-
-const translateNakshatraWithPada = (text: string): string => {
-  if (!text) return '—'
-  const parts = text.trim().split(' ')
-  if (parts.length > 0) {
-    const englishName = parts[0]
-    const tamilName = NAKSHATRA_MAP_TA[englishName] || englishName
-    if (parts.length > 1) {
-      return `${tamilName} ${parts[1]}`
-    }
-    return tamilName
-  }
-  return text
 }
 
 export function PathaSaramPage({ pathaSaram = [] }: PathaSaramPageProps) {
@@ -61,7 +47,7 @@ export function PathaSaramPage({ pathaSaram = [] }: PathaSaramPageProps) {
                   {row.no}.
                 </td>
                 <td style={{ color: PDF_RED, fontWeight: 'bold', verticalAlign: 'middle', padding: '12px 6px', fontSize: '15px', border: `1px solid ${PDF_BORDER}`, textAlign: 'center' }}>
-                  {translateNakshatraWithPada(row.nakshatra_ta)}
+                  {row.nakshatra_ta}
                 </td>
                 <td style={{ color: '#1a1a1a', verticalAlign: 'middle', padding: '12px 6px', fontSize: '15px', border: `1px solid ${PDF_BORDER}`, textAlign: 'center' }}>
                   {row.padam}

@@ -89,9 +89,9 @@ export function PersonalDetailsPage({ profile, astrologer }: PersonalDetailsPage
       <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px', borderTop: `1.5px solid ${PDF_GREEN}`, paddingTop: '12px', marginBottom: '4px' }}>
         <div style={{ color: PDF_GREEN, fontWeight: 'bold', fontSize: '13px', marginBottom: '2px' }}>ஜாதகம் எழுதியவர் & மென்பொருள் விபரம் :</div>
         {[
-          { label: 'எழுதியவர்', value: astrologer.name || 'ஆண்டாள் ஆஸ்ட்ரோ சாப்ட்வேர் & ஆப்ஸ்' },
-          { label: 'முகவரி', value: astrologer.address || 'ஆண்டாள் ஆஸ்ட்ரோ சாப்ட்வேர் & ஆப்ஸ், தமிழ்நாடு, இந்தியா' },
-          { label: 'அலைபேசி', value: astrologer.phone || '9176264555' },
+          { label: 'எழுதியவர்', value: astrologer.name || 'Jothisoft Mobile Apps & Software' },
+          { label: 'முகவரி', value: astrologer.address || 'Jothisoft Mobile Apps & Software, தமிழ்நாடு, இந்தியா' },
+          { label: 'அலைபேசி', value: astrologer.phone || '9659657770' },
         ].map((item, idx) => (
           <div key={idx} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
             <span style={{ color: PDF_GREEN, fontWeight: 'bold', width: '100px', flexShrink: 0, fontSize: '13px' }}>
