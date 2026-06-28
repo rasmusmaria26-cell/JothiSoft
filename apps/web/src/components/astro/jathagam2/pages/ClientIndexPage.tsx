@@ -76,15 +76,15 @@ export function ClientIndexPage({ horoscope, astrologer, language }: ClientIndex
             <div className="text-xs space-y-2 text-[var(--sripathi-narrative-text)]">
               <div>
                 <span className="text-[var(--sripathi-static-framework)] font-bold">{isTa ? 'எழுதியவர்' : 'Author'}: </span>
-                <span className="text-[var(--sripathi-dynamic-data)] font-semibold">{astrologer.name || 'ஆண்டாள் ஆஸ்ட்ரோ சாப்ட்வேர் & ஆப்ஸ்'}</span>
+                <span className="text-[var(--sripathi-dynamic-data)] font-semibold">{astrologer.name || 'Jothisoft Mobile Apps & Software'}</span>
               </div>
               <div>
                 <span className="text-[var(--sripathi-static-framework)] font-bold">{isTa ? 'முகவரி' : 'Address'}: </span>
-                <span className="text-[var(--sripathi-dynamic-data)] font-semibold">{astrologer.address || 'ஆண்டாள் ஆஸ்ட்ரோ சாப்ட்வேர் & ஆப்ஸ், தமிழ்நாடு இந்தியா'}</span>
+                <span className="text-[var(--sripathi-dynamic-data)] font-semibold">{astrologer.address || 'Jothisoft Mobile Apps & Software, தமிழ்நாடு, இந்தியா'}</span>
               </div>
               <div>
                 <span className="text-[var(--sripathi-static-framework)] font-bold">{isTa ? 'அலைபேசி' : 'Mobile'}: </span>
-                <span className="text-[var(--sripathi-dynamic-data)] font-semibold">{astrologer.phone || '9176264555'}</span>
+                <span className="text-[var(--sripathi-dynamic-data)] font-semibold">{astrologer.phone || 'Whatsapp : 9659657770'}</span>
               </div>
             </div>
           </div>
